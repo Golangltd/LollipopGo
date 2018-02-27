@@ -1,4 +1,4 @@
-package main
+package LollipopGo
 
 import (
 	"fmt"
@@ -7,10 +7,5 @@ import (
 func init() {
 	fmt.Println("Entry init!!!")
 
-	return
-}
-
-func main() {
-	fmt.Println("Entry main!!!")
 	return
 }
