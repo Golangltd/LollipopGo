@@ -1,13 +1,13 @@
-Golang语言社区  轻量级web开源项目（持续更新）
-社区论坛地址：#www.Golang.LTD
+Golang语言社区  轻量级web开源项目（持续更新）<br>
+[社区论坛地址](http://www.Golang.LTD "悬停显示") 
 
-第三方包列表
-1 日志模块采用：
-glog-master
-2 cache模块采用：
-cache2go
-暂时项目还未全部开源，持续更新中... ...
 
-正式使用请关注社区公众平台文章。
+第三方包列表<br>
+1 日志模块采用：<br>
+glog-master<br>
+2 cache模块采用：<br>
+cache2go<br>
+暂时项目还未全部开源，持续更新中... ...<br>
 
-https://git.kancloud.cn/repos/cserli/golang/raw/56178cf17e7bb6f2d0dcdcdb2e57f06f4b92b511/images/0.jpg?access-token=48551595decf2f00092933a052a6945a
+正式使用请关注社区公众平台文章。<br>
+
