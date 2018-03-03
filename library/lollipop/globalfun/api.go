@@ -5,3 +5,9 @@ Golang语言社区(www.Golang.Ltd)
 */
 
 package API
+
+//---单例函数
+
+//---排序函数（支持多维排序）
+
+//---
