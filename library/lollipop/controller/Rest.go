@@ -5,3 +5,19 @@ Golang语言社区(www.Golang.Ltd)
 */
 
 package controller
+
+import (
+	"fmt"
+)
+
+func init() {
+
+	return
+}
+
+func () new() {
+
+	fmt.Println("Entry Test!")
+
+	return
+}
