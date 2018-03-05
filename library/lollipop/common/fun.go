@@ -5,6 +5,13 @@ Golang语言社区(www.Golang.Ltd)
 */
 package Lcommon
 
+import (
+	"html/template"
+	"os"
+	"os/exec"
+	"strings"
+)
+
 // 获取路径
 func GetCurrentPath() string {
 	s, err := exec.LookPath(os.Args[0])
@@ -19,4 +26,11 @@ func CheckErr(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+// html模板设置
+func Assign(html_Path string) (data *template.Template) {
+	tmpl, err := template.ParseFiles(html_Path)
+	CheckErr(err)
+	return tmpl
 }
