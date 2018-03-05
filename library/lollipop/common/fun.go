@@ -28,7 +28,7 @@ func CheckErr(err error) {
 	}
 }
 
-// html模板设置
+// html模板设置(渲染模板)
 func Assign(html_Path string) (data *template.Template) {
 	tmpl, err := template.ParseFiles(html_Path)
 	CheckErr(err)
