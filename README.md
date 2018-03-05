@@ -11,5 +11,7 @@ cache2go<br>
 3 数据包的包含方式
 "LollipopGo/library/lollipop/controller" // 控制器包
 
+注：2018年仅做的开源项目，预计2019年年初完成。
+
 正式使用请关注社区公众平台文章。<br>
 
