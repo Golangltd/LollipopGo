@@ -12,7 +12,7 @@ import (
 
 // 控制器的结构体
 type Tcontroller struct {
-	MapController map[int]string
+	MapController map[string]string
 	mc            sync.RWMutex
 }
 

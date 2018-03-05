@@ -8,6 +8,8 @@ glog-master<br>
 2 cache模块采用：<br>
 cache2go<br>
 暂时项目还未全部开源，持续更新中... ...<br>
+3 数据包的包含方式
+"LollipopGo/library/lollipop/controller" // 控制器包
 
 正式使用请关注社区公众平台文章。<br>
 

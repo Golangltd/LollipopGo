@@ -15,7 +15,7 @@ func init() {
 	return
 }
 
-func () new() {
+func new111() {
 
 	fmt.Println("Entry Test!")
 
