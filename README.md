@@ -65,5 +65,5 @@ Go1.9以上
 
 <br>  
 正式使用请关注社区公众平台文章。<br>
-![](https://ask.qcloudimg.com/draft/1408376/t7e102owue.png?imageView2/0/w/1620)  
+![](http://www.golang.ltd/data/attachment/common/cf/085318foydbo88rkoda2eh.png)  
 
