@@ -13,6 +13,8 @@ import (
 	"io/ioutil"
 	//"strconv"
 	"strings"
+
+	_ "github.com/go-sql-driver/mysql" // 初始化
 )
 
 var G_StInfoBaseST map[string]*DBBaseConfig
@@ -30,6 +32,9 @@ type DBBaseConfig struct {
 //获取配置信息
 func init() {
 	ReadCsv_ConfigFile_StCard2List_Fun()
+	// 链接数据库
+	Mysql_init()
+	GetMySQL()
 	return
 }
 
@@ -77,6 +82,25 @@ func getMySQL() *sql.DB {
 	// 压入队列
 	putMySQL(conn)
 	return conn
+}
+
+func MYsqlTest() {
+
+}
+
+var db *sql.DB
+
+func Mysql_init() {
+	var er error
+	StrConnection := "root" + ":" + "123456" + "@tcp(" + "127.0.0.1" + ":3306)/" + "gl_test"
+	//}
+	db, er = sql.Open("mysql", StrConnection)
+	if er != nil {
+		fmt.Println("数据库链接错误！！！", er)
+	}
+	db.SetMaxOpenConns(2000)
+	db.SetMaxIdleConns(1000)
+	db.Ping()
 }
 
 // 获取数据链接
