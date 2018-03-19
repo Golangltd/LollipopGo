@@ -1,4 +1,4 @@
-Golang语言社区  轻量级web开源项目 （持续更新）<br>
+Golang语言社区  开源项目 （持续更新）<br>
 ============================================
 [点击进入社区论坛](http://www.Golang.LTD "悬停显示") 
 <br>
@@ -71,6 +71,6 @@ Go1.9以上
 注：2018年由于相对比较忙，预计2019年年初完成，同时用LollipopGo建立3个视频实战项目；具体请关注公众平台文章。<br>  
 
 <br>  
-正式使用请关注社区公众平台文章。<br>
+请关注Golang语言社区公众平台ID：Golangweb<br>
 ![](https://github.com/Golangltd/LollipopGo/blob/master/t7e102owue.png)
 
