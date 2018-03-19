@@ -1,39 +1,46 @@
 Golang语言社区  轻量级web开源项目 （持续更新）<br>
 ============================================
 [社区论坛地址](http://www.Golang.LTD "悬停显示") 
-
+<br>
+<br>
+<br>
 ###########目录结构 如下：
+<br>
 
 ├── LollipopGo<br>
 │---├── config<br>
 │------├──config.csv<br>
 │------├──config.go<br>
-│       ├──config.json
-│---├── deploy
-│       ├──allclose.sh
-│       ├──deploy.sh
-│       ├──restart.sh               
-│---├── lang
-│       ├──limlt_versoin.go
-│       ├──zh-cn.go        
-│---├── library
-│       ├──lollipop
-│          ├──cache
-│          ├──common
-│          ├──controller
-│          ├──db
-│          ├──globalfun
-│          ├──log
-│          ├──redis
-│          ├──template
-│          ├──Build.go
-│       ├──traits              
-│---├── tpl
-│       ├──default_index.tpl
-├── base.go
-├── help.go
-├── README.md
+│------├──config.json<br>
+│---├── deploy<br>
+│------├──allclose.sh<br>
+│------├──deploy.sh<br>
+│------├──restart.sh  <br>             
+│---├── lang<br>
+│------├──limlt_versoin.go<br>
+│------├──zh-cn.go<br>        
+│---├── library<br>
+│------├──lollipop<br>
+│----------├──cache<br>
+│----------├──common<br>
+│----------├──controller<br>
+│----------├──db<br>
+│----------├──globalfun<br>
+│----------├──log<br>
+│----------├──redis<br>
+│----------├──template<br>
+│----------├──Build.go<br>
+│------├──traits<br>              
+│---├── tpl<br>
+│------├──default_index.tpl<br>
+├── base.go<br>
+├── help.go<br>
+├── README.md<br>
 
+<br>
+<br>
+<br>
+<br>
 
 ########### V1.1.0 版本内容更新
 1. 新功能	 优化数据库链接，增加连接池
