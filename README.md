@@ -65,5 +65,5 @@ Go1.9以上
 
 <br>  
 正式使用请关注社区公众平台文章。<br>
-![Image text](https://github.com/Golangltd/LollipopGo/blob/master/t7e102owue.png)
+![](https://github.com/Golangltd/LollipopGo/blob/master/t7e102owue.png)
 
