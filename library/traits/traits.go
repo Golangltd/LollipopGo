@@ -5,6 +5,6 @@ import (
 )
 
 func init() {
-	fmt.Println("")
+	fmt.Println("traits")
 	return
 }
