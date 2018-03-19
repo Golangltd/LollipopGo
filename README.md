@@ -10,8 +10,10 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 Go1.9以上
 
 部署步骤
-1. 配置数据库
+1. 配置数据库(选择其中一种即可)
     config.csv
+	config.go
+	config.json
 
 2. 部署go执行文件（仅支持linux）
     deploy.sh
@@ -27,7 +29,8 @@ Go1.9以上
 │---── config<br>
 │------├──config.csv<br>
 │------├──config.go<br>
-│------└──config.json<br>
+│------├──config.json<br>
+│------└──README.txt<br>
 │---── deploy<br>
 │------├──allclose.sh<br>
 │------├──deploy.sh<br>
@@ -45,6 +48,8 @@ Go1.9以上
 │----------├──log<br>
 │----------├──redis<br>
 │----------├──template<br>
+│----------├──code.google.com<br>
+│----------├──concurrentMap<br>
 │----------└──Build.go<br>
 │------──traits<br>
 │----------└──traits.go<br>
@@ -52,7 +57,7 @@ Go1.9以上
 │------└──default_index.tpl<br>
 ├── base.go<br>
 ├── help.go<br>
-├── README.md<br>
+└── README.md<br>
 
 <br>
 <br>
