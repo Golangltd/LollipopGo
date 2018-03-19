@@ -10,6 +10,8 @@ import (
 	_ "fmt"
 )
 
+//http请求获取授权版本信息
 func init() {
+	// 获取信息
 	return
 }
