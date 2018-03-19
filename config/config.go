@@ -43,7 +43,7 @@ func init() {
 func ReadCsv_ConfigFile_StCard2List_Fun() bool {
 	// 获取数据，按照文件
 	fileName := "config.csv"
-	fileName = "./" + fileName
+	fileName = "./" + fileName // 和执行文件bin放到同一个位置
 	cntb, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		return false
@@ -65,7 +65,6 @@ func ReadCsv_ConfigFile_StCard2List_Fun() bool {
 		Infotmp.Itype = ss[i][6]
 		G_StInfoBaseST[Infotmp.ID] = Infotmp
 	}
-	fmt.Println(G_StInfoBaseST)
 	return true
 }
 
@@ -93,15 +92,16 @@ var db *sql.DB
 func Mysql_init() {
 	var er error
 	// 数据库操作--可以用做数据库集群操作
-	StrConnection := G_StInfoBaseST["1"].LoginName + ":" + G_StInfoBaseST["1"].LoginPW + "@tcp(" + G_StInfoBaseST["1"].DBIP + ":3306)/" + G_StInfoBaseST["1"].DBName
-	//}
-	db, er = sql.Open("mysql", StrConnection)
-	if er != nil {
-		fmt.Println("数据库链接错误！！！", er)
+	for k, _ := range G_StInfoBaseST {
+		StrConnection := G_StInfoBaseST[k].LoginName + ":" + G_StInfoBaseST[k].LoginPW + "@tcp(" + G_StInfoBaseST[k].DBIP + ":" + G_StInfoBaseST[k].DBPort + ")/" + G_StInfoBaseST[k].DBName
+		db, er = sql.Open("mysql", StrConnection)
+		if er != nil {
+			fmt.Println("数据库链接错误", er)
+		}
+		db.SetMaxOpenConns(2000)
+		db.SetMaxIdleConns(1000)
+		db.Ping()
 	}
-	db.SetMaxOpenConns(2000)
-	db.SetMaxIdleConns(1000)
-	db.Ping()
 }
 
 // 获取数据链接
