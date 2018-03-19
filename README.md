@@ -7,7 +7,7 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 ###########目录结构 如下：
 <br>
 
-├── LollipopGo                  // 包目录名<br>
+├── LollipopGo       &nbsp&nbsp&nbsp           // 包目录名<br>
 │---── config<br>
 │------├──config.csv<br>
 │------├──config.go<br>
