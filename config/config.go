@@ -31,10 +31,11 @@ type DBBaseConfig struct {
 
 //获取配置信息
 func init() {
+	G_StInfoBaseST = make(map[string]*DBBaseConfig)
 	ReadCsv_ConfigFile_StCard2List_Fun()
 	// 链接数据库
 	Mysql_init()
-	GetMySQL()
+	GetMySQL() // 测试链接库
 	return
 }
 
@@ -54,7 +55,6 @@ func ReadCsv_ConfigFile_StCard2List_Fun() bool {
 
 	// 循环取数据
 	for i := 1; i < sz; i++ {
-
 		Infotmp := new(DBBaseConfig)
 		Infotmp.ID = ss[i][0]
 		Infotmp.LoginName = ss[i][1]
@@ -92,7 +92,8 @@ var db *sql.DB
 
 func Mysql_init() {
 	var er error
-	StrConnection := "root" + ":" + "123456" + "@tcp(" + "127.0.0.1" + ":3306)/" + "gl_test"
+	// 数据库操作--可以用做数据库集群操作
+	StrConnection := G_StInfoBaseST["1"].LoginName + ":" + G_StInfoBaseST["1"].LoginPW + "@tcp(" + G_StInfoBaseST["1"].DBIP + ":3306)/" + G_StInfoBaseST["1"].DBName
 	//}
 	db, er = sql.Open("mysql", StrConnection)
 	if er != nil {
