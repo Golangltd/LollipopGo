@@ -5,18 +5,18 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 ###########目录结构 如下：
 
 ├── LollipopGo<br>
-│   ├── config<br>
-│       ├──config.csv<br>
-│       ├──config.go<br>
+│---├── config<br>
+│------├──config.csv<br>
+│------├──config.go<br>
 │       ├──config.json
-│   ├── deploy
+│---├── deploy
 │       ├──allclose.sh
 │       ├──deploy.sh
 │       ├──restart.sh               
-│   ├── lang
+│---├── lang
 │       ├──limlt_versoin.go
 │       ├──zh-cn.go        
-│   ├── library
+│---├── library
 │       ├──lollipop
 │          ├──cache
 │          ├──common
@@ -28,7 +28,7 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 │          ├──template
 │          ├──Build.go
 │       ├──traits              
-│   ├── tpl
+│---├── tpl
 │       ├──default_index.tpl
 ├── base.go
 ├── help.go
