@@ -6,9 +6,14 @@ Golang语言社区(www.Golang.Ltd)
 package LollipopGo
 
 import (
+	"LollipopGo/library/lollipop/cache"
+	"LollipopGo/library/lollipop/concurrentMap"
 	"LollipopGo/library/lollipop/log"
 	"fmt"
 )
+
+var cache *cache2go.CacheTable  // 硬件存储
+var M *concurrent.ConcurrentMap // 并发安全的map
 
 // 配置第三方包的配置文件
 // 可以是否打开
@@ -21,5 +26,8 @@ func init() {
 		flag.Set("v", "3")                  // 配置V输出的等级。
 		flag.Parse()
 	}
+	// 初始化
+	M = concurrent.NewConcurrentMap()
+	cache = cache2go.Cache("myCache")
 	return
 }

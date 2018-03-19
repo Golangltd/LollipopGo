@@ -1,4 +1,8 @@
 初始化
+// 定义全局的变量的数据
+var cache *cache2go.CacheTable  // 硬件存储
+var Gmap cmap.ConcurrentMap     // 并发安全的map
+var M *concurrent.ConcurrentMap // 并发安全的map
 
 cache = cache2go.Cache("myCache")
 
