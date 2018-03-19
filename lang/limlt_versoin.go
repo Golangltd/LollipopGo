@@ -5,3 +5,11 @@ Golang语言社区(www.Golang.Ltd)
 */
 
 package PLang
+
+import (
+	_ "fmt"
+)
+
+func init() {
+	return
+}
