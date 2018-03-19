@@ -15,10 +15,10 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 │---├── deploy<br>
 │------├──allclose.sh<br>
 │------├──deploy.sh<br>
-│------├──restart.sh  <br>             
+│------├──restart.sh<br>             
 │---├── lang<br>
 │------├──limlt_versoin.go<br>
-│------├──zh-cn.go<br>        
+│------├──zh-cn.go<br>   
 │---├── library<br>
 │------├──lollipop<br>
 │----------├──cache<br>
@@ -30,7 +30,7 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 │----------├──redis<br>
 │----------├──template<br>
 │----------├──Build.go<br>
-│------├──traits<br>              
+│------├──traits<br>           
 │---├── tpl<br>
 │------├──default_index.tpl<br>
 ├── base.go<br>
