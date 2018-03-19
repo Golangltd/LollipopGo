@@ -4,10 +4,10 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 
 ###########目录结构 如下：
 
-├── LollipopGo
-│   ├── config
-│       ├──config.csv
-│       ├──config.go
+├── LollipopGo<br>
+│   ├── config<br>
+│       ├──config.csv<br>
+│       ├──config.go<br>
 │       ├──config.json
 │   ├── deploy
 │       ├──allclose.sh
