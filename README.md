@@ -8,19 +8,19 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 <br>
 
 ├── LollipopGo<br>
-│---├── config<br>
+│---── config<br>
 │------├──config.csv<br>
 │------├──config.go<br>
-│------├──config.json<br>
-│---├── deploy<br>
+│------└──config.json<br>
+│---── deploy<br>
 │------├──allclose.sh<br>
 │------├──deploy.sh<br>
-│------├──restart.sh<br>
-│---├── lang<br>
+│------└──restart.sh<br>
+│---── lang<br>
 │------├──limlt_versoin.go<br>
-│------├──zh-cn.go<br>
-│---├── library<br>
-│------├──lollipop<br>
+│------└──zh-cn.go<br>
+│---── library<br>
+│------└──lollipop<br>
 │----------├──cache<br>
 │----------├──common<br>
 │----------├──controller<br>
@@ -29,16 +29,15 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 │----------├──log<br>
 │----------├──redis<br>
 │----------├──template<br>
-│----------├──Build.go<br>
-│------├──traits<br>
-│---├── tpl<br>
-│------├──default_index.tpl<br>
+│----------└──Build.go<br>
+│------──traits<br>
+│----------└──traits.go<br>
+│---── tpl<br>
+│------└──default_index.tpl<br>
 ├── base.go<br>
 ├── help.go<br>
 ├── README.md<br>
 
-<br>
-<br>
 <br>
 <br>
 
