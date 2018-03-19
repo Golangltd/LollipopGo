@@ -8,9 +8,9 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 <br>
 
 ├── LollipopGo                         // 包目录名<br>
-│---── config<br>
-│------├──config.csv<br>
-│------├──config.go<br>
+│		config<br>
+│		├──config.csv<br>
+│		├──config.go<br>
 │------└──config.json<br>
 │---── deploy<br>
 │------├──allclose.sh<br>
