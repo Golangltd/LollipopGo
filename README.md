@@ -2,50 +2,43 @@ Golang语言社区  轻量级web开源项目 （持续更新）<br>
 ============================================
 [社区论坛地址](http://www.Golang.LTD "悬停显示") 
 
-目录结构 如下：
+###########目录结构 如下：
 
->|LollipopGo  
->>|config
->>>|config.csv<br>
->>>|config.go<br>
->>>|config.json<br>
->>|deploy<br>
->>>|allclose.sh<br>
->>>|deploy.sh<br>
->>>|restart.sh<br>
->>|lang<br>
->>>|limlt_versoin.go<br>
->>>|zh-cn.go<br>
->>|library<br>
->>>|lollipop<br>
->>>>|cache<br>
->>>>|common<br>
->>>>|controller<br>
->>>>|db<br>
->>>>|globalfun<br>
->>>>|log<br>
->>>>|redis<br>
->>>>|template<br>
->>>>|Build.go<br>
->>>|traits<br>
->>>>|traits.go<br>
->>|tpl<br>
->>>|default_index.tpl<br>
+├── LollipopGo
+│   ├── config
+│       ├──config.csv
+│       ├──config.go
+│       ├──config.json
+│   ├── deploy
+│       ├──allclose.sh
+│       ├──deploy.sh
+│       ├──restart.sh               
+│   ├── lang
+│       ├──limlt_versoin.go
+│       ├──zh-cn.go        
+│   ├── library
+│       ├──lollipop
+│          ├──cache
+│          ├──common
+│          ├──controller
+│          ├──db
+│          ├──globalfun
+│          ├──log
+│          ├──redis
+│          ├──template
+│          ├──Build.go
+│       ├──traits              
+│   ├── tpl
+│       ├──default_index.tpl
+├── base.go
+├── help.go
+├── README.md
 
 
+########### V1.1.0 版本内容更新
+1. 新功能	 优化数据库链接，增加连接池
+2. 新功能	 优化代码
 
-第三方包列表<br>
---------------
-##1 日志模块采用：<br>
-glog-master<br>
-##2 cache模块采用：<br>
-cache2go<br>
-暂时项目还未全部开源，持续更新中... ...<br>
-##3 数据包的包含方式
-"LollipopGo/library/lollipop/controller" // 控制器包
-##4 数据库采用mysql驱动 支持2中连接池（Go语言本身的连接池，一种自己实现的）
-##5 非关系型数据库 选择的是redis
-<br>
 <br>
 注：2018年仅做的开源项目，预计2019年年初完成。<br>  
 
