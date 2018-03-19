@@ -65,5 +65,5 @@ Go1.9以上
 
 <br>  
 正式使用请关注社区公众平台文章。<br>
-![image](http://www.golang.ltd/data/attachment/common/cf/085318foydbo88rkoda2eh.png)
+![Image text](http://www.golang.ltd/data/attachment/common/cf/085318foydbo88rkoda2eh.png)
 
