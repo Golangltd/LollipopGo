@@ -7,12 +7,13 @@ package LollipopGo
 
 import (
 	"LollipopGo/library/lollipop/cache"
+	"LollipopGo/library/lollipop/common"
 	"LollipopGo/library/lollipop/concurrentMap"
 	"LollipopGo/library/lollipop/log"
 	"fmt"
 )
 
-var cache *cache2go.CacheTable  // 硬件存储
+var cache *cache2go.CacheTable  // cache存储
 var M *concurrent.ConcurrentMap // 并发安全的map
 
 // 配置第三方包的配置文件
@@ -29,5 +30,7 @@ func init() {
 	// 初始化
 	M = concurrent.NewConcurrentMap()
 	cache = cache2go.Cache("myCache")
+	// 保存图片资源的路径
+	Lcommon.ResPath = ""
 	return
 }

@@ -17,6 +17,9 @@ import (
 	"strings"
 )
 
+// 保存图片资源的路径
+var ResPath = "/var/www/html/res/"
+
 // 获取路径
 func GetCurrentPath() string {
 	s, err := exec.LookPath(os.Args[0])
@@ -55,7 +58,7 @@ func SaveFiles(StrPath string, StrBase64Data string, StrPicType string, StrPicNa
 	// 输出到磁盘里:包括路径
 	// 文件夹操作
 	//dir, _ := os.Getwd() // 获取当前的程序路径
-	StrPath = "/var/www/html/res/" + StrPath
+	StrPath = ResPath + StrPath
 	err := os.MkdirAll(StrPath, os.ModePerm) //生成多级目录
 	if err != nil {
 		glog.Info(err.Error())
@@ -107,7 +110,7 @@ func SaveFilestmp(StrPath string, StrBase64Data string, StrPicType string, StrPi
 	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(StrBase64Data))
 	// 转换成png格式的图像，需要导入：_“image/png”
 	m, _, _ := image.Decode(reader)
-	StrPath = "/var/www/html/restmp/" + StrPath
+	StrPath = ResPath + "/restmp/" + StrPath
 	err := os.MkdirAll(StrPath, os.ModePerm) //生成多级目录
 	if err != nil {
 		glog.Info(err.Error())
