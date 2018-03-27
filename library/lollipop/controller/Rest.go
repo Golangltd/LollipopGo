@@ -15,7 +15,7 @@ func init() {
 	return
 }
 
-func new111() {
+func UpdateData() {
 
 	fmt.Println("Entry Test!")
 
