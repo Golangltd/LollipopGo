@@ -1,0 +1,18 @@
+Log file created at: 2018/11/03 11:39:03
+Running on machine: PC-20160710NSGJ
+Binary: Built with gc go1.9.2 for windows/386
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1103 11:39:03.747090   19256 tmain.go:35] 8888
+I1103 11:39:03.773091   19256 tmain.go:36] Golang语言社区
+I1103 11:39:03.839095   19256 tmain.go:39] 本机几核：4
+I1103 11:39:07.001276   19256 NetData.go:61] {"Protocol":1,"Protocol2":1,"Itype":1,"Code":"","StrLoginName":"Golangltd","StrLoginPW":"1234556","StrLoginEmail":"123455@qq.com"}
+I1103 11:39:07.001276   19256 NetData.go:99] 1
+I1103 11:39:07.001276   19256 NetData.go:100] 1
+I1103 11:39:07.001276   19256 NetData.go:103] float64
+I1103 11:39:07.001276   19256 NetData.go:104] int
+I1103 11:39:07.001276   19256 NetData.go:157] Golangltd1234556123455@qq.com
+I1103 11:39:07.001276   19256 NetData.go:169] -------------------------------
+I1103 11:39:07.001276   19256 NetData.go:171] &{0x1252a3c0 <nil> <nil> 15 28 [0x1251dfe0 0x125a8000 0x125a8020 0x125a8040 0x125a8060 0x125a8080 0x125a80a0 0x125a80c0 0x125a80e0 0x125a8100 0x125a8120 0x125a8140 0x125a8160 0x125a8180 0x125a81a0 0x125a81c0]}
+I1103 11:39:07.001276   19256 NetData.go:172] -------------------------------
+I1103 11:39:07.001276   19256 NetData.go:175] <nil>
+I1103 11:39:07.001276   19256 NetData.go:197] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
