@@ -1,0 +1,5 @@
+package game
+
+func init() {
+
+}
