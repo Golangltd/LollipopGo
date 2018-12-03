@@ -1,0 +1,7 @@
+Log file created at: 2018/10/28 21:22:29
+Running on machine: PC-20160710NSGJ
+Binary: Built with gc go1.9.2 for windows/386
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I1028 21:22:29.732966  113564 tmain.go:35] 8888
+I1028 21:22:29.805971  113564 tmain.go:36] Golang语言社区
+I1028 21:22:30.207994  113564 tmain.go:39] 本机几核：4

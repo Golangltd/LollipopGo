@@ -1,0 +1,164 @@
+Log file created at: 2018/09/03 12:02:16
+Running on machine: PC-20160710NSGJ
+Binary: Built with gc go1.9.2 for windows/amd64
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0903 12:02:16.965582 2031348 tmain.go:35] 8888
+I0903 12:02:17.418608 2031348 tmain.go:36] Golang语言社区
+I0903 12:02:17.485612 2031348 tmain.go:39] 本机几核：4
+I0903 12:02:29.966326 2031348 NetData.go:58] {"Protocol":1,"Protocol2":1,"Code":"www.golang.ltd","StrLoginName":"彬哥","StrLoginPW":"123456","StrLoginEmail":"1528884535@qq.com"}
+I0903 12:02:29.967326 2031348 NetData.go:80] 1
+I0903 12:02:29.967326 2031348 NetData.go:81] 1
+I0903 12:02:29.967326 2031348 NetData.go:83] float64
+I0903 12:02:29.968326 2031348 NetData.go:84] int
+I0903 12:02:29.968326 2031348 NetData.go:137] 彬哥1234561528884535@qq.com
+I0903 12:02:29.968326 2031348 NetData.go:148] &{0xc042146090 彬哥123456}
+I0903 12:02:29.968326 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+I0903 12:02:36.974727 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+I0903 12:02:36.981727 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:02:56.982871 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+I0903 12:02:56.989872 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:03:06.978443 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+I0903 12:03:16.994016 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:03:17.037018 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:03:17.300033 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:03:37.301177 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:03:37.302177 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:03:37.306177 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:03:46.995732 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:03:47.113738 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:03:57.307321 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:03:57.308322 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:03:57.309322 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:04:17.310466 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:04:17.310466 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:04:17.310466 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:04:27.118027 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:04:27.118027 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:04:37.310610 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:04:37.310610 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:04:37.310610 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:04:57.310753 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:04:57.310753 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:04:57.310753 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:05:07.123315 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:05:07.123315 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:05:17.310897 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:05:17.310897 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:05:17.310897 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:05:37.311041 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:05:37.311041 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:05:37.311041 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:05:47.125603 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:05:47.134603 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:05:57.312185 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:05:57.312185 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:05:57.312185 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:06:17.313329 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:06:17.313329 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:06:17.313329 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:06:27.137891 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:06:27.138891 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:06:37.315473 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:06:37.318474 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:06:37.318474 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:06:57.318618 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:06:57.318618 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:06:57.318618 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:07:07.148180 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:07:07.150180 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:07:17.318761 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:07:17.318761 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:07:17.318761 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:07:37.318905 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:07:37.318905 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:07:37.318905 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:07:47.152468 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:07:47.152468 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:07:57.393054 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:07:57.468058 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:07:57.541062 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:08:17.592209 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:08:17.592209 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:08:17.592209 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:08:27.284763 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:08:27.284763 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:08:37.592353 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:08:37.593353 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:08:37.593353 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:08:57.596497 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:08:57.596497 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:08:57.596497 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:09:07.328054 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:09:07.328054 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:09:17.596641 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:09:17.596641 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:09:17.596641 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:09:37.597785 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:09:37.598785 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:09:37.599785 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:09:47.336342 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:09:47.336342 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:09:57.605929 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:09:57.611930 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:09:57.612930 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:10:17.613074 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:10:17.613074 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:10:17.614074 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:10:27.355631 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:10:27.355631 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:10:37.616218 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:10:37.616218 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:10:37.616218 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:10:57.616362 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:10:57.616362 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:10:57.616362 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:11:07.357919 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:11:07.357919 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:11:17.617506 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:11:17.617506 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:11:17.618506 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:11:37.618650 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:11:37.618650 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:11:37.618650 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:11:47.361207 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:11:47.361207 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:11:57.618794 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:11:57.618794 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:11:57.618794 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:12:17.619938 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:12:17.619938 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:12:17.620938 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:12:27.380496 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:12:27.380496 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:12:37.621082 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:12:37.623082 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:12:37.623082 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:12:57.624226 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:12:57.624226 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:12:57.624226 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:13:07.383784 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:13:07.383784 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:13:17.624370 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:13:17.624370 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:13:17.624370 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:13:37.624514 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:13:37.624514 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:13:37.624514 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:13:47.386072 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:13:47.386072 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:13:57.625658 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:13:57.625658 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:13:57.625658 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:14:17.625802 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:14:17.626802 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:14:17.626802 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:14:27.389360 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:14:27.391360 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:14:37.626946 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:14:37.626946 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:14:37.627946 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:14:57.628090 2031348 NetData.go:170] data:{"Protocol":1,"Protocol2":2,"PlayerData":null}
+E0903 12:14:57.629090 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
+I0903 12:14:57.629090 2031348 timer.go:67] 发送数据：&{1 2 <nil>}
+I0903 12:15:07.393648 2031348 NetData.go:170] data:{"Protocol":3,"Protocol2":2,"OpenID":"","ErrorCode":10001,"StrMsg":""}
+E0903 12:15:07.393648 2031348 NetData.go:174] write tcp 127.0.0.1:8888->127.0.0.1:53105: use of closed network connection
