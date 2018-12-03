@@ -1,76 +1,31 @@
-Golang语言社区  开源项目 （持续更新）<br>
-============================================
-[点击进入社区论坛](http://www.Golang.LTD "悬停显示") 
-<br>
-<br>
-<br>
+# codeclass 
+字节教育 授权Golang语言社区开设的付费、免费公开课，Golang语言社区维护网络课程的PPT及代码等
+>微信订阅号：Golang语言社区<Br/>
+>微信服务号：Golang技术社区<Br/>
+>关注可了解更多的Go语言技术教程及课程活动。问题或建议，请公众号留言<Br/>
 
+论坛
+--------------
+WwW.Golang.Ltd
 
-环境依赖
-Go1.9以上
+微信助教（申请加入微信课程群）
+--------------
+微信号:18144370312
 
-部署步骤
-1. 配置数据库(选择其中一种即可)
-    config.csv
-	config.go
-	config.json
+QQ群
+-----------
+221273219
 
-2. 部署go执行文件（仅支持linux）
-    deploy.sh
+课程说明
+=============
 
-<br>
-##################################<br>
->>目录结构 如下：
+<ol>
+<li>面向零基础学员，希望更多喜欢Go语言的同学及想从事Go语言开发游戏服务器的同学一个方向的指引</li>
+<li>课程多维度教学，基础课程，进阶课程，提高课程，lollipopGo游戏框架实战课程等等</li>
+<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" title="Title">腾讯课堂</a></li>
+</ol>
+<img src="第一季%20Go语言基础、进阶、提高课程/pic/xuanc.png"/>
 
-<br>
-<br>
-
-├── LollipopGo<br>
-│---── config<br>
-│------├──config.csv<br>
-│------├──config.go<br>
-│------├──config.json<br>
-│------└──README.txt<br>
-│---── deploy<br>
-│------├──allclose.sh<br>
-│------├──deploy.sh<br>
-│------└──restart.sh<br>
-│---── lang<br>
-│------├──limlt_versoin.go<br>
-│------└──zh-cn.go<br>
-│---── library<br>
-│------└──lollipop<br>
-│----------├──cache<br>
-│----------├──common<br>
-│----------├──controller<br>
-│----------├──db<br>
-│----------├──globalfun<br>
-│----------├──log<br>
-│----------├──redis<br>
-│----------├──template<br>
-│----------├──code.google.com<br>
-│----------├──concurrentMap<br>
-│----------└──Build.go<br>
-│------──traits<br>
-│----------└──traits.go<br>
-│---── tpl<br>
-│------└──default_index.tpl<br>
-├── base.go<br>
-├── help.go<br>
-└── README.md<br>
-
-<br>
-<br>
-
-########### V1.0.1 版本内容更新##############
-1. 更新base.go 初始化逻辑
-2. 更新安全并发map及cache 初始化
-
-
-<br>
-注：2018年由于相对比较忙，预计2019年年初完成，同时用LollipopGo建立3个视频实战项目；具体请关注公众平台文章。<br>  
-
-<br>  
-请关注Golang语言社区公众平台ID：Golangweb<br>
-![](https://github.com/Golangltd/LollipopGo/blob/master/t7e102owue.png)
-
+ <div class="footer">
+        &copy; 成都字节跳动教育咨询有限公司(www.ByteEdu.Com)
+ </div>
