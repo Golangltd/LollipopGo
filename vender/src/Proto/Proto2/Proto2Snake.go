@@ -40,11 +40,12 @@ type S2S_PlayerMove struct {
 
 //------------------------------------------------------------------------------
 
-// 进入游戏匹配
+// C2S_PlayerEntryGameProto2 进入游戏完成匹配
 type C2S_PlayerEntryGame struct {
 	Protocol  int
 	Protocol2 int
-	Code      string //临时码
+	Code      string // 临时码
+	Icode     int    // 临时码
 }
 
 //  返回数据操作
