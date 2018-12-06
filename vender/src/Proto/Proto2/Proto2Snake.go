@@ -15,9 +15,22 @@ const (
 	C2S_PlayerMoveProto2 // C2S_PlayerMoveProto2 == 5 移动操作
 	S2S_PlayerMoveProto2 // S2S_PlayerMoveProto2 == 6
 
-	// S2S_PlayerMoveProto2 // S2S_PlayerMoveProto2 == 7  玩家死亡操作
+	C2S_PlayerAddGameProto2 // C2S_PlayerAddGameProto2 == 7 玩家进入匹配成功后进入游戏
 
 )
+
+//------------------------------------------------------------------------------
+
+// C2S_PlayerAddGameProto2 玩家进入匹配成功后进入游戏
+type C2S_PlayerAddGame struct {
+	Protocol      int
+	Protocol2     int
+	OpenID        string // 玩家的唯一的标识, 另外一个玩家的唯一标识
+	RoomID        int    // 房间ID
+	PlayerHeadURL string // 玩家的头像数据
+	Init_X        int    // 初始化X
+	Init_Y        int    // 初始化Y
+}
 
 //------------------------------------------------------------------------------
 
@@ -40,19 +53,20 @@ type S2S_PlayerMove struct {
 
 //------------------------------------------------------------------------------
 
-// C2S_PlayerEntryGameProto2 进入游戏完成匹配
+// 进入游戏匹配
 type C2S_PlayerEntryGame struct {
 	Protocol  int
 	Protocol2 int
-	Code      string // 临时码
-	Icode     int    // 临时码
+	Code      string //临时码
+	Icode     int
 }
 
 //  返回数据操作
 type S2S_PlayerEntryGame struct {
 	Protocol  int
 	Protocol2 int
-	RoomID    int                      //房间ID
+	RoomID    int //房间ID
+	Data      []int
 	MapPlayer map[int]*player.PlayerSt // 玩家的结构信息
 }
 
