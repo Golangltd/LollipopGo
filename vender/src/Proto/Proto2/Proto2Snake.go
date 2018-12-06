@@ -17,11 +17,14 @@ const (
 
 	C2S_PlayerAddGameProto2 // C2S_PlayerAddGameProto2 == 7 玩家进入匹配成功后进入游戏
 
+	C2S_PlayerGameOverProto2 // C2S_PlayerGameOverProto2 == 8 游戏结束的协议 也是房间内广播
+
 )
 
 //------------------------------------------------------------------------------
 
 // C2S_PlayerAddGameProto2 玩家进入匹配成功后进入游戏
+// 服务器生产虚拟地图 -- 防止外挂修改本地数据导致数据不正确！！！！
 type C2S_PlayerAddGame struct {
 	Protocol      int
 	Protocol2     int
