@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"math/rand"
 	"strconv"
 	"time"
 )
@@ -67,6 +68,19 @@ func MD5_LollipopGO(data string) string {
 	h.Write([]byte(data))
 	cipherStr := h.Sum(nil)
 	return hex.EncodeToString(cipherStr)
+}
+
+//------------------------------------------------------------------------------
+//返回[0,max)的随机整数
+func Randnum_LollipopGO(max int) int {
+
+	if max == 0 {
+		panic("随机函数，传递参数错误!")
+		return -1
+	}
+	// 随机种子:系统时间
+	rand.Seed(time.Now().Unix())
+	return rand.Intn(max)
 }
 
 //------------------------------------------------------------------------------
