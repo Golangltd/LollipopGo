@@ -3,6 +3,7 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"math/rand"
 	"strconv"
 	"time"
@@ -66,8 +67,7 @@ func UTCTime_LollipopGO() string {
 func MD5_LollipopGO(data string) string {
 	h := md5.New()
 	h.Write([]byte(data))
-	cipherStr := h.Sum(nil)
-	return hex.EncodeToString(cipherStr)
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 //------------------------------------------------------------------------------
@@ -84,3 +84,24 @@ func Randnum_LollipopGO(max int) int {
 }
 
 //------------------------------------------------------------------------------
+
+func CheckErr_LollipopGO(err error) {
+	if err != nil {
+		panic(err)
+		fmt.Println("err:", err)
+	}
+}
+
+func GetTime_LollipopGO() string {
+	const shortForm = "2006-01-02 15:04:05"
+	t := time.Now()
+	temp := time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), time.Local)
+	str := temp.Format(shortForm)
+	return str
+}
+
+func GetNowtimeMD5_LollipopGO() string {
+	t := time.Now()
+	timestamp := strconv.FormatInt(t.UTC().UnixNano(), 10)
+	return MD5_LollipopGO(timestamp)
+}

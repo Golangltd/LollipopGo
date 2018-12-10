@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "LollipopGo/db/mysql"
 	_ "LollipopGo/db/redis"
 	"encoding/base64"
 	"flag"
