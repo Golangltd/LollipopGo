@@ -20,9 +20,10 @@ func (f *mysql_db) mysql_open() {
 		fmt.Println("链接失败")
 	}
 	fmt.Println("链接数据库成功...........已经打开")
-	// 设置链接池
-	db.SetMaxOpenConns(dbMaxOpenConns)
-	db.SetMaxIdleConns(dbMaxIdleConns)
-	db.Ping()
 	f.db = Odb
+	// 设置链接池
+	f.db.SetMaxOpenConns(dbMaxOpenConns)
+	f.db.SetMaxIdleConns(dbMaxIdleConns)
+	f.db.Ping()
+
 }
