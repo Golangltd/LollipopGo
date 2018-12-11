@@ -74,14 +74,14 @@ func DB_rpc_() interface{} {
 	// 正常是读取数据库后得到的
 	var reply Proto2.GL2C_GameLogin
 	// 同步调用
-	err = client.Call("Arith.Muliply", args, &reply)
-	if err != nil {
-		fmt.Println("Arith.Muliply call error:", err)
-	}
+	// err = client.Call("Arith.Muliply", args, &reply)
+	// if err != nil {
+	// 	fmt.Println("Arith.Muliply call error:", err)
+	// }
 
-	// divCall := client.Go("Arith.Muliply", args, &reply, nil)
-	// replyCall := <-divCall.Done // will be equal to divCall
-	// fmt.Println(replyCall.Reply)
+	divCall := client.Go("Arith.Muliply", args, &reply, nil)
+	replyCall := <-divCall.Done // will be equal to divCall
+	fmt.Println(replyCall.Reply)
 	// 返回的数据
 	fmt.Println("the arith.mutiply is :", reply)
 	return reply

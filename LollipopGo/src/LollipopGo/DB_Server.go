@@ -50,30 +50,6 @@ func MainListener(strport string) {
 		}
 		go jsonrpc.ServeConn(conn)
 	}
-	// arith := new(Arith)
-	// rpc.Register(arith)
-	// server := rpc.NewServer()
-	// listener, err := net.Listen("tcp", ":"+strport)
-	// if err != nil {
-	// 	log.Fatal("server\t-", "listen error:", err.Error())
-	// }
-	// defer listener.Close()
-	// log.Println("server\t-", "start listion on port "+strport)
-
-	// // 等待并处理链接
-	// //go func() {
-	// for {
-	// 	conn, err := listener.Accept()
-	// 	if err != nil {
-	// 		log.Fatal(err.Error())
-	// 	}
-
-	// 	// 在goroutine中处理请求
-	// 	// 绑定rpc的编码器，使用http connection新建一个jsonrpc编码器，并将该编码器绑定给http处理器
-	// 	go server.ServeCodec(jsonrpc.NewServerCodec(conn))
-	// }
-	// //}()
-
 }
 
 // -----------------------------------------------------------------------------
