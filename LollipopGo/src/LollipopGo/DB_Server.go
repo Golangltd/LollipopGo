@@ -67,12 +67,12 @@ func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
 	data := &player.GateWayList{
 		ServerID:        1001,
 		ServerName:      "大厅服务器",
-		ServerIPAndPort: "hall.a.babaliuliu.com:8891",
+		ServerIPAndPort: "gateway.a.babaliuliu.com:8888",
 		State:           "空闲",
 		OLPlayerNum:     1024,
 		MaxPlayerNum:    5000,
 	}
-
+	// 返回数据
 	*reply = Proto2.GL2C_GameLogin{
 		Protocol:  1,
 		Protocol2: 2,
