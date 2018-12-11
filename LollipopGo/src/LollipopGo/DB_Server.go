@@ -1,9 +1,9 @@
 package main
 
 import (
+	"LollipopGo/LollipopGo/player"
 	"Proto/Proto2"
 	"fmt"
-	_ "log"
 	"net"
 	"net/rpc"
 	"net/rpc/jsonrpc"
@@ -63,12 +63,22 @@ type Arith int
 
 func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
 	//*reply = args.A * args.B
+	// 组装数据
+	data := &player.GateWayList{
+		ServerID:        1001,
+		ServerName:      "大厅服务器",
+		ServerIPAndPort: "hall.a.babaliuliu.com:8891",
+		State:           "空闲",
+		OLPlayerNum:     1024,
+		MaxPlayerNum:    5000,
+	}
+
 	*reply = Proto2.GL2C_GameLogin{
 		Protocol:  1,
 		Protocol2: 2,
 		Tocken:    "22222",
 		PlayerST:  nil,
-		GateWayST: nil,
+		GateWayST: data,
 	}
 
 	return nil

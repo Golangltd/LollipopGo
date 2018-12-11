@@ -78,7 +78,7 @@ func DB_rpc_() interface{} {
 	// if err != nil {
 	// 	fmt.Println("Arith.Muliply call error:", err)
 	// }
-
+	// 异步调用
 	divCall := client.Go("Arith.Muliply", args, &reply, nil)
 	replyCall := <-divCall.Done // will be equal to divCall
 	fmt.Println(replyCall.Reply)

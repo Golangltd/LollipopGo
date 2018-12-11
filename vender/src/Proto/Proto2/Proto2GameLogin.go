@@ -27,11 +27,11 @@ type C2GL_GameLogin struct {
 // GL2C_GameLoginProto2
 // 登录服务器返回给客户端协议
 type GL2C_GameLogin struct {
-	Protocol  int                            // 主协议
-	Protocol2 int                            // 子协议
-	Tocken    string                         // server 验证加密数据
-	PlayerST  map[string]*player.PlayerSt    // 玩家的结构
-	GateWayST map[string]*player.GateWayList // 大厅列表   --- 一般只有一个链接
+	Protocol  int                 // 主协议
+	Protocol2 int                 // 子协议
+	Tocken    string              // server 验证加密数据
+	PlayerST  *player.PlayerSt    // 玩家的结构
+	GateWayST *player.GateWayList // 大厅链接地址
 }
 
 //------------------------------------------------------------------------------
