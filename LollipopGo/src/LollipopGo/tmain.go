@@ -61,11 +61,9 @@ func main() {
 		}
 	} else if strServerType == strServerType_DB {
 		strport = "8890"
-		http.Handle("/GolangLtdDB", websocket.Handler(wwwGolangLtd))
-		if err := http.ListenAndServe(":"+strport, nil); err != nil {
-			glog.Error("网络错误", err)
-			return
-		}
+		MainListener(strport)
+		// http.HandleFunc("/GolangLtdDT", GolangLtdDB)
+		// http.ListenAndServe(":"+strport, nil)
 	} else if strServerType == strServerType_DT {
 		strport = "8891" //  登录服务器 -- 大厅服务器
 		http.HandleFunc("/GolangLtdDT", IndexHandler)
