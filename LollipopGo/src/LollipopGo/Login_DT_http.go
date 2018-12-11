@@ -14,6 +14,7 @@ import (
 
 /*
   登录服务器:
+  http://127.0.0.1:8891/GolangLtdDT?Protocol=8&Protocol2=1
 */
 
 func IndexHandler(w http.ResponseWriter, req *http.Request) {
@@ -44,7 +45,7 @@ func IndexHandler(w http.ResponseWriter, req *http.Request) {
 					b, _ := json.Marshal(data)
 					fmt.Fprint(w, base64.StdEncoding.EncodeToString(b))
 					//------------------------------------------------------
-					break
+					return
 				default:
 					fmt.Fprintln(w, "88902")
 					return
@@ -66,17 +67,22 @@ func DB_rpc_() interface{} {
 	client, err := jsonrpc.Dial("tcp", service)
 	if err != nil {
 		fmt.Println("dial error:", err)
-		// os.Exit(1)
 	}
 	// 测试 --
 	args := Args{1, 2}
 	// 返回数据的结构体 -->  消息的结构
+	// 正常是读取数据库后得到的
 	var reply Proto2.GL2C_GameLogin
+	// 同步调用
 	err = client.Call("Arith.Muliply", args, &reply)
 	if err != nil {
 		fmt.Println("Arith.Muliply call error:", err)
-		// os.Exit(1)
 	}
+
+	// divCall := client.Go("Arith.Muliply", args, &reply, nil)
+	// replyCall := <-divCall.Done // will be equal to divCall
+	// fmt.Println(replyCall.Reply)
+	// 返回的数据
 	fmt.Println("the arith.mutiply is :", reply)
 	return reply
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "LollipopGo/db/mysql"
-	"LollipopGo/db/redis"
+	_ "LollipopGo/db/redis"
 	"encoding/base64"
 	"flag"
 	"fmt"
@@ -36,7 +36,7 @@ func init() {
 	// go G_timer()
 	// go G_timeout_kick_Player()
 	// redis 测试
-	go Redis_DB.INIT()
+	// go Redis_DB.INIT()
 	return
 }
 
