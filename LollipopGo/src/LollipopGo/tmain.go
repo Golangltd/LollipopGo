@@ -1,13 +1,13 @@
 package main
 
 import (
-	"glog-master"
-	"net/http"
-	"os"
-
+	"LollipopGo/LollipopGo"
 	LollipopGoconf "LollipopGo/LollipopGo/conf"
 	"LollipopGo/conf" // 服务器配置——针对不同环境的配置
+	"glog-master"
+	"net/http"
 	_ "net/http/pprof"
+	"os"
 
 	"code.google.com/p/go.net/websocket"
 )
@@ -19,6 +19,7 @@ func init() {
 	LollipopGoconf.LogFlag = conf.LogFlag
 	LollipopGoconf.ConsolePort = conf.Server.ConsolePort
 	LollipopGoconf.ProfilePath = conf.Server.ProfilePath
+	glog.Info("LollipopGo version:", LollipopGo.version)
 }
 
 func main() {
@@ -37,6 +38,7 @@ func main() {
 	strServerType_DB := "DB"
 	strServerType_DT := "DT"
 	strServerType_GM := "GM"
+	strServerType_GL := "GL"
 	strServerType_Snake := "Snake"
 	if len(os.Args) > 1 {
 		strport = os.Args[1]
@@ -75,6 +77,13 @@ func main() {
 	} else if strServerType == strServerType_Snake {
 		strport = "8893"
 		http.Handle("/GolangLtdSnake", websocket.Handler(wwwGolangLtd))
+		if err := http.ListenAndServe(":"+strport, nil); err != nil {
+			glog.Error("网络错误", err)
+			return
+		}
+	} else if strServerType == strServerType_GL {
+		strport = "8894"
+		http.Handle("/GolangLtdGL", websocket.Handler(wwwGolangLtdGL))
 		if err := http.ListenAndServe(":"+strport, nil); err != nil {
 			glog.Error("网络错误", err)
 			return
