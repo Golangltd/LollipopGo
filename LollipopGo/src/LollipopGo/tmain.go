@@ -3,7 +3,7 @@ package main
 import (
 	"LollipopGo/LollipopGo"
 	LollipopGoconf "LollipopGo/LollipopGo/conf"
-	"LollipopGo/conf" // 服务器配置——针对不同环境的配置
+	"LollipopGo/conf"
 	"glog-master"
 	"net/http"
 	_ "net/http/pprof"
@@ -19,7 +19,8 @@ func init() {
 	LollipopGoconf.LogFlag = conf.LogFlag
 	LollipopGoconf.ConsolePort = conf.Server.ConsolePort
 	LollipopGoconf.ProfilePath = conf.Server.ProfilePath
-	glog.Info("LollipopGo version:", LollipopGo.version)
+	// 启动所有的版本
+	LollipopGo.Run()
 }
 
 func main() {
@@ -83,7 +84,7 @@ func main() {
 		}
 	} else if strServerType == strServerType_GL {
 		strport = "8894"
-		http.Handle("/GolangLtdGL", websocket.Handler(wwwGolangLtdGL))
+		http.Handle("/GolangLtdGL", websocket.Handler(wwwGolangLtd))
 		if err := http.ListenAndServe(":"+strport, nil); err != nil {
 			glog.Error("网络错误", err)
 			return
