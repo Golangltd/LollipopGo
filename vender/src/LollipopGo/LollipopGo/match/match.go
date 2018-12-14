@@ -18,4 +18,5 @@ type MatchMoudle interface {
 	GetMatchNum(string) int
 	TimerMatch()
 	DestroyMatch()
+	MatchRecord()
 }

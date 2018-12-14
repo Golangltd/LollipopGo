@@ -4,6 +4,13 @@ import (
 	"LollipopGo/LollipopGo/player"
 )
 
+/*
+  房间匹配功能：
+	1 gameserver 功能，主要是匹配的数据。
+	2 房间的数据的管理
+	3 定时器的使用等
+*/
+
 var MapMatch map[string]*RoomMatch
 
 type RoomMatch struct {
