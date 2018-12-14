@@ -1,14 +1,16 @@
 package csv
 
 // csv配置表
-var G_StCard2InfoBaseST map[string]*Card2InfoBase // 卡牌活动结构
+var G_GameList map[string]*GameList // 卡牌活动结构
 
-// 卡牌活动结构
-type Card2InfoBase struct {
-	Card2ID       string // 卡牌的ID
-	Card2Msg      string // 卡牌的描述
-	Card2GameName string // 卡牌的地点
-	Card2GameID   string // 策划看到的类型
-	PicPath       string //  图片路径
-	Type          string // 卡牌类型
+// 游戏列表
+type GameList struct {
+	GameID        string // 游戏的ID
+	GameName      string // 游戏名字
+	GameICON      string // 游戏ICON
+	IsShow        string // 是否显示
+	ShowStartTime string // 开始显示的时间
+	ShowEndTime   string // 结束显示的时间
+	IsNewShow     string // 是否最新上架
+	IsHotGame     string // 是否是热游戏
 }
