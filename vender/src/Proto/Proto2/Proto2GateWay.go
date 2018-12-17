@@ -24,9 +24,13 @@ type C2GWS_PlayerLogin struct {
 
 // S2GWS_PlayerLoginProto2
 type S2GWS_PlayerLogin struct {
-	Protocol  int
-	Protocol2 int
-	OpenID    string
+	Protocol   int
+	Protocol2  int
+	OpenID     string
+	PlayerST   *player.PlayerSt          // 玩家的结构
+	GateWayST  *player.GateWayList       // 大厅链接地址
+	GameList   map[string]*conf.GameList // 游戏列表
+	BannerList map[string]*conf.Banner   // 广告列表
 }
 
 //------------------------------------------------------------------------------

@@ -9,24 +9,7 @@ import (
 	"strings"
 )
 
-/*
-  功能说明:
-      GM 更新操作,游戏中的配置文件
-      更新 游戏中的活动,等操作
-*/
-
-// GM 操作更新
-func ReadCsv_ConfigFile_UpDate_Fun() bool {
-	ReadCsv_ConfigFile_GameInfoST_Fun()
-	return true
-}
-
-func init() {
-	// 获取配置列表，游戏列表的数据
-	ReadCsv_ConfigFile_GameInfoST_Fun()
-}
-
-// 游戏的基本的ID的数据信息
+// 游戏列表
 func ReadCsv_ConfigFile_GameInfoST_Fun() bool {
 	// 获取数据，按照文件
 	fileName := "gamelist.csv"
@@ -60,3 +43,37 @@ func ReadCsv_ConfigFile_GameInfoST_Fun() bool {
 	fmt.Println(conf.G_GameList)
 	return true
 }
+
+//------------------------------------------------------------------------------
+
+// 游戏列表
+func ReadCsv_ConfigFile_BannerInfoST_Fun() bool {
+	// 获取数据，按照文件
+	fileName := "banner.csv"
+	fileName = "./csv/" + fileName
+	cntb, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		panic("读取配置文件出错!")
+		return false
+	}
+	// 读取文件数据
+	r2 := csv.NewReader(strings.NewReader(string(cntb)))
+	ss, _ := r2.ReadAll()
+	sz := len(ss)
+	// 循环取数据
+	for i := 1; i < sz; i++ {
+		Infotmp := new(conf.Banner)
+		Infotmp.ADID = ss[i][0]
+		Infotmp.PicURL = ss[i][1]
+		Infotmp.IsTop = ss[i][2]
+		Infotmp.SkipURL = ss[i][3]
+		Infotmp.ReMark = ss[i][4]
+		// 保存数据
+		conf.G_BannerList[Infotmp.ADID] = Infotmp
+	}
+
+	fmt.Println(conf.G_BannerList)
+	return true
+}
+
+//------------------------------------------------------------------------------
