@@ -5,12 +5,41 @@ import (
 	"Proto/Proto2"
 )
 
-func init() {
+// Global Server 子协议的处理
+func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolData map[string]interface{}) {
+
+	switch protocol2 {
+	case float64(Proto2.G2GW_ConnServerProto2):
+		{
+			// 网关主动链接进来，做数据链接的保存
+			this.GLConnServerFunc(ProtocolData)
+		}
+	default:
+		panic("子协议：不存在！！！")
+	}
 
 	return
 }
 
-// 子协议的处理
+// Global server 保存
+func (this *NetDataConn) GLConnServerFunc(ProtocolData map[string]interface{}) {
+	if ProtocolData["ServerID"] == nil {
+		panic("ServerID 数据为空!")
+		return
+	}
+
+	// Globla server 发过来的可以加密的数据
+	StrServerID := ProtocolData["ServerID"].(string)
+
+	// 1 保存Global的链接信息
+	// 2 发送数据
+
+	return
+}
+
+//------------------------------------------------------------------------------
+
+// client 子协议的处理
 func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolData map[string]interface{}) {
 
 	switch protocol2 {

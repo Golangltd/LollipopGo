@@ -19,6 +19,7 @@ import (
 var addrG = flag.String("addrG", "127.0.0.1:8888", "http service address")
 var conn *websocket.Conn // 保存用户的链接信息，数据会在主动匹配成功后进行链接
 
+// 初始化操作
 func init() {
 	if initGateWayNet() {
 		panic("链接 gateway server 失败!")
@@ -41,10 +42,29 @@ func initGateWayNet() bool {
 	}
 	// 协程支持  --接受线程操作 全球协议操作
 	go GameServerReceiveG(conn)
+	// 发送链接的协议 ---》
+	initConn(conn)
 	return true
 }
 
-// 处理数据的返回
+// 公用函数处理-- 可以整合到 LollipopGo
+func PlayerSendToServer(conn *websocket.Conn, data interface{}) bool {
+
+	jsons, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println("err:", err.Error())
+		return false
+	}
+	// 发送数据
+	errq := websocket.Message.Send(conn, jsons)
+	if errq != nil {
+		fmt.Println(errq)
+		return false
+	}
+	return true
+}
+
+// 处理数据
 func GameServerReceiveG(ws *websocket.Conn) {
 	for {
 		var content string
@@ -119,16 +139,30 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 	case float64(Proto2.S2S_PlayerLoginSProto2):
 		{
 			fmt.Println("贪吃蛇:玩家进入游戏的协议!!!")
-			// EntryGameSnake(ProtocolData)
+
 		}
 	case float64(Proto2.S2S_PlayerEntryGameProto2):
 		{
 			fmt.Println("贪吃蛇:玩家匹配成功协议!!!")
-			// EntryGameSnake(ProtocolData)
+
 		}
 
 	default:
 		panic("子协议：不存在！！！")
 	}
+	return
+}
+
+// 链接到网关
+func initConn(conn *websocket.Conn) {
+
+	data := &Proto2.C2S_PlayerEntryGame{
+		Protocol:  Proto.G_GameGlobal_Proto, // 游戏主要协议
+		Protocol2: Proto2.G2GW_ConnServerProto2,
+		ServerID:  util.MD5_LollipopGO("8894" + "Global server"),
+	}
+	// fmt.Println(data)
+	// 2 发送数据到服务器
+	PlayerSendToServer(conn, data)
 	return
 }
