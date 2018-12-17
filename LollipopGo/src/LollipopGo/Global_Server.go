@@ -19,7 +19,7 @@ import (
 */
 
 var addrG = flag.String("addrG", "127.0.0.1:8888", "http service address")
-var conn *websocket.Conn // 保存用户的链接信息，数据会在主动匹配成功后进行链接
+var Conn *websocket.Conn // 保存用户的链接信息，数据会在主动匹配成功后进行链接
 
 // 初始化操作
 func init() {
@@ -42,10 +42,11 @@ func initGateWayNet() bool {
 		fmt.Println("err:", err.Error())
 		return false
 	}
+	Conn = conn
 	// 协程支持  --接受线程操作 全球协议操作
-	go GameServerReceiveG(conn)
+	go GameServerReceiveG(Conn)
 	// 发送链接的协议 ---》
-	initConn(conn)
+	initConn(Conn)
 	return true
 }
 
@@ -126,11 +127,39 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 			fmt.Println("gateway server 返回给global server 数据信息！！！")
 
 		}
+	case float64(Proto2.G2GW_PlayerEntryHallProto2):
+		{ // 网关请求获取大厅数据
+			fmt.Println("玩家请求获取大厅数：默认获奖列表、跑马灯等")
+			G2GW_PlayerEntryHallProto2Fucn(Conn)
+		}
 
 	default:
 		panic("子协议：不存在！！！")
 	}
 	return
+}
+
+// 返回给玩家数据
+func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn) {
+	// 返回数据给GateWay
+
+	iGamePlayerNum := make(map[string]int)
+	iGamePlayerNum["1001"] = 1000
+	iGamePlayerNum["1002"] = 9999
+
+	// 组装数据
+	data := &Proto2.GW2G_PlayerEntryHall{
+		Protocol:      Proto.G_GameGlobal_Proto, // 游戏主要协议
+		Protocol2:     Proto2.GW2G_PlayerEntryHallProto2,
+		GamePlayerNum: iGamePlayerNum,
+		DefaultAward:  nil,
+		DefaultMsg:    nil,
+	}
+	fmt.Println(data)
+	// 2 发送数据到服务器
+	PlayerSendToServer(conn, data)
+	return
+
 }
 
 // 链接到网关
