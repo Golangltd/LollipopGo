@@ -44,6 +44,26 @@ func PlayerSendToServer(conn *websocket.Conn, data interface{}) {
 	return
 }
 
+// 发送给客户端的数据信息函数
+func (this *NetDataConn) PlayerSendMessage(senddata interface{}) {
+	// 1 消息序列化 interface --->  json
+	b, errjson := json.Marshal(senddata)
+	if errjson != nil {
+		fmt.Println(errjson.Error())
+		return
+	}
+	// 数据转换 json的byte数组 --->  string
+	data := "data:" + string(b[0:len(b)])
+	fmt.Println(data)
+	// 发送
+	err := websocket.JSON.Send(this.Connection, b)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	return
+}
+
 // 群发广播函数:同一个房间
 func PlayerSendBroadcastToRoomPlayer(iroomID int) {
 
@@ -102,6 +122,39 @@ func (this *NetDataConn) SendServerDataFunc(StrMD5 string, ServerType string, Da
 					keyName = strsplit[i]
 				}
 				if key == StrMD5 && keyName == strServerType {
+					// 发消息
+					v.(interface{}).(*NetDataConn).PlayerSendMessage(Data)
+					return true
+				}
+			}
+		}
+	}
+
+	return false
+}
+
+// 发送给客户端
+func (this *NetDataConn) SendClientDataFunc(StrMD5 string, ClientType string, Data interface{}) bool {
+
+	fmt.Println("--------------------:", StrMD5)
+	fmt.Println("--------------------:", ClientType)
+	fmt.Println("--------------------:", Data)
+	strClientType := ClientType
+	for itr := M.Iterator(); itr.HasNext(); {
+		k, v, _ := itr.Next()
+		var key = ""
+		var keyName = ""
+		strsplit := Strings_Split(k.(string), "|") // key = serverid|connect
+		if len(strsplit) == 2 {
+			for i := 0; i < len(strsplit); i++ {
+				if i == 0 {
+					key = strsplit[i]
+				}
+				// 获取链接的名字
+				if i == len(strsplit)-1 {
+					keyName = strsplit[i]
+				}
+				if key == StrMD5 && keyName == strClientType {
 					// 发消息
 					v.(interface{}).(*NetDataConn).PlayerSendMessage(Data)
 					return true

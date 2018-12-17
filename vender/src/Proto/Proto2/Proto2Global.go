@@ -23,13 +23,15 @@ const (
 type G2GW_PlayerEntryHall struct {
 	Protocol  int
 	Protocol2 int
+	OpenID    string // 用户唯一ID
 }
 
 // GW2G_PlayerEntryHallProto2 查询需要返回的协议
 type GW2G_PlayerEntryHall struct {
 	Protocol      int
 	Protocol2     int
-	GamePlayerNum map[string]int              // 每个游戏的玩家的人数,global server获取
+	OpenID        string                      // 用户唯一ID
+	GamePlayerNum map[string]interface{}      // 每个游戏的玩家的人数,global server获取
 	DefaultAward  map[string]*player.PlayerSt // 默认兑换列表
 	DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
 }
