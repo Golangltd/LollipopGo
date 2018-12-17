@@ -80,3 +80,82 @@ func PlayerSendBroadcastToRoomPlayer(iroomID int) {
 	}
 	// -------------------------------------------------------------------------
 }
+
+// 推送给服务器
+// 推送给 Global server key = Global_Server
+// 几个小游戏的serverID
+func (this *NetDataConn) SendServerDataFunc(StrMD5 string, ServerType string, Data interface{}) bool {
+
+	strServerType := ServerType
+	for itr := MServer.Iterator(); itr.HasNext(); {
+		k, v, _ := itr.Next()
+		var key = ""
+		var keyName = ""
+		strsplit := Strings_Split(k.(string), "|") // key = serverid| Global_Server
+		if len(strsplit) == 2 {
+			for i := 0; i < len(strsplit); i++ {
+				if i == 0 {
+					key = strsplit[i]
+				}
+				// 获取链接的名字
+				if i == len(strsplit)-1 {
+					keyName = strsplit[i]
+				}
+				if key == StrMD5 && keyName == strServerType {
+					// 发消息
+					v.(interface{}).(*NetDataConn).PlayerSendMessage(Data)
+					return true
+				}
+			}
+		}
+	}
+
+	return false
+}
+
+// 推送格式
+// 例子参考
+func (this *NetDataConn) XC_Data_Send_AllPlayer_State(StrMD5 string, Data interface{}) bool {
+	//发给手机
+	for itr := M.Iterator(); itr.HasNext(); {
+		k, v, _ := itr.Next()
+		var key = ""
+		var keyName = ""
+		// 拆分key
+		strsplit := Strings_Split(k.(string), "|") // key = openid|XCN|name
+		if len(strsplit) == 2 {
+			// 拆分
+			for i := 0; i < len(strsplit); i++ {
+				if i == 0 {
+					key = strsplit[i]
+				}
+				// 获取链接的名字
+				if i == len(strsplit)-1 {
+					keyName = strsplit[i]
+				}
+				if key == StrMD5 && keyName == "connect" {
+					// 发消息
+					v.(interface{}).(*NetDataConn).PlayerSendMessage(Data)
+				}
+			}
+		} else if len(strsplit) == 3 {
+			// 拆分
+			for i := 0; i < len(strsplit); i++ {
+				if i == 1 {
+					key = strsplit[i]
+				}
+				// 获取链接的名字
+				if i == len(strsplit)-1 {
+					keyName = strsplit[i]
+				}
+				if key == StrMD5 && keyName == "connect" {
+					// 发消息
+					v.(interface{}).(*NetDataConn).PlayerSendMessage(Data)
+				}
+			}
+		}
+
+	}
+
+	return true
+}

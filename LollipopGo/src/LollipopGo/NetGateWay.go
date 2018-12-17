@@ -33,7 +33,7 @@ func (this *NetDataConn) GLConnServerFunc(ProtocolData map[string]interface{}) {
 
 	// Globla server 发过来的可以加密的数据
 	StrServerID := ProtocolData["ServerID"].(string)
-
+	strGlobalServer = StrServerID
 	// 1 发送数据
 	data := &Proto2.GW2G_ConnServer{
 		Protocol:  9,
@@ -51,7 +51,7 @@ func (this *NetDataConn) GLConnServerFunc(ProtocolData map[string]interface{}) {
 		MapSafeServer: this.MapSafeServer,
 	}
 	// 保存玩家数据到内存
-	this.MapSafeServer.Put(StrServerID+"|connectserver", onlineServer)
+	this.MapSafeServer.Put(StrServerID+"|Global_Server", onlineServer)
 	//==============================================================================
 	return
 }
