@@ -24,6 +24,9 @@ var addr = flag.String("addr", "127.0.0.1:8888", "http service address")
 var WS *websocket.Conn
 var icount, icounttmp int
 
+// server data;推送数据时候用
+var strGlobalServer string = ""
+
 // 游戏服务器的初始化
 func init() {
 	// 初始化
