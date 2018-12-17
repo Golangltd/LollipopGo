@@ -129,7 +129,7 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 	case float64(Proto2.G2GW_PlayerEntryHallProto2):
 		{ // 网关请求获取大厅数据
 			fmt.Println("玩家请求获取大厅数：默认获奖列表、跑马灯等")
-			G2GW_PlayerEntryHallProto2Fucn(Conn)
+			G2GW_PlayerEntryHallProto2Fucn(Conn, ProtocolData)
 		}
 
 	default:
@@ -139,8 +139,9 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 }
 
 // 返回给玩家数据
-func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn) {
+func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 	// 返回数据给GateWay
+	StrOpenID := ProtocolData["OpenID"].(string)
 
 	iGamePlayerNum := make(map[string]interface{})
 	iGamePlayerNum["1001"] = 1000
@@ -150,6 +151,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn) {
 	data := &Proto2.GW2G_PlayerEntryHall{
 		Protocol:      Proto.G_GameGlobal_Proto, // 游戏主要协议
 		Protocol2:     Proto2.GW2G_PlayerEntryHallProto2,
+		OpenID:        StrOpenID,
 		GamePlayerNum: iGamePlayerNum,
 		DefaultAward:  nil,
 		DefaultMsg:    nil,
