@@ -1,15 +1,43 @@
 package Proto2
 
-const (
-	ININGATEWAY             = iota
-	C2GWS_PlayerLoginProto2 // C2GWS_PlayerLoginProto2 == 1 登陆协议
-	S2GWS_PlayerLoginProto2 // S2GWS_PlayerLoginProto2 == 2 登陆协议
+import (
+	"LollipopGo/LollipopGo/player"
+)
 
-	GateWay_HeartBeatProto2 // GateWay_HeartBeatProto2 == 3 心跳协议
+const (
+	ININGATEWAY                 = iota // ININGATEWAY == 0
+	C2GWS_PlayerLoginProto2            // C2GWS_PlayerLoginProto2 == 1 登陆协议
+	S2GWS_PlayerLoginProto2            // S2GWS_PlayerLoginProto2 == 2
+	GateWay_HeartBeatProto2            // GateWay_HeartBeatProto2 == 3 心跳协议
+	GateWay_RelinkProto2               // GateWay_RelinkProto2 == 4 断线重新链接协议
+	C2GWS_PlayerEntryGameProto2        // C2GWS_PlayerEntryGameProto2 == 5 玩家请求进入游戏
+	S2GWS_PlayerEntryGameProto2        // S2GWS_PlayerEntryGameProto2 == 6
 )
 
 //------------------------------------------------------------------------------
-// 断线重连
+
+//------------------------------------------------------------------------------
+// C2GWS_PlayerEntryGameProto2 玩家请求进入游戏
+type C2GWS_PlayerEntryGame struct {
+	Protocol  int
+	Protocol2 int
+	GameID    string // 游戏ID
+}
+
+// S2GWS_PlayerEntryGameProto2
+type C2GWS_PlayerEntryGame struct {
+	Protocol  int
+	Protocol2 int
+}
+
+//------------------------------------------------------------------------------
+// 断线重连  网关
+type GateWay_Relink struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	Timestamp int // 时间戳
+}
 
 //------------------------------------------------------------------------------
 
@@ -24,13 +52,12 @@ type C2GWS_PlayerLogin struct {
 
 // S2GWS_PlayerLoginProto2
 type S2GWS_PlayerLogin struct {
-	Protocol   int
-	Protocol2  int
-	OpenID     string
-	PlayerST   *player.PlayerSt          // 玩家的结构
-	GateWayST  *player.GateWayList       // 大厅链接地址
-	GameList   map[string]*conf.GameList // 游戏列表
-	BannerList map[string]*conf.Banner   // 广告列表
+	Protocol      int
+	Protocol2     int
+	OpenID        string
+	GamePlayerNum map[string]int              // 每个游戏的玩家的人数,global server获取
+	DefaultAward  map[string]*player.PlayerSt // 默认兑换列表
+	DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
 }
 
 //------------------------------------------------------------------------------

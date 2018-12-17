@@ -36,3 +36,33 @@ type Banner struct {
 }
 
 //------------------------------------------------------------------------------
+// 道具类型
+const (
+	ITEMTTYPE = iota // ITEMTTYPE == 0
+	ItemType1        // ItemType1 == 1 代表货币
+	ItemType2        // ItemType1 == 2 代表门票
+	ItemType3        // ItemType1 == 3 代表兑换
+	ItemType4        // ItemType1 == 4 代表道具
+)
+
+// 道具表
+type ItemList struct {
+	ItemID    string
+	ItemName  string
+	ItemType  int
+	ItemICON  string
+	ItemDesc  string
+	ItemCoin  string // 兑换的钻石的数量
+	IsLimTime string // 是否限时
+	LimTime   string // 限时时间
+	IsUse     string // 是否可以直接使用
+}
+
+//------------------------------------------------------------------------------
+// 兑换列表
+type AwardList struct {
+	AwardID   string // 前端在玩家兑换中查找
+	AwardName string
+}
+
+//------------------------------------------------------------------------------

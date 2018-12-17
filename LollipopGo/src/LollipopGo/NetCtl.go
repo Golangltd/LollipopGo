@@ -110,6 +110,10 @@ func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 inter
 		{ // DB_server
 
 		}
+	case float64(Proto.G_GameGlobal_Proto):
+		{ // global_server
+			this.HandleCltProtocol2GL(protocol2, ProtocolData)
+		}
 	case float64(Proto.GameNet_Proto):
 		{
 			this.HandleCltProtocol2Net(protocol2, ProtocolData)

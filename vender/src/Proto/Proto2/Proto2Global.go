@@ -48,14 +48,14 @@ type GW2G_HeartBeat struct {
 type G2GW_ConnServer struct {
 	Protocol  int
 	Protocol2 int
-	ServerID  int //全局配置 唯一的也是
+	ServerID  string //全局配置 唯一的也是
 }
 
 // GW2G_ConnServerProto2 返回的数据链接
 type GW2G_ConnServer struct {
 	Protocol  int
 	Protocol2 int
-	ServerID  int
+	ServerID  string
 }
 
 //------------------------------------------------------------------------------
