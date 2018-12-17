@@ -162,7 +162,7 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 		OpenID:    util.MD5_LollipopGO(StrPlayerUID + "GateWay"),
 	}
 	// 发送数据
-	this.PlayerSendMessage(data)
+	// this.PlayerSendMessage(data)
 	// 保存玩家数据到内存 M
 	//================================推送消息处理===================================
 	// 保存在线的玩家的数据信息
