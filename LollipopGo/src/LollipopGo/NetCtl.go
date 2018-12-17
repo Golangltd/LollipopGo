@@ -222,26 +222,6 @@ func (this *NetDataConn) PlayerLogin(ProtocolData map[string]interface{}) {
 	return
 }
 
-// 发送给客户端的数据信息函数
-func (this *NetDataConn) PlayerSendMessage(senddata interface{}) {
-	// 1 消息序列化 interface --->  json
-	b, errjson := json.Marshal(senddata)
-	if errjson != nil {
-		glog.Error(errjson.Error())
-		return
-	}
-	// 数据转换 json的byte数组 --->  string
-	// data := "data:" + string(b[0:len(b)])
-	// glog.Info(data)
-	// 发送
-	err := websocket.JSON.Send(this.Connection, b)
-	if err != nil {
-		glog.Error(err.Error())
-		return
-	}
-	return
-}
-
 // 广播函数处理
 func Broadcast(data interface{}) {
 

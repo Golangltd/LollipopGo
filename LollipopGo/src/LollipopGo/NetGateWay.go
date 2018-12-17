@@ -1,9 +1,11 @@
 package main
 
 import (
+	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/util"
 	"Proto"
 	"Proto/Proto2"
+	"fmt"
 )
 
 //------------------------------------------------------------------------------
@@ -18,10 +20,38 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 			// 网关主动链接进来，做数据链接的保存
 			this.GLConnServerFunc(ProtocolData)
 		}
+	case float64(Proto2.GW2G_PlayerEntryHallProto2):
+		{
+			// Global server 返回给服务器
+			this.GWPlayerLoginGL(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+// Global server 返回给gateway server
+func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
+
+	if ProtocolData["OpenID"] == nil {
+		log.Debug("Global server data is wrong:OpenID is nil!")
+		return
+	}
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	StGamePlayerNum := ProtocolData["GamePlayerNum"].(map[string]interface{})
+
+	// 发给客户端模拟
+	data := &Proto2.S2GWS_PlayerLogin{
+		Protocol:      6,
+		Protocol2:     2,
+		OpenID:        StrOpenID,
+		GamePlayerNum: StGamePlayerNum,
+	}
+	// 发送数据  --
+	this.SendClientDataFunc(data.OpenID, "connect", data)
 	return
 }
 
@@ -31,6 +61,8 @@ func (this *NetDataConn) GLConnServerFunc(ProtocolData map[string]interface{}) {
 		panic("ServerID 数据为空!")
 		return
 	}
+
+	fmt.Println("Global server conn entry gateway!!!")
 
 	// Globla server 发过来的可以加密的数据
 	StrServerID := ProtocolData["ServerID"].(string)
@@ -118,6 +150,7 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 		data := &Proto2.G2GW_PlayerEntryHall{
 			Protocol:  Proto.G_GameGlobal_Proto,
 			Protocol2: Proto2.G2GW_PlayerEntryHallProto2,
+			OpenID:    StrPlayerUID,
 		}
 		this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	}

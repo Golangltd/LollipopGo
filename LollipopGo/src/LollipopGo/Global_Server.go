@@ -23,16 +23,16 @@ var Conn *websocket.Conn // 保存用户的链接信息，数据会在主动匹�
 
 // 初始化操作
 func init() {
-	if initGateWayNet() {
-		panic("链接 gateway server 失败!")
+	if !initGateWayNet() {
+		fmt.Println("链接 gateway server 失败!")
 		return
 	}
+	fmt.Println("链接 gateway server 成功!")
+
 	return
 }
 
 func initGateWayNet() bool {
-
-	return false
 
 	fmt.Println("用户客户端客户端模拟！")
 	log.Debug("用户客户端客户端模拟！")
@@ -100,13 +100,13 @@ func HandleCltProtocolG(protocol interface{}, protocol2 interface{}, ProtocolDat
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
 			// 发送给玩家数据
-			fmt.Println("贪吃蛇的主协议!!!", ErrorST)
+			fmt.Println("Global server的主协议!!!", ErrorST)
 		}
 	}()
 
 	// 协议处理
 	switch protocol {
-	case float64(Proto.G_Snake_Proto):
+	case float64(Proto.G_GameGlobal_Proto):
 		{ // Global Server 主要协议处理
 			fmt.Println("Global server 主协议!!!")
 			HandleCltProtocol2Glogbal(protocol2, ProtocolData)
@@ -125,7 +125,6 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 	case float64(Proto2.GW2G_ConnServerProto2):
 		{ // 网关返回数据
 			fmt.Println("gateway server 返回给global server 数据信息！！！")
-
 		}
 	case float64(Proto2.G2GW_PlayerEntryHallProto2):
 		{ // 网关请求获取大厅数据
@@ -143,7 +142,7 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn) {
 	// 返回数据给GateWay
 
-	iGamePlayerNum := make(map[string]int)
+	iGamePlayerNum := make(map[string]interface{})
 	iGamePlayerNum["1001"] = 1000
 	iGamePlayerNum["1002"] = 9999
 
@@ -170,7 +169,7 @@ func initConn(conn *websocket.Conn) {
 		Protocol2: Proto2.G2GW_ConnServerProto2,
 		ServerID:  util.MD5_LollipopGO("8894" + "Global server"),
 	}
-	// fmt.Println(data)
+	fmt.Println(data)
 	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
 	return
