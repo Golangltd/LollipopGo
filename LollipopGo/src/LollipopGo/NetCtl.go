@@ -13,12 +13,11 @@ import (
 )
 
 // 网络数据结构的保存
-// 1 websocket 的网络链接
-// 2 StrMd5   房间的加密信息
 type NetDataConn struct {
-	Connection *websocket.Conn
-	StrMd5     string
-	MapSafe    *concurrent.ConcurrentMap
+	Connection    *websocket.Conn           //  链接信息
+	StrMd5        string                    //  校验加密的信息
+	MapSafe       *concurrent.ConcurrentMap //  保存client的信息
+	MapSafeServer *concurrent.ConcurrentMap //  保存server的信息
 }
 
 // 结构体数据类型
