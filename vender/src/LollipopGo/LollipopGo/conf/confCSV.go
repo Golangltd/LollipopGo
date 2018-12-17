@@ -1,7 +1,12 @@
-package csv
+package conf
 
 // csv配置表
 var G_GameList map[string]*GameList // 卡牌活动结构
+
+func init() {
+	G_GameList = make(map[string]*GameList)
+	return
+}
 
 // 游戏列表
 type GameList struct {
@@ -14,3 +19,5 @@ type GameList struct {
 	IsNewShow     string // 是否最新上架
 	IsHotGame     string // 是否是热游戏
 }
+
+//------------------------------------------------------------------------------

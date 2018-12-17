@@ -1,7 +1,9 @@
 package main
 
 import (
+	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/player"
+	_ "LollipopGo/ReadCSV"
 	"Proto/Proto2"
 	"fmt"
 	"net"
@@ -79,6 +81,7 @@ func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
 		Tocken:    "22222",
 		PlayerST:  nil,
 		GateWayST: data,
+		GameList:  conf.G_GameList,
 	}
 
 	return nil
