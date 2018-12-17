@@ -1,10 +1,11 @@
 package csv
 
 import (
+	"LollipopGo/LollipopGo/conf"
 	"encoding/csv"
 	"fmt"
 	"io/ioutil"
-	"strconv"
+	_ "strconv"
 	"strings"
 )
 
@@ -41,7 +42,7 @@ func ReadCsv_ConfigFile_GameInfoST_Fun() bool {
 	sz := len(ss)
 	// 循环取数据
 	for i := 1; i < sz; i++ {
-		Infotmp := new(GameList)
+		Infotmp := new(conf.GameList)
 		// igame, _ := strconv.Atoi(ss[i][0])
 		// Infotmp.GameId = uint32(igame)
 		Infotmp.GameID = ss[i][0]
@@ -53,9 +54,9 @@ func ReadCsv_ConfigFile_GameInfoST_Fun() bool {
 		Infotmp.IsNewShow = ss[i][6]
 		Infotmp.IsHotGame = ss[i][7]
 		// 保存数据
-		G_GameList[Infotmp.GameName] = Infotmp
+		conf.G_GameList[Infotmp.GameName] = Infotmp
 	}
 
-	fmt.Println(G_GameInfoST)
+	fmt.Println(conf.G_GameList)
 	return true
 }

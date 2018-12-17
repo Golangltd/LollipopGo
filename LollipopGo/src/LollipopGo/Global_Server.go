@@ -2,7 +2,11 @@ package main
 
 import (
 	"LollipopGo/LollipopGo/log"
+	"Proto"
+	"Proto/Proto2"
+	"flag"
 	"fmt"
+	"strings"
 
 	"code.google.com/p/go.net/websocket"
 )
@@ -12,7 +16,7 @@ import (
 	1 匹配玩家活动
 */
 
-var addrG = flag.String("addr", "127.0.0.1:8888", "http service address")
+var addrG = flag.String("addrG", "127.0.0.1:8888", "http service address")
 var conn *websocket.Conn // 保存用户的链接信息，数据会在主动匹配成功后进行链接
 
 func init() {
@@ -24,6 +28,8 @@ func init() {
 }
 
 func initGateWayNet() bool {
+
+	return false
 
 	fmt.Println("用户客户端客户端模拟！")
 	log.Debug("用户客户端客户端模拟！")
@@ -113,7 +119,7 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 	case float64(Proto2.S2S_PlayerLoginSProto2):
 		{
 			fmt.Println("贪吃蛇:玩家进入游戏的协议!!!")
-			//EntryGameSnake(ProtocolData)
+			// EntryGameSnake(ProtocolData)
 		}
 	case float64(Proto2.S2S_PlayerEntryGameProto2):
 		{
