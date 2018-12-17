@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"strings"
 
+	"LollipopGo/LollipopGo/util"
+
 	"code.google.com/p/go.net/websocket"
 )
 
@@ -44,23 +46,6 @@ func initGateWayNet() bool {
 	go GameServerReceiveG(conn)
 	// 发送链接的协议 ---》
 	initConn(conn)
-	return true
-}
-
-// 公用函数处理-- 可以整合到 LollipopGo
-func PlayerSendToServer(conn *websocket.Conn, data interface{}) bool {
-
-	jsons, err := json.Marshal(data)
-	if err != nil {
-		fmt.Println("err:", err.Error())
-		return false
-	}
-	// 发送数据
-	errq := websocket.Message.Send(conn, jsons)
-	if errq != nil {
-		fmt.Println(errq)
-		return false
-	}
 	return true
 }
 
@@ -136,14 +121,9 @@ func HandleCltProtocolG(protocol interface{}, protocol2 interface{}, ProtocolDat
 func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]interface{}) {
 
 	switch protocol2 {
-	case float64(Proto2.S2S_PlayerLoginSProto2):
-		{
-			fmt.Println("贪吃蛇:玩家进入游戏的协议!!!")
-
-		}
-	case float64(Proto2.S2S_PlayerEntryGameProto2):
-		{
-			fmt.Println("贪吃蛇:玩家匹配成功协议!!!")
+	case float64(Proto2.GW2G_ConnServerProto2):
+		{ // 网关返回数据
+			fmt.Println("gateway server 返回给global server 数据信息！！！")
 
 		}
 
@@ -155,8 +135,8 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 
 // 链接到网关
 func initConn(conn *websocket.Conn) {
-
-	data := &Proto2.C2S_PlayerEntryGame{
+	// 组装数据
+	data := &Proto2.G2GW_ConnServer{
 		Protocol:  Proto.G_GameGlobal_Proto, // 游戏主要协议
 		Protocol2: Proto2.G2GW_ConnServerProto2,
 		ServerID:  util.MD5_LollipopGO("8894" + "Global server"),

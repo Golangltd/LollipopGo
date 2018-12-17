@@ -25,7 +25,7 @@ type C2GWS_PlayerEntryGame struct {
 }
 
 // S2GWS_PlayerEntryGameProto2
-type C2GWS_PlayerEntryGame struct {
+type S2GWS_PlayerEntryGame struct {
 	Protocol  int
 	Protocol2 int
 }

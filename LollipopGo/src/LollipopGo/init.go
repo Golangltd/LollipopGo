@@ -17,8 +17,9 @@ var G_PlayerData map[string]*NetDataConn
 var G_PlayerNet map[string]int // 心跳结构信息存储的结构
 var G_PlayerNetSys map[string]int
 var G_Net_Count map[string]int
-var M *concurrent.ConcurrentMap     // 并发安全的
-var MRoom *concurrent.ConcurrentMap // 并发安全的
+var M *concurrent.ConcurrentMap       // 并发安全的client的链接
+var MRoom *concurrent.ConcurrentMap   // 并发安全的房间的链接
+var MServer *concurrent.ConcurrentMap // 并发安全的server链接
 var addr = flag.String("addr", "127.0.0.1:8888", "http service address")
 var WS *websocket.Conn
 var icount, icounttmp int
@@ -33,6 +34,7 @@ func init() {
 	// 并发安全的初始化
 	M = concurrent.NewConcurrentMap()
 	MRoom = concurrent.NewConcurrentMap()
+	MServer = concurrent.NewConcurrentMap()
 	// go G_timer()
 	// go G_timeout_kick_Player()
 	// redis 测试

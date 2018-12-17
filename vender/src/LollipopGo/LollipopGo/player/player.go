@@ -6,5 +6,5 @@ type PlayerSt struct {
 	Name      string
 	HeadURL   string
 	CoinNum   int
-	Awardlist [string] // 兑换列表，保存对应的玩家的架构数据里
+	Awardlist []string // 兑换列表，保存对应的玩家的架构数据里
 }

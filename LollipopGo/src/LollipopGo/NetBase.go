@@ -18,9 +18,10 @@ func wwwGolangLtd(ws *websocket.Conn) {
 
 	// 网络信息
 	NetDataConntmp := &NetDataConn{
-		Connection: ws,
-		StrMd5:     "",
-		MapSafe:    M,
+		Connection:    ws,
+		StrMd5:        "",
+		MapSafe:       M,
+		MapSafeServer: MServer,
 	}
 	// 指针接受者  处理消息
 	NetDataConntmp.PullFromClient()
