@@ -154,7 +154,6 @@ func (this *NetDataConn) XC_Data_Send_AllPlayer_State(StrMD5 string, Data interf
 				}
 			}
 		}
-
 	}
 
 	return true
