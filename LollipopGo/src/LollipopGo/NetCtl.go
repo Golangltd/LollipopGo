@@ -25,7 +25,7 @@ type Requestbody struct {
 	req string
 }
 
-// json转化为map:数据的处理
+//json转化为map:数据的处理
 func (r *Requestbody) Json2map() (s map[string]interface{}, err error) {
 	var result map[string]interface{}
 	if err := json.Unmarshal([]byte(r.req), &result); err != nil {
@@ -34,6 +34,15 @@ func (r *Requestbody) Json2map() (s map[string]interface{}, err error) {
 	}
 	return result, nil
 }
+
+// func (r *Requestbody) Json2map() (s map[interface{}]interface{}, err error) {
+// 	var result map[interface{}]interface{}
+// 	if err := json.Unmarshal([]byte(r.req), &result); err != nil {
+// 		glog.Error("Json2map:", err.Error())
+// 		return nil, err
+// 	}
+// 	return result, nil
+// }
 
 func (this *NetDataConn) PullFromClient() {
 	for {
@@ -66,6 +75,7 @@ func typeof(v interface{}) string {
 }
 
 // 处理函数(底层函数了，必须面向所有的数据处理)
+//func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 interface{}, ProtocolData map[interface{}]interface{}) {
 func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 interface{}, ProtocolData map[string]interface{}) {
 
 	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
@@ -102,7 +112,7 @@ func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 inter
 	case float64(Proto.GameData_Proto):
 		{
 			// 子协议处理
-			this.HandleCltProtocol2(protocol2, ProtocolData)
+			//this.HandleCltProtocol2(protocol2, ProtocolData)
 
 		}
 	case float64(Proto.GameDataDB_Proto):
@@ -115,12 +125,12 @@ func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 inter
 		}
 	case float64(Proto.GameNet_Proto):
 		{
-			this.HandleCltProtocol2Net(protocol2, ProtocolData)
+			// this.HandleCltProtocol2Net(protocol2, ProtocolData)
 		}
 	case float64(Proto.G_Snake_Proto):
 		{ // 贪吃蛇的主协议
 			fmt.Println("贪吃蛇的主协议!!!")
-			this.HandleCltProtocol2Snake(protocol2, ProtocolData)
+			// this.HandleCltProtocol2Snake(protocol2, ProtocolData)
 
 		}
 	default:

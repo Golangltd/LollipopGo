@@ -21,6 +21,7 @@ const (
 type C2GWS_PlayerEntryGame struct {
 	Protocol  int
 	Protocol2 int
+	OpenID    string
 	GameID    string // 游戏ID
 }
 
@@ -55,7 +56,7 @@ type S2GWS_PlayerLogin struct {
 	Protocol      int
 	Protocol2     int
 	OpenID        string
-	GamePlayerNum map[interface{}]interface{} // 每个游戏的玩家的人数,global server获取
+	GamePlayerNum map[string]interface{}      // 每个游戏的玩家的人数,global server获取
 	DefaultAward  map[string]*player.PlayerSt // 默认兑换列表
 	DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
 }
