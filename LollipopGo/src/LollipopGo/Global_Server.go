@@ -121,6 +121,7 @@ func HandleCltProtocolG(protocol interface{}, protocol2 interface{}, ProtocolDat
 }
 
 // 子协议的处理
+//func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[interface{}]interface{}) {
 func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]interface{}) {
 
 	switch protocol2 {
@@ -141,11 +142,12 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 }
 
 // 返回给玩家数据
+//func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[interface{}]interface{}) {
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 	// 返回数据给GateWay
 	StrOpenID := ProtocolData["OpenID"].(string)
 	// 获取在线人数
-	ddd := make(map[interface{}]interface{})
+	ddd := make(map[string]interface{})
 	csv.M_CSV.LollipopGo_RLockRange(ddd)
 
 	// 组装数据
