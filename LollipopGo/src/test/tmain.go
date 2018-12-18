@@ -58,7 +58,7 @@ func main() {
 	// defer close(Match_Chan)
 	Imax = len(Match_Chan)
 	// 取数据
-	//DoingMatch()
+	// DoingMatch()
 	go Sort_timer()
 
 	strport := "8892" //  GM 系统操作 -- 修改金币等操作
@@ -78,26 +78,29 @@ func Putdata(data *Match_player) {
 
 // 获取
 func DoingMatch() {
+
+	Data := make(map[int]*Match_player)
 	// 全部数据都拿出来
 	// data := make(chan map[string]*Match_player, 100)
 	// data <- Match_Chan
-
 	for i := 0; i < Imax; i++ {
 		if data, ok := <-Match_Chan; ok {
 			fmt.Print(data, "\t")
+			Data[i+1] = data
 		} else {
 			fmt.Print("woring", "\t")
 			break
 		}
-
 	}
+	// 打印数据保存
+	fmt.Println(Data)
 	return
 }
 
-//
+// 定时器
 func Sort_timer() {
 
-	timer := time.NewTimer(time.Second * 1)
+	timer := time.NewTimer(time.Millisecond * 400)
 	for {
 		select {
 		case <-timer.C:
@@ -107,12 +110,10 @@ func Sort_timer() {
 			}
 		}
 	}
-
 }
 
 // 排序算法  每8秒排序一次
 func Sort_channel() {
-
 	return
 }
 
