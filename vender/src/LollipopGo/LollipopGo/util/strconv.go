@@ -13,3 +13,7 @@ func Str2int_LollipopGo(data string) int {
 	}
 	return v
 }
+
+func Int2str_LollipopGo(data int) string {
+	return strconv.Itoa(data)
+}

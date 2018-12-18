@@ -33,3 +33,22 @@ func QueryFromDB(db *sql.DB) {
 		fmt.Println(uid)
 	}
 }
+
+//------------------------------------------------------------------------------
+// 查询表  select 1 from tablename where uid = 'uid' limit 1;
+func (this *mysql_db) ReadUserInfoData(uid string) bool {
+
+	rows, err := this.STdb.Query("SELECT 1 FROM t_userinfo  where uid = '" + uid + "' limit 1")
+	CheckErr(err)
+	if err != nil {
+		fmt.Println("error:", err)
+	} else {
+	}
+
+	data, _ := rows.Columns()
+	if len(data) > 0 {
+		return true
+	}
+
+	return false
+}
