@@ -37,10 +37,17 @@ func ReadCsv_ConfigFile_GameInfoST_Fun() bool {
 		Infotmp.IsNewShow = ss[i][6]
 		Infotmp.IsHotGame = ss[i][7]
 		// 保存数据
-		conf.G_GameList[Infotmp.GameName] = Infotmp
+		conf.G_GameList[Infotmp.GameID] = Infotmp
+		// 保存数据更新数据
+		M_CSV.Set(Infotmp.GameID, 0)
 	}
-
 	fmt.Println(conf.G_GameList)
+	//fmt.Println("fmt.Println(M_CSV)", M_CSV)
+
+	// ddd := make(map[interface{}]interface{})
+	// M_CSV.LollipopGo_RLockRange(ddd)
+	// fmt.Println("fmt.Println(ddd)", ddd)
+
 	return true
 }
 
