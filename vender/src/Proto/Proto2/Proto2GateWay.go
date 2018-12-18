@@ -21,8 +21,9 @@ const (
 type C2GWS_PlayerEntryGame struct {
 	Protocol  int
 	Protocol2 int
-	OpenID    string
+	OpenID    string // 玩家唯一的ID 信息
 	GameID    string // 游戏ID
+	Timestamp int    // 时间戳
 }
 
 // S2GWS_PlayerEntryGameProto2

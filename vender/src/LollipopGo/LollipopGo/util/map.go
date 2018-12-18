@@ -97,7 +97,7 @@ func (m *Map) LollipopGo_RLockRange(data map[string]interface{}) map[string]inte
 		return nil
 	}
 	for k, v := range m.m {
-		if k.(string) == nil {
+		if k == nil {
 			continue
 		}
 		data[k.(string)] = v
