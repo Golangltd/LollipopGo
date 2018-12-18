@@ -112,7 +112,7 @@ func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 inter
 	case float64(Proto.GameData_Proto):
 		{
 			// 子协议处理
-			//this.HandleCltProtocol2(protocol2, ProtocolData)
+			this.HandleCltProtocol2(protocol2, ProtocolData)
 
 		}
 	case float64(Proto.GameDataDB_Proto):
@@ -125,12 +125,12 @@ func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 inter
 		}
 	case float64(Proto.GameNet_Proto):
 		{
-			// this.HandleCltProtocol2Net(protocol2, ProtocolData)
+			this.HandleCltProtocol2Net(protocol2, ProtocolData)
 		}
 	case float64(Proto.G_Snake_Proto):
 		{ // 贪吃蛇的主协议
 			fmt.Println("贪吃蛇的主协议!!!")
-			// this.HandleCltProtocol2Snake(protocol2, ProtocolData)
+			this.HandleCltProtocol2Snake(protocol2, ProtocolData)
 
 		}
 	default:
