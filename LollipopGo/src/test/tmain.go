@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 // 匹配的结构
@@ -51,15 +52,18 @@ func main() {
 		Lev: 900,
 	}
 	Putdata(idata3)
+	Putdata(idata3)
+	Putdata(idata3)
 
 	// defer close(Match_Chan)
 	Imax = len(Match_Chan)
 	// 取数据
-	DoingMatch()
+	//DoingMatch()
+	go Sort_timer()
 
-	// strport := "8892" //  GM 系统操作 -- 修改金币等操作
-	// http.HandleFunc("/GolangLtdGM", IndexHandlerGM)
-	// http.ListenAndServe(":"+strport, nil)
+	strport := "8892" //  GM 系统操作 -- 修改金币等操作
+	http.HandleFunc("/GolangLtdGM", IndexHandlerGM)
+	http.ListenAndServe(":"+strport, nil)
 
 	return
 }
@@ -87,6 +91,28 @@ func DoingMatch() {
 		}
 
 	}
+	return
+}
+
+//
+func Sort_timer() {
+
+	timer := time.NewTimer(time.Second * 1)
+	for {
+		select {
+		case <-timer.C:
+			{
+				// 获取channel数据的函数。
+				DoingMatch()
+			}
+		}
+	}
+
+}
+
+// 排序算法  每8秒排序一次
+func Sort_channel() {
+
 	return
 }
 
