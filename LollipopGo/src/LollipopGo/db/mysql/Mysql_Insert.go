@@ -28,10 +28,10 @@ func insertToDB(db *sql.DB) {
 
 //------------------------------------------------------------------------------
 // 玩家数据保存
-func InsertPlayerST2DB(data *player.PlayerST) bool {
+func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) bool {
 	uid := data.UID
 	nowTimeStr := GetTime()
-	stmt, err := db.Prepare("insert t_userinfo set username=?,departname=?,created=?,password=?,uid=?")
+	stmt, err := this.STdb.Prepare("insert t_userinfo set username=?,departname=?,created=?,password=?,uid=?")
 	CheckErr(err)
 	res, err := stmt.Exec("test", "研发中心", nowTimeStr, "123456", uid)
 	CheckErr(err)
