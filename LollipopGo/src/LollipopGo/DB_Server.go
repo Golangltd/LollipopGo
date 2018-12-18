@@ -4,6 +4,7 @@ import (
 	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/player"
 	_ "LollipopGo/ReadCSV"
+	"LollipopGo/mysql"
 	"Proto/Proto2"
 	"fmt"
 	"net"
@@ -58,7 +59,9 @@ func MainListener(strport string) {
 func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
 	// 1 解析数据 *reply = args.A * args.B
 	roleUID := args.UID
+	fmt.Println("SavePlayerST2DB:", roleUID)
 	// 2 保存或者更新数据
+	Mysyl_DB.InsertPlayerST2DB(args)
 	return nil
 
 }
