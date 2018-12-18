@@ -13,6 +13,7 @@ type Match_player struct {
 
 // 匹配的chan
 var Match_Chan chan *Match_player
+var Imax int = 0
 
 // 初始化
 func init() {
@@ -44,14 +45,21 @@ func main() {
 	}
 	Putdata(idata2)
 
+	// 第四个数据：
+	idata3 := &Match_player{
+		UID: 3,
+		Lev: 900,
+	}
+	Putdata(idata3)
+
 	// defer close(Match_Chan)
-
+	Imax = len(Match_Chan)
 	// 取数据
-	go DoingMatch()
+	DoingMatch()
 
-	strport := "8892" //  GM 系统操作 -- 修改金币等操作
-	http.HandleFunc("/GolangLtdGM", IndexHandlerGM)
-	http.ListenAndServe(":"+strport, nil)
+	// strport := "8892" //  GM 系统操作 -- 修改金币等操作
+	// http.HandleFunc("/GolangLtdGM", IndexHandlerGM)
+	// http.ListenAndServe(":"+strport, nil)
 
 	return
 }
@@ -67,16 +75,17 @@ func Putdata(data *Match_player) {
 // 获取
 func DoingMatch() {
 	// 全部数据都拿出来
-	//data := make(chan map[string]*Match_player, 100)
-	//data <- Match_Chan
+	// data := make(chan map[string]*Match_player, 100)
+	// data <- Match_Chan
 
-	for i := 0; i < len(Match_Chan); i++ {
-		fmt.Print("len:", len(Match_Chan), "\t")
+	for i := 0; i < Imax; i++ {
 		if data, ok := <-Match_Chan; ok {
 			fmt.Print(data, "\t")
 		} else {
 			fmt.Print("woring", "\t")
+			break
 		}
+
 	}
 	return
 }
