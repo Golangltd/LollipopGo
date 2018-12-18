@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"LollipopGo/LollipopGo/util"
+	"LollipopGo/ReadCSV"
 
 	"code.google.com/p/go.net/websocket"
 )
@@ -28,6 +29,7 @@ func init() {
 		return
 	}
 	fmt.Println("链接 gateway server 成功!")
+	// 初始化数据
 
 	return
 }
@@ -142,17 +144,16 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 	// 返回数据给GateWay
 	StrOpenID := ProtocolData["OpenID"].(string)
-
-	iGamePlayerNum := make(map[string]interface{})
-	iGamePlayerNum["1001"] = 1000
-	iGamePlayerNum["1002"] = 9999
+	// 获取在线人数
+	ddd := make(map[interface{}]interface{})
+	csv.M_CSV.LollipopGo_RLockRange(ddd)
 
 	// 组装数据
 	data := &Proto2.GW2G_PlayerEntryHall{
 		Protocol:      Proto.G_GameGlobal_Proto, // 游戏主要协议
 		Protocol2:     Proto2.GW2G_PlayerEntryHallProto2,
 		OpenID:        StrOpenID,
-		GamePlayerNum: iGamePlayerNum,
+		GamePlayerNum: ddd,
 		DefaultAward:  nil,
 		DefaultMsg:    nil,
 	}

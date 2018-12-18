@@ -41,7 +41,7 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 	}
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	StGamePlayerNum := ProtocolData["GamePlayerNum"].(map[string]interface{})
+	StGamePlayerNum := ProtocolData["GamePlayerNum"].(map[interface{}]interface{})
 
 	// 发给客户端模拟
 	data := &Proto2.S2GWS_PlayerLogin{
