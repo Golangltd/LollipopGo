@@ -1,7 +1,9 @@
 package Mysyl_DB
 
 import (
+	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/player"
+	"LollipopGo/LollipopGo/util"
 	"database/sql"
 	"fmt"
 )
@@ -30,6 +32,11 @@ func insertToDB(db *sql.DB) {
 // 玩家数据保存
 func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) bool {
 	uid := data.UID
+	// 判断是否存在
+	if this.ReadUserInfoData(util.Int2str_LollipopGo(uid)) {
+		log.Debug("数据存在！")
+		return false
+	}
 	nowTimeStr := GetTime()
 	stmt, err := this.STdb.Prepare("insert t_userinfo set username=?,departname=?,created=?,password=?,uid=?")
 	CheckErr(err)
