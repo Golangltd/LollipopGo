@@ -46,23 +46,6 @@ func UTCTime_LollipopGO() string {
 	return strconv.FormatInt(t.UTC().UnixNano(), 10)
 }
 
-//------------------------------------------------------------------------------
-// package main
-
-// import (
-//     "crypto/md5"
-//     "encoding/hex"
-//     "fmt"
-// )
-
-// func main() {
-//     h := md5.New()
-//     h.Write([]byte("123456")) // 需要加密的字符串为 123456
-//     cipherStr := h.Sum(nil)
-//     fmt.Println(cipherStr)
-//     fmt.Printf("%s\n", hex.EncodeToString(cipherStr)) // 输出加密结果
-// }
-
 // MD5 实现 :主要是针对 字符串的加密
 func MD5_LollipopGO(data string) string {
 	h := md5.New()

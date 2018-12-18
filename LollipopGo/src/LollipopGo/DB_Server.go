@@ -54,12 +54,22 @@ func MainListener(strport string) {
 	}
 }
 
+// 玩家用户保存
+func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
+	// 1 解析数据 *reply = args.A * args.B
+	roleUID := args.UID
+	// 2 保存或者更新数据
+	return nil
+
+}
+
 // -----------------------------------------------------------------------------
+type Arith int
+
+// 登录结构 -- login server
 type Args struct {
 	A, B int
 }
-
-type Arith int
 
 //------------------------------------------------------------------------------
 

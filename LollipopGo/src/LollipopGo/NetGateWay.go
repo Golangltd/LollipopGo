@@ -146,21 +146,19 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 	// 1 将我们解析的数据 --> token --->  redis 验证等等
 	// 主要看TTL的时间是否正确
 	// 2 发送给Global server 获取数据  在线人数等
-	if true {
-		data := &Proto2.G2GW_PlayerEntryHall{
-			Protocol:  Proto.G_GameGlobal_Proto,
-			Protocol2: Proto2.G2GW_PlayerEntryHallProto2,
-			OpenID:    util.MD5_LollipopGO(StrPlayerUID + "GateWay"),
-		}
-		this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
-	}
-
-	// 发给客户端模拟
-	data := &Proto2.S2GWS_PlayerLogin{
-		Protocol:  6,
-		Protocol2: 2,
+	data := &Proto2.G2GW_PlayerEntryHall{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.G2GW_PlayerEntryHallProto2,
 		OpenID:    util.MD5_LollipopGO(StrPlayerUID + "GateWay"),
 	}
+	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
+
+	// 发给客户端模拟
+	// data := &Proto2.S2GWS_PlayerLogin{
+	// 	Protocol:  6,
+	// 	Protocol2: 2,
+	// 	OpenID:    util.MD5_LollipopGO(StrPlayerUID + "GateWay"),
+	// }
 	// 发送数据
 	// this.PlayerSendMessage(data)
 	// 保存玩家数据到内存 M

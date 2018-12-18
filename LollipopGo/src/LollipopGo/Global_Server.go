@@ -6,10 +6,14 @@ import (
 	"Proto/Proto2"
 	"flag"
 	"fmt"
+	"net/rpc"
+	"net/rpc/jsonrpc"
 	"strings"
 
 	"LollipopGo/LollipopGo/util"
 	"LollipopGo/ReadCSV"
+
+	"LollipopGo/LollipopGo/player"
 
 	"code.google.com/p/go.net/websocket"
 )
@@ -21,6 +25,7 @@ import (
 
 var addrG = flag.String("addrG", "127.0.0.1:8888", "http service address")
 var Conn *websocket.Conn // 保存用户的链接信息，数据会在主动匹配成功后进行链接
+var ConnRPC *rpc.Client
 
 // 初始化操作
 func init() {
@@ -30,8 +35,17 @@ func init() {
 	}
 	fmt.Println("链接 gateway server 成功!")
 	// 初始化数据
-
+	initNetRPC()
 	return
+}
+
+// 初始化RPC
+func initNetRPC() {
+	client, err := jsonrpc.Dial("tcp", service)
+	if err != nil {
+		log.Debug("dial error:", err)
+	}
+	ConnRPC = client
 }
 
 func initGateWayNet() bool {
@@ -121,7 +135,6 @@ func HandleCltProtocolG(protocol interface{}, protocol2 interface{}, ProtocolDat
 }
 
 // 子协议的处理
-//func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[interface{}]interface{}) {
 func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]interface{}) {
 
 	switch protocol2 {
@@ -142,7 +155,6 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 }
 
 // 返回给玩家数据
-//func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[interface{}]interface{}) {
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 	// 返回数据给GateWay
 	StrOpenID := ProtocolData["OpenID"].(string)
@@ -162,8 +174,27 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	fmt.Println(data)
 	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
+	// 3 DB server进行数据保存
+	DB_Save_RoleST(StrOpenID)
 	return
 
+}
+
+// 保存数据都DB 人物信息
+func DB_Save_RoleST(uid string) interface{} {
+	args := player.PlayerSt{
+		UID:       util.Str2int_LollipopGo(uid),
+		Name:      "ss",
+		HeadURL:   "ss",
+		CoinNum:   2,
+		Awardlist: nil,
+	}
+	var reply int
+	// 异步调用【结构的方法】
+	divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
+	replyCall := <-divCall.Done
+	fmt.Println(replyCall.Reply)
+	return reply
 }
 
 // 链接到网关
