@@ -6,8 +6,15 @@ import (
 	"code.google.com/p/go.net/websocket"
 )
 
-var PoolMax int // 匹配池的大小
-var MapPoolMatch1V1 chan map[string]*PoolMatch
+const (
+	INITMATCH = iota // INITMATCH == 0
+	Match_1V1        // Match_1V1 == 1
+	Match_2V2        // Match_2V2 == 2
+	Match_3V3        // Match_3V3 == 3
+)
+
+var PoolMax int                                // 匹配池的大小
+var MapPoolMatch1V1 chan map[string]*PoolMatch // key 是游戏ID
 
 // 匹配池
 type PoolMatch struct {
@@ -16,6 +23,8 @@ type PoolMatch struct {
 	Connection  *websocket.Conn // global服务器只是和gateway 进行链接的数据,可以忽略
 	MatchTime   int             // 玩家匹配的耗时  --- conf配置 数据需要
 	PlayerScore int             // 玩家的分数
+	PlayerLev   int             // 玩家等级
+	MatchGame   int             // 玩家匹配的游戏
 }
 
 // 经过算法后的匹配结果
@@ -28,6 +37,7 @@ type RoomST struct {
 }
 
 // 申请链接池
+// map[int]*PoolMatch int就是游戏ID
 func newPoolMatch(IMax int) (MapPoolMatch chan map[int]*PoolMatch) {
 
 	if IMax <= 0 {
@@ -43,13 +53,29 @@ func (this *PoolMatch) PutMatch(data map[int]*PoolMatch) {
 		log.Debug("超过了 pool的上限!")
 		return
 	}
-	MapPoolMatch <- data
+	MapPoolMatch1V1 <- data
 }
 
 // 根据匹配算法进行返回匹配结果
-func (this *PoolMatch) GetMatchResult() {
+// 条件：那款游戏匹配，匹配类型（1V1）
+// 定时器：每个秒就要匹配一次所有数据
+func (this *PoolMatch) GetMatchResult(igameid int, imatchtype int) {
 
-	// 匹配后就可以发送数据给gateway server 给玩家进行分析
+	if imatchtype == Match_1V1 {
+		// 1V1 匹配
+		// 找到游戏
+		data <- MapPoolMatch1V1
+		// 排序 lev
+		// 生成数据，roomID等
+		// 发送给网关
+	} else if imatchtype == Match_2V2 {
+		// 2V2 匹配
+
+	} else if imatchtype == Match_3V3 {
+		// 3V3 匹配
+
+	}
+	// 匹配数据发给 GateWay Server
 	// send_gateway_data(){}
 	return
 }

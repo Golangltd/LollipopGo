@@ -3,6 +3,7 @@ package main
 import (
 	"LollipopGo/LollipopGo"
 	LollipopGoconf "LollipopGo/LollipopGo/conf"
+	_ "LollipopGo/LollipopGo/match"
 	"LollipopGo/conf"
 	"glog-master"
 	"net/http"
