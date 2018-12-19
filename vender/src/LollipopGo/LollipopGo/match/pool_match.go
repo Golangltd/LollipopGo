@@ -3,6 +3,8 @@ package match
 import (
 	"LollipopGo/LollipopGo/log"
 
+	"LollipopGo/LollipopGo/player"
+
 	"code.google.com/p/go.net/websocket"
 )
 
@@ -13,8 +15,8 @@ const (
 	Match_3V3        // Match_3V3 == 3
 )
 
-var PoolMax int                                // 匹配池的大小
-var MapPoolMatch1V1 chan map[string]*PoolMatch // key 是游戏ID
+var PoolMax int                             // 匹配池的大小
+var MapPoolMatch1V1 chan map[int]*PoolMatch // key 是游戏ID
 
 // 匹配池
 type PoolMatch struct {
@@ -64,7 +66,7 @@ func (this *PoolMatch) GetMatchResult(igameid int, imatchtype int) {
 	if imatchtype == Match_1V1 {
 		// 1V1 匹配
 		// 找到游戏
-		data <- MapPoolMatch1V1
+		// data <- MapPoolMatch1V1
 		// 排序 lev
 		// 生成数据，roomID等
 		// 发送给网关

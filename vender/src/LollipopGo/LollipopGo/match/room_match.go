@@ -23,5 +23,5 @@ type RoomMatch struct {
 
 func newRoomMatch() (MapMatch map[string]*RoomMatch) {
 
-	return make(MapMatch map[string]*RoomMatch)
+	return make(map[string]*RoomMatch)
 }
