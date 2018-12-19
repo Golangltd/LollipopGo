@@ -37,7 +37,7 @@ func InitDSQ(data1 []int) [4][4]int {
 	// 循环获取
 	for i := 0; i < 8*2; i++ {
 		// 删除第i个元素
-		icount := util.RandInterval(0, int32(len(data))-1)
+		icount := util.RandInterval_LollipopGo(0, int32(len(data))-1)
 		fmt.Println("随机数：", icount)
 		//datatmp := data[icount]
 
