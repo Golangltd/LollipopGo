@@ -45,8 +45,8 @@ type GW2DSQ_InitGame struct {
 type DSQ2GW_InitGame struct {
 	Protocol  int
 	Protocol2 int
-	Isucc     bool          // 是否初始化成功
-	InitData  [4][4]*DSQ_ST // 斗兽棋的棋盘的数据
+	Isucc     bool       // 是否初始化成功
+	InitData  [4][4]*int // 斗兽棋的棋盘的数据
 }
 
 //------------------------------------------------------------------------------

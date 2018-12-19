@@ -199,21 +199,37 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 
 //------------------------------------------------------------------------------
 // 初始化牌型
-func InitDSQ() {
+func InitDSQ() [][]int {
 
 	data := DSQ_qi
-	for i := 0; i < Proto.Mouse; i++ {
+	erdata := [4][4]int{}
+	j, k := 0, 0
 
+	// 循环获取
+	for i := 0; i < Proto.Mouse*2; i++ {
 		// 删除第i个元素
-		datatmp := util.RandInterval(0, len(data))
-		i := 2
-		data = append(data[:i], data[i+1:]...)
+		icount := util.RandInterval(0, len(data))
+		datatmp := data[icount]
 
-		// 2 添加到二维数组
-		// 3
+		if len(data) == 1 {
+			erdata[4][4] = data[0]
+
+		} else {
+			erdata[j][k] = data[icount]
+			k++
+			if k%4 == 0 {
+				j++
+				k = 0
+			}
+			//------------------------------------------------------------------
+			if icount < len(data) {
+				data = append(data[:icount], data[icount+1:]...)
+			} else {
+				data = data[:icount-1]
+			}
+			//------------------------------------------------------------------
+		}
 	}
 
-	return
+	return erdata
 }
-
-//
