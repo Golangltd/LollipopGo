@@ -199,36 +199,41 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 
 //------------------------------------------------------------------------------
 // 初始化牌型
-func InitDSQ() [][]int {
+func InitDSQ(data1 []int) [4][4]int {
 
-	data := DSQ_qi
+	data := data1
 	erdata := [4][4]int{}
 	j, k := 0, 0
 
-	// 循环获取
-	for i := 0; i < Proto.Mouse*2; i++ {
-		// 删除第i个元素
-		icount := util.RandInterval(0, len(data))
-		datatmp := data[icount]
-
+	for i := 0; i < 8*2; i++ {
+		icount := util.RandInterval(0, int32(len(data))-1)
+		fmt.Println("随机数：", icount)
 		if len(data) == 1 {
-			erdata[4][4] = data[0]
+			erdata[3][3] = data[0]
 
 		} else {
-			erdata[j][k] = data[icount]
-			k++
-			if k%4 == 0 {
-				j++
-				k = 0
-			}
 			//------------------------------------------------------------------
-			if icount < len(data) {
+			if int(icount) < len(data) {
+				erdata[j][k] = data[icount]
+				k++
+				if k%4 == 0 {
+					j++
+					k = 0
+				}
+
 				data = append(data[:icount], data[icount+1:]...)
 			} else {
+				erdata[j][k] = data[icount]
+				k++
+				if k%4 == 0 {
+					j++
+					k = 0
+				}
 				data = data[:icount-1]
 			}
 			//------------------------------------------------------------------
 		}
+		fmt.Println("生成的数据", erdata)
 	}
 
 	return erdata
