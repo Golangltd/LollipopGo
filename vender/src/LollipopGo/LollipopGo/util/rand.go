@@ -9,7 +9,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func RandGroup(p ...uint32) int {
+func RandGroup_LollipopGo(p ...uint32) int {
 	if p == nil {
 		panic("args not found")
 	}
@@ -38,7 +38,7 @@ func RandGroup(p ...uint32) int {
 	panic("bug")
 }
 
-func RandInterval(b1, b2 int32) int32 {
+func RandInterval_LollipopGo(b1, b2 int32) int32 {
 	if b1 == b2 {
 		return b1
 	}
@@ -50,7 +50,7 @@ func RandInterval(b1, b2 int32) int32 {
 	return int32(rand.Int63n(max-min+1) + min)
 }
 
-func RandIntervalN(b1, b2 int32, n uint32) []int32 {
+func RandIntervalN_LollipopGo(b1, b2 int32, n uint32) []int32 {
 	if b1 == b2 {
 		return []int32{b1}
 	}
