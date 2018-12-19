@@ -32,8 +32,8 @@ var DSQ_qi = []int{                                                            /
 type RoomPlayerDSQ struct {
 	OpenIDA   string
 	OpenIDB   string
-	InitData  [4][4]*Proto2.DSQ_ST // 斗兽棋的棋盘的数据
-	WhoChuPai string               // 当前谁出牌
+	InitData  [4][4]int // 斗兽棋的棋盘的数据
+	WhoChuPai string    // 当前谁出牌
 }
 
 /*
@@ -201,16 +201,13 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 // 初始化牌型
 func InitDSQ(data1 []int) [4][4]int {
 
-	data := data1
-	erdata := [4][4]int{}
-	j, k := 0, 0
+	data, erdata, j, k := data1, [4][4]int{}, 0, 0
 
 	for i := 0; i < Proto2.Mouse*2; i++ {
 		icount := util.RandInterval_LollipopGo(0, int32(len(data))-1)
 		fmt.Println("随机数：", icount)
 		if len(data) == 1 {
 			erdata[3][3] = data[0]
-
 		} else {
 			//------------------------------------------------------------------
 			if int(icount) < len(data) {
@@ -220,7 +217,6 @@ func InitDSQ(data1 []int) [4][4]int {
 					j++
 					k = 0
 				}
-
 				data = append(data[:icount], data[icount+1:]...)
 			} else {
 				erdata[j][k] = data[icount]
@@ -237,4 +233,72 @@ func InitDSQ(data1 []int) [4][4]int {
 	}
 
 	return erdata
+}
+
+// 判断棋子大小
+func CheckIsEat(fangx int, qizi int, qipan [4][4]int) (bool, int) {
+	if qizi > 16 || qizi < 1 {
+		log.Debug("玩家发送棋子数据不对！")
+		return false, 1000
+	}
+	// 1 寻找 玩家的棋子在棋牌的位置/或者这个棋子是否存在
+	bret, Posx, posy := CheckChessIsExit(qizi, qipan)
+	if bret {
+		CheckArea(fangx, Posx, posy)
+	} else {
+		log.Debug("玩家发送棋子不存在！")
+		return false, 1001
+	}
+
+	return true, 100
+}
+
+// 检查棋盘中是不是存在
+func CheckChessIsExit(qizi int, qipan [4][4]int) (bool, int, int) {
+	for i := 0; i < 4; i++ {
+		for j := 0; j < 4; j++ {
+			if qipan[i][j] == qizi {
+				return true, i, j
+			}
+		}
+	}
+	return false, 0, 0
+}
+
+// 边界判断
+func CheckArea(fangx, iposx, iposy int) (bool, int) {
+
+	if fangx == Proto2.UP {
+		if iposy == 0 {
+			return false, 1005
+		}
+		// 对比棋子大小
+
+	} else if fangx == Proto2.DOWN {
+
+		if iposy == 3 {
+			return false, 1005
+		}
+		// 对比棋子大小
+
+	} else if fangx == Proto2.LEFT {
+		if iposx == 0 {
+			return false, 1005
+		}
+		// 对比棋子大小
+
+	} else if fangx == Proto2.RIGHT {
+		if iposx == 3 {
+			return false, 1005
+		}
+		// 对比棋子大小
+	}
+
+	return false, 10001
+}
+
+// 更新棋盘数据
+func UpdateChessData() {
+
+	return
 }
