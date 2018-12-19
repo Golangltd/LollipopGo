@@ -309,22 +309,105 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 			return false, 1005 // 无法移动
 		}
 		// 判断是空地不
-		if qipan[iposx][iposy-1] == 0 {
+		if qipan[iposx][iposy+1] == 0 {
 			return true, 1006 // 移动成功
 		}
 		// 对比棋子大小
+		if qipan[iposx][iposy] < 9 {
+			if qipan[iposx][iposy+1] < 9 {
+				return false, 1007 // 自己人
+			} else {
+				if qipan[iposx][iposy+1] > qipan[iposx][iposy] {
+					return true, 1008 // 自残
+				} else if qipan[iposx][iposy+1] == qipan[iposx][iposy] {
+					return true, 1009 // 同归于尽
+				} else if qipan[iposx][iposy+1] < qipan[iposx][iposy] {
+					return true, 1010 // 吃掉对方
+				}
+			}
+		} else {
+			if qipan[iposx][iposy+1] > 9 {
+				return false, 1007 // 自己人
+			} else {
+				if qipan[iposx][iposy+1] > qipan[iposx][iposy] {
+					return true, 1008 // 自残
+				} else if qipan[iposx][iposy+1] == qipan[iposx][iposy] {
+					return true, 1009 // 同归于尽
+				} else if qipan[iposx][iposy+1] < qipan[iposx][iposy] {
+					return true, 1010 // 吃掉对方
+				}
+			}
+		}
 
 	} else if fangx == Proto2.LEFT {
 		if iposx == 0 {
 			return false, 1005 // 无法移动
 		}
+		// 判断是空地不
+		if qipan[iposx-1][iposy] == 0 {
+			return true, 1006 // 移动成功
+		}
 		// 对比棋子大小
+		if qipan[iposx][iposy] < 9 {
+			if qipan[iposx-1][iposy] < 9 {
+				return false, 1007 // 自己人
+			} else {
+				if qipan[iposx-1][iposy] > qipan[iposx][iposy] {
+					return true, 1008 // 自残
+				} else if qipan[iposx-1][iposy] == qipan[iposx][iposy] {
+					return true, 1009 // 同归于尽
+				} else if qipan[iposx-1][iposy] < qipan[iposx][iposy] {
+					return true, 1010 // 吃掉对方
+				}
+			}
+		} else {
+			if qipan[iposx-1][iposy] > 9 {
+				return false, 1007 // 自己人
+			} else {
+				if qipan[iposx-1][iposy] > qipan[iposx][iposy] {
+					return true, 1008 // 自残
+				} else if qipan[iposx-1][iposy] == qipan[iposx][iposy] {
+					return true, 1009 // 同归于尽
+				} else if qipan[iposx-1][iposy] < qipan[iposx][iposy] {
+					return true, 1010 // 吃掉对方
+				}
+			}
+		}
 
 	} else if fangx == Proto2.RIGHT {
 		if iposx == 3 {
 			return false, 1005 // 无法移动
 		}
+		// 判断是空地不
+		if qipan[iposx+1][iposy] == 0 {
+			return true, 1006 // 移动成功
+		}
 		// 对比棋子大小
+		if qipan[iposx][iposy] < 9 {
+			if qipan[iposx+1][iposy] < 9 {
+				return false, 1007 // 自己人
+			} else {
+				if qipan[iposx+1][iposy] > qipan[iposx][iposy] {
+					return true, 1008 // 自残
+				} else if qipan[iposx+1][iposy] == qipan[iposx][iposy] {
+					return true, 1009 // 同归于尽
+				} else if qipan[iposx+1][iposy] < qipan[iposx][iposy] {
+					return true, 1010 // 吃掉对方
+				}
+			}
+		} else {
+			if qipan[iposx+1][iposy] > 9 {
+				return false, 1007 // 自己人
+			} else {
+				if qipan[iposx+1][iposy] > qipan[iposx][iposy] {
+					return true, 1008 // 自残
+				} else if qipan[iposx+1][iposy] == qipan[iposx][iposy] {
+					return true, 1009 // 同归于尽
+				} else if qipan[iposx+1][iposy] < qipan[iposx][iposy] {
+					return true, 1010 // 吃掉对方
+				}
+			}
+		}
 	}
 
 	return false, 10001
