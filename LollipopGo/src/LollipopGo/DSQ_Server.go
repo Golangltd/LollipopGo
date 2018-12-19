@@ -19,9 +19,41 @@ import (
 	"code.google.com/p/go.net/websocket"
 )
 
-var addrDSQ = flag.String("addrDSQ", "127.0.0.1:8888", "http service address")
-var ConnDSQ *websocket.Conn // 保存用户的链接信息，数据会在主动匹配成功后进行链接
-var ConnDSQRPC *rpc.Client
+var addrDSQ = flag.String("addrDSQ", "127.0.0.1:8888", "http service address") // 链接gateway
+var ConnDSQ *websocket.Conn                                                    // 保存用户的链接信息，数据会在主动匹配成功后进行链接
+var ConnDSQRPC *rpc.Client                                                     // 链接DB server
+var DSQAllMap map[string]*RoomPlayerDSQ                                        // 游戏逻辑存储
+var DSQ_qi = []int{                                                            // 1-8 A ;9-16 B
+	Proto2.Elephant, Proto2.Lion, Proto2.Tiger, Proto2.Leopard, Proto2.Wolf, Proto2.Dog, Proto2.Cat, Proto2.Mouse,
+	Proto2.Elephant, Proto2.Lion, Proto2.Tiger, Proto2.Leopard, Proto2.Wolf, Proto2.Dog, Proto2.Cat, Proto2.Mouse}
+
+// 斗兽棋游戏结构
+// 每个房间都存在一个
+type RoomPlayerDSQ struct {
+	OpenIDA   string
+	OpenIDB   string
+	InitData  [4][4]*Proto2.DSQ_ST // 斗兽棋的棋盘的数据
+	WhoChuPai string               // 当前谁出牌
+}
+
+/*
+
+	-----------------------------------------
+	|										|
+	|	[0,3]01	[1,3]02	[2,3]03	[3,3]04		|
+	|										|
+	|										|
+	|	[0,2]05	[1,2]06	[2,2]07	[3,2]08		|
+	|										|
+	|										|
+	|	[0,1]11	[1,1]12	[2,1]13	[3,1]14		|
+	|									    |
+	|										|
+	|	[0,0]15	[1,0]16	[2,0]17	[3,0]18		|
+	|										|
+	-----------------------------------------
+
+*/
 
 // 初始化操作
 func init() {
@@ -164,3 +196,24 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 	}
 	return
 }
+
+//------------------------------------------------------------------------------
+// 初始化牌型
+func InitDSQ() {
+
+	data := DSQ_qi
+	for i := 0; i < Proto.Mouse; i++ {
+
+		// 删除第i个元素
+		datatmp := util.RandInterval(0, len(data))
+		i := 2
+		data = append(data[:i], data[i+1:]...)
+
+		// 2 添加到二维数组
+		// 3
+	}
+
+	return
+}
+
+//
