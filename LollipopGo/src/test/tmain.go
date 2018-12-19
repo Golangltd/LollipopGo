@@ -97,9 +97,8 @@ func DoingMatch() {
 	return
 }
 
-// 定时器
 func Sort_timer() {
-
+	// 控制排队的速度
 	timer := time.NewTimer(time.Millisecond * 400)
 	for {
 		select {
@@ -117,6 +116,7 @@ func Sort_channel() {
 	return
 }
 
+// 数据处理
 func IndexHandlerGM(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "hello world")
 	// 需要处理 get请求等
