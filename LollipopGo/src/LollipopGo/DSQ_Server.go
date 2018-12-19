@@ -205,7 +205,7 @@ func InitDSQ(data1 []int) [4][4]int {
 	erdata := [4][4]int{}
 	j, k := 0, 0
 
-	for i := 0; i < 8*2; i++ {
+	for i := 0; i < Proto2.Mouse*2; i++ {
 		icount := util.RandInterval_LollipopGo(0, int32(len(data))-1)
 		fmt.Println("随机数：", icount)
 		if len(data) == 1 {
