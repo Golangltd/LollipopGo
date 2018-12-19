@@ -20,17 +20,14 @@ const (
 	Mouse             // mouse == 8 	老鼠
 )
 
-// 阵营分组:2个阵营
+// 棋子的行动的方向
 const (
-	CAMP_A = iota // CAMP_A == 0
-	CAMP_B        // CAMP_B == 1
+	FANGXIANGINIT = iota // FANGXIANGINIT == 0
+	UP                   // UP 		== 1
+	DOWN                 // DOWN 	== 2
+	LEFT                 // LEFT 	== 3
+	RIGHT                // RIGHT 	== 4
 )
-
-// 棋盘的结构
-type DSQ_ST struct {
-	Camp      int
-	PieceType int
-}
 
 //------------------------------------------------------------------------------
 // GW2DSQ_InitGameProto2
