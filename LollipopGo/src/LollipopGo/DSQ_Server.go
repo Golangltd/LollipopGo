@@ -422,7 +422,11 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 }
 
 // 更新棋盘数据
-func UpdateChessData() {
+// 注：移动成功后，原来位置如何变化
+//    目标的位置如何变化
+func UpdateChessData(iType, fangxPos, iPosx, iPosy int, qipan [4][4]int) [4][4]int {
+	if iType == 1 { // 更新空地
 
-	return
+	}
+	return qipan
 }
