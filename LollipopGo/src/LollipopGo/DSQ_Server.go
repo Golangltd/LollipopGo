@@ -25,7 +25,8 @@ var ConnDSQRPC *rpc.Client                                                     /
 var DSQAllMap map[string]*RoomPlayerDSQ                                        // 游戏逻辑存储
 var DSQ_qi = []int{                                                            // 1-8 A ;9-16 B
 	Proto2.Elephant, Proto2.Lion, Proto2.Tiger, Proto2.Leopard, Proto2.Wolf, Proto2.Dog, Proto2.Cat, Proto2.Mouse,
-	Proto2.Elephant, Proto2.Lion, Proto2.Tiger, Proto2.Leopard, Proto2.Wolf, Proto2.Dog, Proto2.Cat, Proto2.Mouse}
+	Proto2.Mouse + Proto2.Elephant, Proto2.Mouse + Proto2.Lion, Proto2.Mouse + Proto2.Tiger, Proto2.Mouse + Proto2.Leopard,
+	Proto2.Mouse + Proto2.Wolf, Proto2.Mouse + Proto2.Dog, Proto2.Mouse + Proto2.Cat, 2 * Proto2.Mouse}
 
 // 斗兽棋游戏结构
 // 每个房间都存在一个
@@ -46,10 +47,10 @@ type RoomPlayerDSQ struct {
 	|	[0,2]05	[1,2]06	[2,2]07	[3,2]08		|
 	|										|
 	|										|
-	|	[0,1]11	[1,1]12	[2,1]13	[3,1]14		|
+	|	[0,1]09	[1,1]10	[2,1]11	[3,1]12		|
 	|									    |
 	|										|
-	|	[0,0]15	[1,0]16	[2,0]17	[3,0]18		|
+	|	[0,0]13	[1,0]14	[2,0]15	[3,0]16		|
 	|										|
 	-----------------------------------------
 
