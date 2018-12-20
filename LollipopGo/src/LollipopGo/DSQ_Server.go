@@ -236,6 +236,7 @@ func InitDSQ(data1 []int) [4][4]int {
 }
 
 // 判断棋子大小
+// 玩家操作移动,操作协议
 func CheckIsEat(fangx int, qizi int, qipan [4][4]int) (bool, int) {
 	if qizi > 16 || qizi < 1 {
 		log.Debug("玩家发送棋子数据不对！")
@@ -276,6 +277,7 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
+			UpdateChessData(Proto2.MOVE, iposx, iposy-1, iposx, iposy, qipan)
 			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
@@ -284,11 +286,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					//UpdateChessData()
+					UpdateChessData(Proto2.DISAPPEAR, iposx, iposy-1, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx, iposy-1, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx, iposy-1, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
@@ -297,10 +301,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
+					UpdateChessData(Proto2.DISAPPEAR, iposx, iposy-1, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx, iposy-1, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx, iposy-1, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
@@ -315,6 +322,7 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
+			UpdateChessData(Proto2.MOVE, iposx, iposy+1, iposx, iposy, qipan)
 			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
@@ -323,10 +331,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
+					UpdateChessData(Proto2.DISAPPEAR, iposx, iposy+1, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx, iposy+1, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx, iposy+1, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
@@ -335,10 +346,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
+					UpdateChessData(Proto2.DISAPPEAR, iposx, iposy+1, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx, iposy+1, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx, iposy+1, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
@@ -352,6 +366,7 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
+			UpdateChessData(Proto2.MOVE, iposx-1, iposy, iposx, iposy, qipan)
 			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
@@ -360,10 +375,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
+					UpdateChessData(Proto2.DISAPPEAR, iposx-1, iposy, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx-1, iposy, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx-1, iposy, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
@@ -372,10 +390,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
+					UpdateChessData(Proto2.DISAPPEAR, iposx-1, iposy, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx-1, iposy, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx-1, iposy, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
@@ -389,6 +410,7 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
+			UpdateChessData(Proto2.MOVE, iposx+1, iposy, iposx, iposy, qipan)
 			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
@@ -397,10 +419,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
+					UpdateChessData(Proto2.DISAPPEAR, iposx+1, iposy, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx+1, iposy, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx+1, iposy, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
@@ -409,10 +434,13 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
+					UpdateChessData(Proto2.DISAPPEAR, iposx+1, iposy, iposx, iposy, qipan)
 					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
+					UpdateChessData(Proto2.ALLDISAPPEAR, iposx+1, iposy, iposx, iposy, qipan)
 					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
+					UpdateChessData(Proto2.BEAT, iposx+1, iposy, iposx, iposy, qipan)
 					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
