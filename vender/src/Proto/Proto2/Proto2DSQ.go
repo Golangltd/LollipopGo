@@ -29,6 +29,20 @@ const (
 	RIGHT                // RIGHT 	== 4
 )
 
+// 棋子的攻击方式
+const (
+	ITYPEINIY    = iota // ITYPEINIY == 0
+	MOVE                // MOVE == 1         正常移动
+	DISAPPEAR           // DISAPPEAR == 2 	 自残
+	ALLDISAPPEAR        // ALLDISAPPEAR == 3 同归于尽
+	BEAT                // BEAT == 4         击败对方
+	TEAMMATE            // TEAMMATE == 5     队友
+	MOVESUCC            // MOVESUCC == 6     移动成功
+	MOVEFAIL            // MOVEFAIL == 7     移动失败
+	DATAERROR           // DATAERROR == 8    数据错误    玩家的棋子已经被吃掉不存在了
+	DATANOEXIT          // DATANOEXIT == 9   数据不存在  棋子的数据大于 16或者小于0
+)
+
 //------------------------------------------------------------------------------
 // GW2DSQ_InitGameProto2
 type GW2DSQ_InitGame struct {
