@@ -250,7 +250,7 @@ func CheckIsEat(fangx int, qizi int, qipan [4][4]int) (bool, int) {
 		return false, Proto2.DATAERROR
 	}
 
-	return true, 100
+	return true, 0
 }
 
 // 检查棋盘中是不是存在
