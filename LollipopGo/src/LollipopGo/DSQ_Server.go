@@ -239,15 +239,15 @@ func InitDSQ(data1 []int) [4][4]int {
 func CheckIsEat(fangx int, qizi int, qipan [4][4]int) (bool, int) {
 	if qizi > 16 || qizi < 1 {
 		log.Debug("玩家发送棋子数据不对！")
-		return false, 1000
+		return false, Proto2.DATANOEXIT
 	}
 	// 1 寻找 玩家的棋子在棋牌的位置/或者这个棋子是否存在
 	bret, Posx, posy := CheckChessIsExit(qizi, qipan)
 	if bret {
 		CheckArea(fangx, Posx, posy, qipan)
 	} else {
-		log.Debug("玩家发送棋子不存在！")
-		return false, 1001
+		log.Debug("玩家发送棋子不存在！疑似外挂。")
+		return false, Proto2.DATAERROR
 	}
 
 	return true, 100
@@ -270,37 +270,38 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 
 	if fangx == Proto2.UP {
 		if iposy == 0 {
-			return false, 1005 // 无法移动
+			return false, Proto2.MOVEFAIL // 无法移动
 		}
 		data_yidong := qipan[iposx][iposy-1]
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
-			return true, 1006 // 移动成功
+			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
 		if data < 9 {
 			if data_yidong < 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					//UpdateChessData()
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		} else {
 			if data_yidong > 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		}
@@ -308,125 +309,141 @@ func CheckArea(fangx, iposx, iposy int, qipan [4][4]int) (bool, int) {
 	} else if fangx == Proto2.DOWN {
 
 		if iposy == 3 {
-			return false, 1005 // 无法移动
+			return false, Proto2.MOVEFAIL // 无法移动
 		}
 		data_yidong := qipan[iposx][iposy+1]
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
-			return true, 1006 // 移动成功
+			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
 		if data < 9 {
 			if data_yidong < 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		} else {
 			if data_yidong > 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		}
 
 	} else if fangx == Proto2.LEFT {
 		if iposx == 0 {
-			return false, 1005 // 无法移动
+			return false, Proto2.MOVEFAIL // 无法移动
 		}
 		data_yidong := qipan[iposx-1][iposy]
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
-			return true, 1006 // 移动成功
+			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
 		if data < 9 {
 			if data_yidong < 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		} else {
 			if data_yidong > 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		}
 
 	} else if fangx == Proto2.RIGHT {
 		if iposx == 3 {
-			return false, 1005 // 无法移动
+			return false, Proto2.MOVEFAIL // 无法移动
 		}
 		data_yidong := qipan[iposx+1][iposy]
 		data := qipan[iposx][iposy]
 		// 判断是空地不
 		if data_yidong == 0 {
-			return true, 1006 // 移动成功
+			return true, Proto2.MOVESUCC // 移动成功
 		}
 		// 对比棋子大小
 		if data < 9 {
 			if data_yidong < 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		} else {
 			if data_yidong > 9 {
-				return false, 1007 // 自己人
+				return false, Proto2.TEAMMATE // 自己人
 			} else {
 				if data_yidong > data {
-					return true, 1008 // 自残
+					return true, Proto2.DISAPPEAR // 自残
 				} else if data_yidong == data {
-					return true, 1009 // 同归于尽
+					return true, Proto2.ALLDISAPPEAR // 同归于尽
 				} else if data_yidong < data {
-					return true, 1010 // 吃掉对方
+					return true, Proto2.BEAT // 吃掉对方
 				}
 			}
 		}
 	}
 
-	return false, 10001
+	return false, Proto2.ITYPEINIY // 不存在的操作
 }
 
 // 更新棋盘数据
 // 注：移动成功后，原来位置如何变化
 //    目标的位置如何变化
-func UpdateChessData(iType, fangxPos, iPosx, iPosy int, qipan [4][4]int) [4][4]int {
-	if iType == 1 { // 更新空地
-
+//    fangxPos fangyPos表示变化的位置
+//    iPosx iPosy 原来棋子的位置
+func UpdateChessData(iType, fangxPos, fangyPos, iPosx, iPosy int, qipan [4][4]int) [4][4]int {
+	// 保存副本数据
+	data := qipan
+	// 原来棋子的数据
+	yd_data := data[iPosx][iPosy]
+	//  更新棋盘 数据
+	if iType == Proto2.MOVE { // 更新空地 ,1 更新原来棋盘的位置为0， 目标的位置为现在数据
+		data[iPosx][iPosy] = 0
+		data[fangxPos][fangyPos] = yd_data
+	} else if iType == Proto2.DISAPPEAR { // 自残 ,1 更新原来棋盘的位置为0，目标的位置数据不变
+		data[iPosx][iPosy] = 0
+	} else if iType == Proto2.ALLDISAPPEAR { // 同归于尽 ,1 更新原来棋盘的位置为0，目标的位置数据为0
+		data[iPosx][iPosy] = 0
+		data[fangxPos][fangyPos] = 0
+	} else if iType == Proto2.BEAT { // 吃掉对方 ,1 更新原来位置为0，目标位置为现在数据
+		data[iPosx][iPosy] = 0
+		data[fangxPos][fangyPos] = yd_data
 	}
-	return qipan
+	return data
 }
