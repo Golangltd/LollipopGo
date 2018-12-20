@@ -57,6 +57,8 @@ func MainListener(strport string) {
 
 // 玩家用户保存
 func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
+	fmt.Println("SavePlayerST2DB")
+	fmt.Println("玩家数据保存----->args.UID:", args.UID)
 	// 1 解析数据 *reply = args.A * args.B
 	roleUID := args.UID
 	fmt.Println("SavePlayerST2DB:", roleUID)
