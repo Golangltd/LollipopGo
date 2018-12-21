@@ -1,3 +1,3 @@
 package LollipopGo
 
-const version = "v1.0.20181214"
+const version = "v1.0.20181221"
