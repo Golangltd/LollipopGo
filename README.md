@@ -24,7 +24,7 @@ Golang语言社区说明
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" title="Title">腾讯课堂</a></li>
 </ol>
-<img src="https://github.com/Golangltd/codeclass/raw/master/%E7%AC%AC%E4%B8%80%E5%AD%A3%20Go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80%E3%80%81%E8%BF%9B%E9%98%B6%E3%80%81%E6%8F%90%E9%AB%98%E8%AF%BE%E7%A8%8B/pic/xuanc.png"/>
+<img src="https://github.com/Golangltd/LollipopGo/blob/master/vender/src/LollipopGo/LollipopGo/xmind/LollipopGo%E6%9E%B6%E6%9E%84%20v1.0.20181221.png"/>
 
  <div class="footer">
         &copy; 成都字节跳动教育咨询有限公司(www.ByteEdu.Com)
