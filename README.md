@@ -30,6 +30,7 @@ Golang语言社区
 字节教育
 =============
 <li>专业游戏全栈开发IT教学平台，后端仅Golang语言</li>
+--------------
  <div class="footer">
         &copy; 成都字节跳动教育咨询有限公司(www.ByteEdu.Com)
  </div>
