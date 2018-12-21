@@ -61,6 +61,7 @@ func IndexHandler(w http.ResponseWriter, req *http.Request) {
 
 }
 
+// www.ollq.com
 // jsonrpc 数据处理
 func DB_rpc_() interface{} {
 	// 链接DB操作
