@@ -65,7 +65,6 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
 	// 2 保存或者更新数据
 	Mysyl_DB.DB.InsertPlayerST2DB(args)
 	return nil
-
 }
 
 // -----------------------------------------------------------------------------
