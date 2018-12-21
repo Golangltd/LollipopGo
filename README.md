@@ -22,6 +22,7 @@ Golang语言社区说明
 <ol>
 <li>希望更多喜欢Go语言的同学及想从事Go语言开发游戏服务器的同学一个方向的指引</li>
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
+<li>LollipopGo架构 最新版本: v1.0.20181221</li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" title="Title">腾讯课堂</a></li>
 </ol>
 <img src="https://github.com/Golangltd/LollipopGo/blob/master/vender/src/LollipopGo/LollipopGo/xmind/LollipopGo%E6%9E%B6%E6%9E%84%20v1.0.20181221.png"/>
