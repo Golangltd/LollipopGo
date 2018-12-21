@@ -27,11 +27,9 @@ Golang语言社区
 </ol>
 <img src="https://github.com/Golangltd/LollipopGo/blob/master/vender/src/LollipopGo/LollipopGo/xmind/LollipopGo%E6%9E%B6%E6%9E%84%E6%8B%93%E6%89%91%E5%9B%BE%20v1.0.20181221.png"/>
 
-字节教育(www.ByteEdu.Com)
+字节教育
 =============
-<ol>
 <li>专业游戏全栈开发IT教学平台，后端仅Golang语言</li>
-</ol>
  <div class="footer">
         &copy; 成都字节跳动教育咨询有限公司(www.ByteEdu.Com)
  </div>
