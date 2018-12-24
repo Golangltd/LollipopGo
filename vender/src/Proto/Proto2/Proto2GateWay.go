@@ -46,10 +46,13 @@ type GateWay_Relink struct {
 // C2GWS_PlayerLoginProto2
 // 登陆  客户端--> 服务器
 type C2GWS_PlayerLogin struct {
-	Protocol  int
-	Protocol2 int
-	PlayerUID string
-	Token     string
+	Protocol      int
+	Protocol2     int
+	PlayerUID     string // APP 的UID
+	HeadUrl       string // 头像
+	Constellation string // 星座
+	Sex           string // 性别
+	Token         string
 }
 
 // S2GWS_PlayerLoginProto2
@@ -58,8 +61,10 @@ type S2GWS_PlayerLogin struct {
 	Protocol2     int
 	OpenID        string
 	GamePlayerNum map[string]interface{}      // 每个游戏的玩家的人数,global server获取
-	DefaultAward  map[string]*player.PlayerSt // 默认兑换列表
+	RacePlayerNum map[string]interface{}      // 大奖赛列表
+	Personal      map[string]*player.PlayerSt // 个人信息
 	DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
+	DefaultAward  map[string]interface{}      // 默认兑换列表
 }
 
 //------------------------------------------------------------------------------
