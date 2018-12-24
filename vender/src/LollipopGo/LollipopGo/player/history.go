@@ -31,7 +31,7 @@ type HistoryGame struct {
 type HistoryRace struct {
 	UID      int    // UID  存储唯一ID
 	RaceICON string // 比赛的图标
-	RaceRank int    // 比赛的名次
+	RaceRank int    // 比赛的名次，最好的名次
 	RaceTime string // 比赛的时间 2018.12.24
 }
 

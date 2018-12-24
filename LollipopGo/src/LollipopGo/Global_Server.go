@@ -181,7 +181,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	personal.Sex = StrSex
 	personal.Lev = 0
 	personal.HallExp = 0
-	personal.CoinNum = 2000
+	personal.CoinNum = 2000 // 数据等待
 	personal.MasonryNum = 0
 	personal.MCard = 0
 	personal.Constellation = StrConstellation
