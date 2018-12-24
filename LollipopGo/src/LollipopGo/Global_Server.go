@@ -157,6 +157,7 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 
 // 返回给玩家数据
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+
 	// 返回数据给GateWay
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrPlayerName := ProtocolData["PlayerName"].(string)
@@ -164,21 +165,23 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	StrSex := ProtocolData["Sex"].(string)
 	StrConstellation := ProtocolData["Constellation"].(string)
 	StrToken := ProtocolData["Token"].(string)
+	_ = StrToken
 
 	// 获取在线人数
 	ddd := make(map[string]interface{})
 	csv.M_CSV.LollipopGo_RLockRange(ddd)
 	// 查询数据库,找出游戏服务器的uid信息
-	DB_Save_RoleST(StrOpenID)
+	// 返回的数据操作
+	DB_Save_RoleST(StrOpenID, StrPlayerName, StrHeadUrl, StrSex, StrConstellation, 0, 0, 2000, 0, 0)
 	// 个人数据
 	personal := new(player.PlayerSt)
 	personal.UID = 1
 	personal.Name = StrPlayerName
 	personal.HeadURL = StrHeadUrl
 	personal.Sex = StrSex
-	personal.Lev = 0 // 大厅的玩家的等级
+	personal.Lev = 0
 	personal.HallExp = 0
-	personal.CoinNum = 2000 // 金币
+	personal.CoinNum = 2000
 	personal.MasonryNum = 0
 	personal.MCard = 0
 	personal.Constellation = StrConstellation
@@ -202,7 +205,8 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	PlayerSendToServer(conn, data)
 	// 3 DB server进行数据保存
 	// 玩家的数据操作，保存玩家的数据
-	DB_Save_RoleST(StrOpenID)
+	//DB_Save_RoleST(StrOpenID)
+
 	return
 
 }
@@ -224,6 +228,7 @@ func DB_Save_RoleST(uid, strname, HeadURL, Sex, Constellation string, Lev, HallE
 		Constellation: Constellation, // 玩家的星座
 	}
 
+	fmt.Println("args:", args)
 	var reply int
 	// 异步调用【结构的方法】
 	divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
