@@ -159,9 +159,32 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 	// 返回数据给GateWay
 	StrOpenID := ProtocolData["OpenID"].(string)
+	StrPlayerName := ProtocolData["PlayerName"].(string)
+	StrHeadUrl := ProtocolData["HeadUrl"].(string)
+	StrSex := ProtocolData["Sex"].(string)
+	StrConstellation := ProtocolData["Constellation"].(string)
+	StrToken := ProtocolData["Token"].(string)
+
 	// 获取在线人数
 	ddd := make(map[string]interface{})
 	csv.M_CSV.LollipopGo_RLockRange(ddd)
+	// 查询数据库,找出游戏服务器的uid信息
+	DB_Save_RoleST(StrOpenID)
+	// 个人数据
+	personal := new(player.PlayerSt)
+	personal.UID = 1
+	personal.Name = StrPlayerName
+	personal.HeadURL = StrHeadUrl
+	personal.Sex = StrSex
+	personal.Lev = 0 // 大厅的玩家的等级
+	personal.HallExp = 0
+	personal.CoinNum = 2000 // 金币
+	personal.MasonryNum = 0
+	personal.MCard = 0
+	personal.Constellation = StrConstellation
+	personal.HistoryGameList = nil // 历史游戏
+	personal.HistoryRaceList = nil // 历史比赛
+	personal.MedalList = nil       // 勋章列表，策划配表
 
 	// 组装数据
 	data := &Proto2.GW2G_PlayerEntryHall{
@@ -169,27 +192,38 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		Protocol2:     Proto2.GW2G_PlayerEntryHallProto2,
 		OpenID:        StrOpenID,
 		GamePlayerNum: ddd,
-		DefaultAward:  nil,
+		RacePlayerNum: nil,
+		Personal:      personal,
 		DefaultMsg:    nil,
+		DefaultAward:  nil,
 	}
 	fmt.Println(data)
 	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
 	// 3 DB server进行数据保存
+	// 玩家的数据操作，保存玩家的数据
 	DB_Save_RoleST(StrOpenID)
 	return
 
 }
 
 // 保存数据都DB 人物信息
-func DB_Save_RoleST(uid string) interface{} {
+func DB_Save_RoleST(uid, strname, HeadURL, Sex, Constellation string, Lev, HallExp, CoinNum, MasonryNum, MCard int) interface{} {
+
+	// 发送到DB 操作
 	args := player.PlayerSt{
-		UID:       util.Str2int_LollipopGo(uid),
-		Name:      "ss",
-		HeadURL:   "ss",
-		CoinNum:   2,
-		Awardlist: nil,
+		UID:           util.Str2int_LollipopGo(uid),
+		Name:          strname,       // 玩家的名字
+		HeadURL:       HeadURL,       // 玩家的头像
+		Sex:           Sex,           // 玩家的性别
+		Lev:           Lev,           // 玩家等级
+		HallExp:       HallExp,       // 玩家大厅的经验
+		CoinNum:       CoinNum,       // 玩家的金币
+		MasonryNum:    MasonryNum,    // 玩家的砖石
+		MCard:         MCard,         // M 兑换卡
+		Constellation: Constellation, // 玩家的星座
 	}
+
 	var reply int
 	// 异步调用【结构的方法】
 	divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)

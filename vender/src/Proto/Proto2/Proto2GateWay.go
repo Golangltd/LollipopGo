@@ -49,6 +49,7 @@ type C2GWS_PlayerLogin struct {
 	Protocol      int
 	Protocol2     int
 	PlayerUID     string // APP 的UID
+	PlayerName    string // 玩家的名字
 	HeadUrl       string // 头像
 	Constellation string // 星座
 	Sex           string // 性别
@@ -60,11 +61,11 @@ type S2GWS_PlayerLogin struct {
 	Protocol      int
 	Protocol2     int
 	OpenID        string
-	GamePlayerNum map[string]interface{}      // 每个游戏的玩家的人数,global server获取
-	RacePlayerNum map[string]interface{}      // 大奖赛列表
-	Personal      map[string]*player.PlayerSt // 个人信息
-	DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
-	DefaultAward  map[string]interface{}      // 默认兑换列表
+	GamePlayerNum map[string]interface{}   // 每个游戏的玩家的人数,global server获取
+	RacePlayerNum map[string]interface{}   // 大奖赛列表
+	Personal      *player.PlayerSt         // 个人信息
+	DefaultMsg    map[string]*player.MsgST // 默认跑马灯消息
+	DefaultAward  map[string]interface{}   // 默认兑换列表
 }
 
 //------------------------------------------------------------------------------
