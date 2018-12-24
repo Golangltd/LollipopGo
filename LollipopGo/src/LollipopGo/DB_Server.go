@@ -55,6 +55,16 @@ func MainListener(strport string) {
 	}
 }
 
+// -----------------------------------------------------------------------------
+type Arith int
+
+// 登录结构 -- login server
+type Args struct {
+	A, B int
+}
+
+//------------------------------------------------------------------------------
+
 // 玩家用户保存
 func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
 	fmt.Println("SavePlayerST2DB")
@@ -67,18 +77,9 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
 	return nil
 }
 
-// -----------------------------------------------------------------------------
-type Arith int
-
-// 登录结构 -- login server
-type Args struct {
-	A, B int
-}
-
-//------------------------------------------------------------------------------
-
+// 登录的时候，返回的数据
 func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
-	//*reply = args.A * args.B
+	// *reply = args.A * args.B
 	// 组装数据
 	data := &player.GateWayList{
 		ServerID:        1001,

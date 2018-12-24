@@ -73,7 +73,7 @@ func InitDSQ(data1 []int) [4][4]int {
 }
 
 // 主函数
-func main() {
+func main1() {
 
 	// 第一个数据：
 	idata := &Match_player{
