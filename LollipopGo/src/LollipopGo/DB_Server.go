@@ -5,6 +5,7 @@ import (
 	"LollipopGo/LollipopGo/player"
 	_ "LollipopGo/ReadCSV"
 	"LollipopGo/db/mysql"
+	"Proto"
 	"Proto/Proto2"
 	"fmt"
 	"net"
@@ -67,13 +68,33 @@ type Args struct {
 
 // 玩家用户保存
 func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
+
+	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+		if err := recover(); err != nil {
+			strerr := fmt.Sprintf("%s", err)
+			//发消息给客户端
+			ErrorST := Proto2.G_Error_All{
+				Protocol:  Proto.G_Error_Proto,      // 主协议
+				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				ErrCode:   "80006",
+				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
+			}
+			// 发送给玩家数据
+			fmt.Println("Global server的主协议!!!", ErrorST)
+		}
+	}()
+
 	fmt.Println("SavePlayerST2DB")
 	fmt.Println("玩家数据保存----->args.UID:", args.UID)
 	// 1 解析数据 *reply = args.A * args.B
 	roleUID := args.UID
 	fmt.Println("SavePlayerST2DB:", roleUID)
 	// 2 保存或者更新数据
-	Mysyl_DB.DB.InsertPlayerST2DB(args)
+	if Mysyl_DB.DB != nil {
+		Mysyl_DB.DB.InsertPlayerST2DB(args)
+	} else {
+		fmt.Println("SavePlayerST2DB00000")
+	}
 	return nil
 }
 

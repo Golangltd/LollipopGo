@@ -52,7 +52,6 @@ func initNetRPC() {
 func initGateWayNet() bool {
 
 	fmt.Println("用户客户端客户端模拟！")
-	log.Debug("用户客户端客户端模拟！")
 	url := "ws://" + *addrG + "/GolangLtd"
 	conn, err := websocket.Dial(url, "", "test://golang/")
 	if err != nil {
@@ -158,6 +157,8 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 // 返回给玩家数据
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 
+	fmt.Println("G2GW_PlayerEntryHallProto2Fucn Entry Func(){}")
+
 	// 返回数据给GateWay
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrPlayerName := ProtocolData["PlayerName"].(string)
@@ -214,9 +215,10 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 // 保存数据都DB 人物信息
 func DB_Save_RoleST(uid, strname, HeadURL, Sex, Constellation string, Lev, HallExp, CoinNum, MasonryNum, MCard int) interface{} {
 
+	fmt.Println("DB_Save_RoleST Entry Func(){}")
 	// 发送到DB 操作
 	args := player.PlayerSt{
-		UID:           util.Str2int_LollipopGo(uid),
+		UID:           util.Str2int_LollipopGo("787"),
 		Name:          strname,       // 玩家的名字
 		HeadURL:       HeadURL,       // 玩家的头像
 		Sex:           Sex,           // 玩家的性别
@@ -228,12 +230,23 @@ func DB_Save_RoleST(uid, strname, HeadURL, Sex, Constellation string, Lev, HallE
 		Constellation: Constellation, // 玩家的星座
 	}
 
+	// client, err := jsonrpc.Dial("tcp", service)
+	// if err != nil {
+	// 	log.Debug("dial error:", err)
+	// 	panic("dial RPC Servre error")
+	// }
+	// ConnRPC = client
+
 	fmt.Println("args:", args)
 	var reply int
 	// 异步调用【结构的方法】
-	divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
-	replyCall := <-divCall.Done
-	fmt.Println(replyCall.Reply)
+	if ConnRPC != nil {
+		divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
+		replyCall := <-divCall.Done
+		fmt.Println(replyCall.Reply)
+	} else {
+		fmt.Println("ConnRPC == nil")
+	}
 	return reply
 }
 
