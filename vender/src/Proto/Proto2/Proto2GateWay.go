@@ -52,6 +52,7 @@ type C2GWS_PlayerLogin struct {
 	PlayerName    string // 玩家的名字
 	HeadUrl       string // 头像
 	Constellation string // 星座
+	PlayerSchool  string // 玩家的学校
 	Sex           string // 性别
 	Token         string
 }
