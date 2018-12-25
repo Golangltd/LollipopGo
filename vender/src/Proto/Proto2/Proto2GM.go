@@ -1,5 +1,6 @@
 package Proto2
 
+// G_GameGM_Proto  == 11 子协议
 const (
 	GAMEINIT                      = iota // GAMEINIT == 0
 	W2GMS_Modify_PlayerDataProto2        // W2GMS_Modify_PlayerDataProto2 == 1 修改玩家的数据 :web请求 GM 系统
