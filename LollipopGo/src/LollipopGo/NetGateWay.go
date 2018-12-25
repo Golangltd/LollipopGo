@@ -2,6 +2,7 @@ package main
 
 import (
 	"LollipopGo/LollipopGo/log"
+	"LollipopGo/LollipopGo/player"
 	"LollipopGo/LollipopGo/util"
 	"Proto"
 	"Proto/Proto2"
@@ -42,6 +43,10 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StGamePlayerNum := ProtocolData["GamePlayerNum"].(map[string]interface{})
+	StRacePlayerNum := ProtocolData["RacePlayerNum"].(map[string]interface{})
+	StPersonal := ProtocolData["Personal"].(*player.PlayerSt)
+	StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
+	StDefaultAward := ProtocolData["DefaultAward"].(map[string]interface{})
 
 	// 发给客户端模拟
 	data := &Proto2.S2GWS_PlayerLogin{
@@ -49,6 +54,10 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 		Protocol2:     2,
 		OpenID:        StrOpenID,
 		GamePlayerNum: StGamePlayerNum,
+		RacePlayerNum: StRacePlayerNum,
+		Personal:      StPersonal,
+		DefaultMsg:    StDefaultMsg,
+		DefaultAward:  StDefaultAward,
 	}
 	// 发送数据  --
 	this.SendClientDataFunc(data.OpenID, "connect", data)

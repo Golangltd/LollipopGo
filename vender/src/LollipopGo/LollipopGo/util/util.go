@@ -70,7 +70,7 @@ func Randnum_LollipopGO(max int) int {
 
 func CheckErr_LollipopGO(err error) {
 	if err != nil {
-		panic(err)
+		// panic(err)
 		fmt.Println("err:", err)
 	}
 }

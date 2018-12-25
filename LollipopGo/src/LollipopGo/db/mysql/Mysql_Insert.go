@@ -13,6 +13,7 @@ import (
 */
 
 func insertToDB(db *sql.DB) {
+	fmt.Println("insertToDB")
 	uid := GetNowtimeMD5()
 	nowTimeStr := GetTime()
 	stmt, err := db.Prepare("insert t_userinfo set username=?,departname=?,created=?,password=?,uid=?")
@@ -31,6 +32,7 @@ func insertToDB(db *sql.DB) {
 //------------------------------------------------------------------------------
 // 玩家数据保存
 func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) bool {
+	fmt.Println("InsertPlayerST2DBInsertPlayerST2DB")
 	uid := data.UID
 	// 判断是否存在
 	if this.ReadUserInfoData(util.Int2str_LollipopGo(uid)) {
