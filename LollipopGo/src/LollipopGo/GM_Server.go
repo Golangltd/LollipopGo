@@ -29,9 +29,9 @@ func IndexHandlerGM(w http.ResponseWriter, r *http.Request) {
 			if Protocol[0] == strconv.Itoa(Proto.G_GameGM_Proto) {
 				switch Protocol2[0] {
 				case strconv.Itoa(Proto2.W2GMS_Modify_PlayerDataProto2):
-					// DB server 获取 验证信息  rpc 操作
+					// DB server 获取 rpc 操作
 					//------------------------------------------------------
-					// 暂时不解析用户名和密码 --> 后面独立出来再增加！！！
+					// 修改Gm数据
 					data := DB_rpc_()
 					b, _ := json.Marshal(data)
 					fmt.Fprint(w, base64.StdEncoding.EncodeToString(b))

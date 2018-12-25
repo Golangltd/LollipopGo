@@ -12,6 +12,11 @@ package match
 
 */
 
+/*
+	Go语言接口 ：
+		1 只是用做声明，并不实现
+*/
+
 type MatchMoudle interface {
 	GetMatchResult(string, int) []byte
 	PutMatch([]byte)
