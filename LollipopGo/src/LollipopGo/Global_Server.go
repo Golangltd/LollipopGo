@@ -175,6 +175,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	// 返回的数据操作
 	DB_Save_RoleST(StrOpenID, StrPlayerName, StrHeadUrl, StrSex, StrConstellation, 0, 0, 2000, 0, 0)
 	// 个人数据
+	personalmap := make(map[string]*player.PlayerSt)
 	personal := new(player.PlayerSt)
 	personal.UID = 1
 	personal.Name = StrPlayerName
@@ -189,6 +190,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	personal.HistoryGameList = nil // 历史游戏
 	personal.HistoryRaceList = nil // 历史比赛
 	personal.MedalList = nil       // 勋章列表，策划配表
+	personalmap["1"] = personal
 
 	// 组装数据
 	data := &Proto2.GW2G_PlayerEntryHall{
@@ -197,7 +199,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		OpenID:        StrOpenID,
 		GamePlayerNum: ddd,
 		RacePlayerNum: nil,
-		Personal:      personal,
+		Personal:      personalmap,
 		DefaultMsg:    nil,
 		DefaultAward:  nil,
 	}
