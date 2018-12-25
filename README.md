@@ -22,7 +22,7 @@ Golang语言社区
 <ol>
 <li>希望更多喜欢Go语言的同学及想从事Go语言开发游戏服务器的同学一个方向的指引</li>
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
-<li>LollipopGo架构 最新版本: v1.0.20181221</li>
+<li>LollipopGo架构 最新版本: v1.0.20181225</li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" title="Title">腾讯课堂</a></li>
 </ol>
 
