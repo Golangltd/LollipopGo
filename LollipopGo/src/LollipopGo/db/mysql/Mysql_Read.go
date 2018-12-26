@@ -37,9 +37,10 @@ func QueryFromDB(db *sql.DB) {
 //------------------------------------------------------------------------------
 // 查询表  select 1 from tablename where uid = 'uid' limit 1;
 func (this *mysql_db) ReadUserInfoData(uid string) bool {
-	return false
+	// return false
 	fmt.Println("ReadUserInfoDataReadUserInfoDataReadUserInfoDataReadUserInfoData")
-	rows, err := this.STdb.Query("SELECT 1 FROM t_userinfo  where uid = " + uid + " limit 1")
+	rows, err := this.STdb.Query("SELECT 1 FROM t_userinfo_copy  where uid = " + uid + " limit 1")
+	defer rows.Close()
 	CheckErr(err)
 	if err != nil {
 		fmt.Println("error:", err)
@@ -47,13 +48,18 @@ func (this *mysql_db) ReadUserInfoData(uid string) bool {
 		fmt.Println("没有错误!")
 	}
 
-	if rows != nil {
-		data, _ := rows.Columns()
-		if len(data) > 0 {
-			return true
-		}
-	} else {
-		return false
+	// 数据操作
+	icount := 0
+	for rows.Next() {
+		icount++
 	}
+
+	if icount != 0 {
+		fmt.Println("true!")
+		return true
+	}
+
+	fmt.Println("false!")
+
 	return false
 }

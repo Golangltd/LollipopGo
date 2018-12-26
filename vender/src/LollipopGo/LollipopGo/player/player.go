@@ -19,5 +19,5 @@ type PlayerSt struct {
 	Constellation   string               // 玩家的星座
 	HistoryGameList map[int]*HistoryGame // 历史游戏
 	HistoryRaceList map[int]*HistoryRace // 历史比赛
-	MedalList       []int                // 勋章列表，策划配表
+	MedalList       string               // 勋章列表，策划配表
 }
