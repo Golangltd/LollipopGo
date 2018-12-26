@@ -61,13 +61,6 @@ func IndexHandler(w http.ResponseWriter, req *http.Request) {
 
 }
 
-// www.ollq.com
-// 在线篮球
-// www.xshooting.com
-// 夜莺行动
-// www.byteedu.com
-// 字节教育
-
 // jsonrpc 数据处理
 func DB_rpc_() interface{} {
 	// 链接DB操作
@@ -75,10 +68,7 @@ func DB_rpc_() interface{} {
 	if err != nil {
 		fmt.Println("dial error:", err)
 	}
-	// 测试 --
 	args := Args{1, 2}
-	// 返回数据的结构体 -->  消息的结构
-	// 正常是读取数据库后得到的l'q
 	var reply Proto2.GL2C_GameLogin
 	// 同步调用
 	// err = client.Call("Arith.Muliply", args, &reply)
