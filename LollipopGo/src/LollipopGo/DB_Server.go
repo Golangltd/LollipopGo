@@ -2,6 +2,7 @@ package main
 
 import (
 	"LollipopGo/LollipopGo/conf"
+	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/player"
 	_ "LollipopGo/ReadCSV"
 	"LollipopGo/db/mysql"
@@ -65,11 +66,10 @@ type Args struct {
 }
 
 //------------------------------------------------------------------------------
-
-// 玩家用户保存
-func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) error {
-
-	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+// 修改GM系统
+func (t *Arith) ModefyPlayerDataGM(args *Proto2.W2GMS_Modify_PlayerData, reply *Proto2.GMS2W_Modify_PlayerData) error {
+	//--------------------------------------------------------------------------
+	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
 			//发消息给客户端
@@ -79,8 +79,41 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
-			// 发送给玩家数据
-			fmt.Println("Global server的主协议!!!", ErrorST)
+			fmt.Println("GM server 异常错误：", ErrorST)
+		}
+	}()
+	//--------------------------------------------------------------------------
+	uid := args.UID
+	itype := args.Itype
+	modifynum := args.ModifyNum
+	//--------------------------------------------------------------------------
+	switch itype {
+	case Proto2.MODIFY_COIN:
+	case Proto2.MODIFY_LEV:
+	case Proto2.MODIFY_MASONRY:
+	case Proto2.MODIFY_MCARD:
+	default:
+		log.Debug("数据类型不存在!")
+	}
+	//--------------------------------------------------------------------------
+	return nil
+}
+
+//------------------------------------------------------------------------------
+
+// 玩家用户保存
+func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) error {
+	defer func() {
+		if err := recover(); err != nil {
+			strerr := fmt.Sprintf("%s", err)
+			//发消息给客户端
+			ErrorST := Proto2.G_Error_All{
+				Protocol:  Proto.G_Error_Proto,      // 主协议
+				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				ErrCode:   "80006",
+				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
+			}
+			fmt.Println("Global server 异常错误", ErrorST)
 		}
 	}()
 

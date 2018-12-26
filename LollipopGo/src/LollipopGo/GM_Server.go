@@ -1,14 +1,15 @@
 package main
 
 import (
-	_ "LollipopGo/LollipopGo/player"
+	"LollipopGo/LollipopGo/log"
 	"Proto"
 	"Proto/Proto2"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	_ "net/rpc/jsonrpc"
+	"net/rpc"
+	"net/rpc/jsonrpc"
 	"strconv"
 )
 
@@ -22,7 +23,7 @@ import (
 var ConnRPC_GM *rpc.Client // 保存全局数据
 
 // 初始化RPC
-func init {
+func init() {
 	client, err := jsonrpc.Dial("tcp", service)
 	if err != nil {
 		log.Debug("dial error:", err)
@@ -42,7 +43,6 @@ func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 				req.Body.Close()
 			}
 		}()
-
 		Protocol, bProtocol := req.Form["Protocol"]
 		Protocol2, bProtocol2 := req.Form["Protocol2"]
 		if bProtocol && bProtocol2 {
@@ -75,9 +75,30 @@ func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 	return
 }
 
+// GM 修改数据
+func ModefyGamePlayerData(uid, itype, modifynum int) interface{} {
+	// 发送的数据
+	args := Proto2.W2GMS_Modify_PlayerData{
+		UID:       uid,
+		Itype:     itype,
+		ModifyNum: modifynum,
+	}
 
-// 数据操作
-func ModefyGamePlayerData(){
-	
-	return
+	// 返回的数据
+	var reply Proto2.GMS2W_Modify_PlayerData
+	//--------------------------------------------------------------------------
+	// 同步调用
+	// err = ConnRPC_GM.Call("Arith.ModefyPlayerDataGM", args, &reply)
+	// if err != nil {
+	// 	fmt.Println("Arith.ModefyPlayerDataGM call error:", err)
+	// }
+	// 异步调用
+	divCall := ConnRPC_GM.Go("Arith.ModefyPlayerDataGM", args, &reply, nil)
+	replyCall := <-divCall.Done // will be equal to divCall
+	fmt.Println(replyCall.Reply)
+	//--------------------------------------------------------------------------
+
+	// 返回的数据
+	fmt.Println("the arith.mutiply is :", reply)
+	return reply
 }
