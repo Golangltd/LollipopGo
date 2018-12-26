@@ -42,7 +42,8 @@ func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) (bool, int) {
 	tmptime := util.GetNowUnix_LollipopGo()
 	stmt, err := this.STdb.Prepare("insert t_userinfo_copy set uid=?,vip=?,name=?,headurl=?,school=?,sex=?,hallexp=?,coinnum=?,masonrynum=?,mcard=?,constellation=?,medallist=?,createtime=?")
 	CheckErr(err)
-	res, err := stmt.Exec(data.UID, data.VIP_Lev, data.Name, data.HeadURL, data.PlayerSchool, data.Sex, data.CoinNum, data.MasonryNum, data.MCard, data.Constellation, data.MedalList, tmptime)
+	res, err := stmt.Exec(data.UID, data.VIP_Lev, data.Name, data.HeadURL, data.PlayerSchool, data.Sex, data.HallExp, data.CoinNum, data.MasonryNum, data.MCard, data.Constellation, data.MedalList, tmptime)
+	CheckErr(err)
 	id, err := res.LastInsertId()
 	CheckErr(err)
 	if err != nil {
@@ -53,6 +54,7 @@ func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) (bool, int) {
 	}
 
 	return true, int(id)
+
 	//--------------------------------------------------------------------------
 	// nowTimeStr := GetTime()
 	// stmt, err := this.STdb.Prepare("insert t_userinfo set username=?,departname=?,created=?,password=?,uid=?")
@@ -68,6 +70,7 @@ func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) (bool, int) {
 	// 	fmt.Println("插入数据成功：", id)
 	// }
 	// return true
+
 }
 
 //------------------------------------------------------------------------------

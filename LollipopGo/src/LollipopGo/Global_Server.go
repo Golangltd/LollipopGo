@@ -192,7 +192,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	personal.Constellation = StrConstellation
 	personal.HistoryGameList = nil // 历史游戏
 	personal.HistoryRaceList = nil // 历史比赛
-	personal.MedalList = nil       // 勋章列表，策划配表
+	personal.MedalList = ""        // 勋章列表，策划配表
 	personalmap["1"] = personal
 
 	// 组装数据
