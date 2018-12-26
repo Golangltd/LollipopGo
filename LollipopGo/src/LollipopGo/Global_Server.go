@@ -165,6 +165,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	StrHeadUrl := ProtocolData["HeadUrl"].(string)
 	StrSex := ProtocolData["Sex"].(string)
 	StrConstellation := ProtocolData["Constellation"].(string)
+	StrPlayerSchool := ProtocolData["PlayerSchool"].(string)
 	StrToken := ProtocolData["Token"].(string)
 	_ = StrToken
 
@@ -180,6 +181,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	personal.UID = 1
 	personal.Name = StrPlayerName
 	personal.HeadURL = StrHeadUrl
+	personal.PlayerSchool = StrPlayerSchool
 	personal.Sex = StrSex
 	personal.Lev = 0
 	personal.HallExp = 0
@@ -197,6 +199,10 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		Protocol:      Proto.G_GameGlobal_Proto, // 游戏主要协议
 		Protocol2:     Proto2.GW2G_PlayerEntryHallProto2,
 		OpenID:        StrOpenID,
+		PlayerName:    StrPlayerName,
+		HeadUrl:       StrHeadUrl,
+		Constellation: StrConstellation,
+		Sex:           StrSex,
 		GamePlayerNum: ddd,
 		RacePlayerNum: nil,
 		Personal:      personalmap,

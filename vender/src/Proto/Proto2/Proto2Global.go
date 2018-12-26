@@ -27,6 +27,7 @@ type G2GW_PlayerEntryHall struct {
 	PlayerName    string // 玩家的名字
 	HeadUrl       string // 头像
 	Constellation string // 星座
+	PlayerSchool  string
 	Sex           string // 性别
 	Token         string // 数据验证
 }
@@ -36,6 +37,10 @@ type GW2G_PlayerEntryHall struct {
 	Protocol      int
 	Protocol2     int
 	OpenID        string                      // 用户唯一ID
+	PlayerName    string                      // 玩家的名字
+	HeadUrl       string                      // 头像
+	Constellation string                      // 星座
+	Sex           string                      // 性别
 	GamePlayerNum map[string]interface{}      // 每个游戏的玩家的人数,global server获取
 	RacePlayerNum map[string]interface{}      // 大奖赛列表
 	Personal      map[string]*player.PlayerSt // 个人信息
