@@ -47,19 +47,12 @@ func (this *mysql_db) ReadUserInfoData(uid string) bool {
 	} else {
 		fmt.Println("没有错误!")
 	}
-
-	// 数据操作
 	icount := 0
 	for rows.Next() {
 		icount++
 	}
-
 	if icount != 0 {
-		fmt.Println("true!")
 		return true
 	}
-
-	fmt.Println("false!")
-
 	return false
 }
