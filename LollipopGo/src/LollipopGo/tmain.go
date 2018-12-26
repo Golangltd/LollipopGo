@@ -46,7 +46,15 @@ func main() {
 		strport = os.Args[1]
 		strServerType = os.Args[2]
 	}
+
 	glog.Info(strport)
+	glog.Info(strServerType)
+	glog.Info(strServerType_GW)
+
+	if "GW" == strServerType {
+		glog.Info("Golang语言社区  gw")
+		strServerType_GW = strServerType
+	}
 	glog.Info("Golang语言社区")
 	glog.Flush()
 	if strServerType == strServerType_GW {
