@@ -9,6 +9,7 @@ type PlayerSt struct {
 	Name            string               // 玩家的名字
 	HeadURL         string               // 玩家的头像
 	Sex             string               // 玩家的性别
+	PlayerSchool    string               // 学校
 	Lev             int                  // 玩家等级
 	HallExp         int                  // 玩家大厅的经验
 	CoinNum         int                  // 玩家的金币

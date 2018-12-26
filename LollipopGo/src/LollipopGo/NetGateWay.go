@@ -2,7 +2,6 @@ package main
 
 import (
 	"LollipopGo/LollipopGo/log"
-	"LollipopGo/LollipopGo/player"
 	"LollipopGo/LollipopGo/util"
 	"Proto"
 	"Proto/Proto2"
@@ -42,22 +41,35 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 	}
 
 	StrOpenID := ProtocolData["OpenID"].(string)
+	StrPlayerName := ProtocolData["PlayerName"].(string)
+	StrHeadUrl := ProtocolData["HeadUrl"].(string)
+	StrConstellation := ProtocolData["Constellation"].(string)
+	StrSex := ProtocolData["Sex"].(string)
 	StGamePlayerNum := ProtocolData["GamePlayerNum"].(map[string]interface{})
-	StRacePlayerNum := ProtocolData["RacePlayerNum"].(map[string]interface{})
-	StPersonal := ProtocolData["Personal"].(*player.PlayerSt)
-	StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
-	StDefaultAward := ProtocolData["DefaultAward"].(map[string]interface{})
+
+	StRacePlayerNum := make(map[string]interface{})
+	if ProtocolData["RacePlayerNum"] != nil {
+		StRacePlayerNum = ProtocolData["RacePlayerNum"].(map[string]interface{})
+	}
+	StPersonal := ProtocolData["Personal"].(map[string]interface{})
+	// StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
+	// StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
+	// StDefaultAward := ProtocolData["DefaultAward"].(map[string]interface{})
 
 	// 发给客户端模拟
 	data := &Proto2.S2GWS_PlayerLogin{
 		Protocol:      6,
 		Protocol2:     2,
+		PlayerName:    StrPlayerName,
+		HeadUrl:       StrHeadUrl,
+		Constellation: StrConstellation,
+		Sex:           StrSex,
 		OpenID:        StrOpenID,
 		GamePlayerNum: StGamePlayerNum,
 		RacePlayerNum: StRacePlayerNum,
 		Personal:      StPersonal,
-		DefaultMsg:    StDefaultMsg,
-		DefaultAward:  StDefaultAward,
+		// DefaultMsg:    StDefaultMsg,
+		// DefaultAward:  StDefaultAward,
 	}
 	// 发送数据  --
 	this.SendClientDataFunc(data.OpenID, "connect", data)
@@ -150,8 +162,10 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 	}
 
 	StrPlayerUID := ProtocolData["PlayerUID"].(string)
+	StrPlayerName := ProtocolData["PlayerName"].(string)
 	StrHeadUrl := ProtocolData["HeadUrl"].(string)
 	StrConstellation := ProtocolData["Constellation"].(string)
+	StrPlayerSchool := ProtocolData["PlayerSchool"].(string)
 	StrSex := ProtocolData["Sex"].(string)
 	StrToken := ProtocolData["Token"].(string)
 
@@ -162,8 +176,10 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 		Protocol:      Proto.G_GameGlobal_Proto,
 		Protocol2:     Proto2.G2GW_PlayerEntryHallProto2,
 		OpenID:        util.MD5_LollipopGO(StrPlayerUID + "GateWay"),
+		PlayerName:    StrPlayerName,
 		HeadUrl:       StrHeadUrl,
 		Constellation: StrConstellation,
+		PlayerSchool:  StrPlayerSchool,
 		Sex:           StrSex,
 		Token:         StrToken,
 	}
