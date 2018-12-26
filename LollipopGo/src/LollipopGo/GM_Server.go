@@ -1,8 +1,15 @@
 package main
 
 import (
+	_ "LollipopGo/LollipopGo/player"
+	"Proto"
+	"Proto/Proto2"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	_ "net/rpc/jsonrpc"
+	"strconv"
 )
 
 /*
@@ -12,7 +19,19 @@ import (
 	3 协议处理
 */
 
-func IndexHandlerGM(w http.ResponseWriter, r *http.Request) {
+var ConnRPC_GM *rpc.Client // 保存全局数据
+
+// 初始化RPC
+func init {
+	client, err := jsonrpc.Dial("tcp", service)
+	if err != nil {
+		log.Debug("dial error:", err)
+		return
+	}
+	ConnRPC_GM = client
+}
+
+func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 	if req.Method == "GET" {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		req.ParseForm()
@@ -23,12 +42,14 @@ func IndexHandlerGM(w http.ResponseWriter, r *http.Request) {
 				req.Body.Close()
 			}
 		}()
+
 		Protocol, bProtocol := req.Form["Protocol"]
 		Protocol2, bProtocol2 := req.Form["Protocol2"]
 		if bProtocol && bProtocol2 {
 			if Protocol[0] == strconv.Itoa(Proto.G_GameGM_Proto) {
 				switch Protocol2[0] {
 				case strconv.Itoa(Proto2.W2GMS_Modify_PlayerDataProto2):
+					// 修改数据玩家的结构的数据信息
 					// DB server 获取 rpc 操作
 					//------------------------------------------------------
 					// 修改Gm数据
@@ -54,4 +75,9 @@ func IndexHandlerGM(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-//
+
+// 数据操作
+func ModefyGamePlayerData(){
+	
+	return
+}
