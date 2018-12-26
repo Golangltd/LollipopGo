@@ -1,6 +1,7 @@
 package Mysyl_DB
 
 import (
+	"LollipopGo/LollipopGo/player"
 	"database/sql"
 	"fmt"
 )
@@ -36,8 +37,8 @@ func QueryFromDB(db *sql.DB) {
 
 //------------------------------------------------------------------------------
 // 查询表  select 1 from tablename where uid = 'uid' limit 1;
-func (this *mysql_db) ReadUserInfoData(uid string) bool {
-	rows, err := this.STdb.Query("SELECT 1 FROM t_userinfo_copy  where uid = " + uid + " limit 1")
+func (this *mysql_db) ReadUserInfoData(uid string) (bool, player.PlayerSt) {
+	rows, err := this.STdb.Query("SELECT * FROM t_userinfo_copy  where uid = " + uid + " limit 1")
 	defer rows.Close()
 	CheckErr(err)
 	if err != nil {
@@ -45,12 +46,25 @@ func (this *mysql_db) ReadUserInfoData(uid string) bool {
 	} else {
 		fmt.Println("没有错误!")
 	}
-	icount := 0
+
+	// cols, _ := rows.Columns()
+	// for i := range cols {
+	// 	fmt.Print(cols[i])
+	// 	fmt.Print("\t")
+	// }
+	bret := false
+	var PlayerSt player.PlayerSt
 	for rows.Next() {
-		icount++
+		var uid, times string = "", ""
+		eer := rows.Scan(&PlayerSt.UID, &uid, &PlayerSt.VIP_Lev,
+			&PlayerSt.Name, &PlayerSt.HeadURL, &PlayerSt.PlayerSchool,
+			&PlayerSt.Sex, &PlayerSt.HallExp, &PlayerSt.CoinNum,
+			&PlayerSt.MasonryNum, &PlayerSt.MCard,
+			&PlayerSt.Constellation, &PlayerSt.MedalList,
+			&times)
+		fmt.Println("+++++++++8888", PlayerSt, eer)
+		bret = true
 	}
-	if icount != 0 {
-		return true
-	}
-	return false
+
+	return bret, PlayerSt
 }

@@ -67,7 +67,7 @@ type Args struct {
 //------------------------------------------------------------------------------
 
 // 玩家用户保存
-func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
+func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) error {
 
 	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
 		if err := recover(); err != nil {
@@ -89,11 +89,15 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *int) error {
 	// 1 解析数据 *reply = args.A * args.B
 	roleUID := args.UID
 	fmt.Println("SavePlayerST2DB:", roleUID)
+
+	// return nil
 	// 2 保存或者更新数据
 	if Mysyl_DB.DB != nil {
-		Mysyl_DB.DB.InsertPlayerST2DB(args)
+		_, data := Mysyl_DB.DB.InsertPlayerST2DB(args)
+		*reply = data
+		fmt.Println("+++++++++++++++++++", reply)
 	} else {
-		fmt.Println("SavePlayerST2DB00000")
+		fmt.Println("0000000000000000000")
 	}
 	return nil
 }

@@ -174,26 +174,27 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	csv.M_CSV.LollipopGo_RLockRange(ddd)
 	// 查询数据库,找出游戏服务器的uid信息
 	// 返回的数据操作
-	DB_Save_RoleST(StrOpenID, StrPlayerName, StrHeadUrl, StrSex, StrConstellation, 0, 0, 2000, 0, 0)
+	datadb := DB_Save_RoleST(StrOpenID, StrPlayerName, StrHeadUrl, StrPlayerSchool, StrSex, StrConstellation, 0, 0, 2000, 0, 0)
+	fmt.Println("--------------------------:", datadb)
 	// 个人数据
 	personalmap := make(map[string]*player.PlayerSt)
-	personal := new(player.PlayerSt)
-	personal.UID = 1
-	personal.VIP_Lev = 0
-	personal.Name = StrPlayerName
-	personal.HeadURL = StrHeadUrl
-	personal.PlayerSchool = StrPlayerSchool
-	personal.Sex = StrSex
-	personal.Lev = 0
-	personal.HallExp = 0
-	personal.CoinNum = 2000 // 数据等待
-	personal.MasonryNum = 0
-	personal.MCard = 0
-	personal.Constellation = StrConstellation
-	personal.HistoryGameList = nil // 历史游戏
-	personal.HistoryRaceList = nil // 历史比赛
-	personal.MedalList = ""        // 勋章列表，策划配表
-	personalmap["1"] = personal
+	// personal := new(player.PlayerSt)
+	// personal.UID = 1
+	// personal.VIP_Lev = 0
+	// personal.Name = StrPlayerName
+	// personal.HeadURL = StrHeadUrl
+	// personal.PlayerSchool = StrPlayerSchool
+	// personal.Sex = StrSex
+	// personal.Lev = 0
+	// personal.HallExp = 0
+	// personal.CoinNum = 2000 // 数据等待
+	// personal.MasonryNum = datadb.MasonryNum
+	// personal.MCard = 0
+	// personal.Constellation = StrConstellation
+	// personal.HistoryGameList = nil // 历史游戏
+	// personal.HistoryRaceList = nil // 历史比赛
+	// personal.MedalList = ""        // 勋章列表，策划配表
+	personalmap["1"] = &datadb
 
 	// 组装数据
 	data := &Proto2.GW2G_PlayerEntryHall{
@@ -213,46 +214,36 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	fmt.Println(data)
 	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
-	// 3 DB server进行数据保存
-	// 玩家的数据操作，保存玩家的数据
-	//DB_Save_RoleST(StrOpenID)
-
 	return
 
 }
 
 // 保存数据都DB 人物信息
-func DB_Save_RoleST(uid, strname, HeadURL, Sex, Constellation string, Lev, HallExp, CoinNum, MasonryNum, MCard int) interface{} {
+func DB_Save_RoleST(uid, strname, HeadURL, StrPlayerSchool, Sex, Constellation string, Lev, HallExp, CoinNum, MasonryNum, MCard int) player.PlayerSt {
 
-	fmt.Println("DB_Save_RoleST Entry Func(){}")
-	// 发送到DB 操作
 	args := player.PlayerSt{
 		UID:           util.Str2int_LollipopGo("787"),
-		Name:          strname,       // 玩家的名字
-		HeadURL:       HeadURL,       // 玩家的头像
-		Sex:           Sex,           // 玩家的性别
-		Lev:           Lev,           // 玩家等级
-		HallExp:       HallExp,       // 玩家大厅的经验
-		CoinNum:       CoinNum,       // 玩家的金币
-		MasonryNum:    MasonryNum,    // 玩家的砖石
-		MCard:         MCard,         // M 兑换卡
-		Constellation: Constellation, // 玩家的星座
+		VIP_Lev:       0,
+		Name:          strname,
+		HeadURL:       HeadURL,
+		Sex:           Sex,
+		PlayerSchool:  StrPlayerSchool,
+		Lev:           Lev,
+		HallExp:       HallExp,
+		CoinNum:       CoinNum,
+		MasonryNum:    MasonryNum,
+		MCard:         MCard,
+		Constellation: Constellation,
 	}
 
-	// client, err := jsonrpc.Dial("tcp", service)
-	// if err != nil {
-	// 	log.Debug("dial error:", err)
-	// 	panic("dial RPC Servre error")
-	// }
-	// ConnRPC = client
-
-	fmt.Println("args:", args)
-	var reply int
+	var reply player.PlayerSt
 	// 异步调用【结构的方法】
 	if ConnRPC != nil {
+		//ConnRPC.Call("Arith.SavePlayerST2DB", args, &reply)
 		divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
 		replyCall := <-divCall.Done
-		fmt.Println(replyCall.Reply)
+		fmt.Println("333333333333333++", replyCall.Reply)
+		fmt.Println("333333333333333++", reply)
 	} else {
 		fmt.Println("ConnRPC == nil")
 	}
