@@ -88,3 +88,13 @@ func GetNowtimeMD5_LollipopGO() string {
 	timestamp := strconv.FormatInt(t.UTC().UnixNano(), 10)
 	return MD5_LollipopGO(timestamp)
 }
+
+//单位s ,打印结果:1491888244
+func GetNowUnix_LollipopGo() int64 {
+	return time.Now().Unix()
+}
+
+//单位纳秒,打印结果：1491888244752784461
+func GetNowUnixNano_LollipopGo() int64 {
+	return time.Now().UnixNano()
+}

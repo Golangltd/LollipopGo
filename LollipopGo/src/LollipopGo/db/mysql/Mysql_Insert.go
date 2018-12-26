@@ -31,28 +31,43 @@ func insertToDB(db *sql.DB) {
 
 //------------------------------------------------------------------------------
 // 玩家数据保存
-func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) bool {
-	fmt.Println("InsertPlayerST2DBInsertPlayerST2DB")
+func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) (bool, int) {
 	uid := data.UID
 	// 判断是否存在
 	if this.ReadUserInfoData(util.Int2str_LollipopGo(uid)) {
 		log.Debug("数据存在！")
-		return false
+		return false, 0
 	}
-	nowTimeStr := GetTime()
-	stmt, err := this.STdb.Prepare("insert t_userinfo set username=?,departname=?,created=?,password=?,uid=?")
+	// 获取时间戳
+	tmptime := util.GetNowUnix_LollipopGo()
+	stmt, err := this.STdb.Prepare("insert t_userinfo_copy set uid=?,vip=?,name=?,headurl=?,school=?,sex=?,hallexp=?,coinnum=?,masonrynum=?,mcard=?,constellation=?,medallist=?,createtime=?")
 	CheckErr(err)
-	res, err := stmt.Exec("test", "研发中心", nowTimeStr, "123456", uid)
-	CheckErr(err)
+	res, err := stmt.Exec(data.UID, data.VIP_Lev, data.Name, data.HeadURL, data.PlayerSchool, data.Sex, data.CoinNum, data.MasonryNum, data.MCard, data.Constellation, data.MedalList, tmptime)
 	id, err := res.LastInsertId()
 	CheckErr(err)
 	if err != nil {
 		fmt.Println("插入数据失败")
-		return false
+		return false, 0
 	} else {
 		fmt.Println("插入数据成功：", id)
 	}
-	return true
+
+	return true, int(id)
+	//--------------------------------------------------------------------------
+	// nowTimeStr := GetTime()
+	// stmt, err := this.STdb.Prepare("insert t_userinfo set username=?,departname=?,created=?,password=?,uid=?")
+	// CheckErr(err)
+	// res, err := stmt.Exec("test", "研发中心", nowTimeStr, "123456", uid)
+	// CheckErr(err)
+	// id, err := res.LastInsertId()
+	// CheckErr(err)
+	// if err != nil {
+	// 	fmt.Println("插入数据失败")
+	// 	return false
+	// } else {
+	// 	fmt.Println("插入数据成功：", id)
+	// }
+	// return true
 }
 
 //------------------------------------------------------------------------------

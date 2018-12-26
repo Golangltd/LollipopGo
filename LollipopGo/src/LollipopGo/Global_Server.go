@@ -179,6 +179,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	personalmap := make(map[string]*player.PlayerSt)
 	personal := new(player.PlayerSt)
 	personal.UID = 1
+	personal.VIP_Lev = 0
 	personal.Name = StrPlayerName
 	personal.HeadURL = StrHeadUrl
 	personal.PlayerSchool = StrPlayerSchool
