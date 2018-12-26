@@ -37,8 +37,6 @@ func QueryFromDB(db *sql.DB) {
 //------------------------------------------------------------------------------
 // 查询表  select 1 from tablename where uid = 'uid' limit 1;
 func (this *mysql_db) ReadUserInfoData(uid string) bool {
-	// return false
-	fmt.Println("ReadUserInfoDataReadUserInfoDataReadUserInfoDataReadUserInfoData")
 	rows, err := this.STdb.Query("SELECT 1 FROM t_userinfo_copy  where uid = " + uid + " limit 1")
 	defer rows.Close()
 	CheckErr(err)
