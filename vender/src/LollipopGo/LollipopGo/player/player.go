@@ -6,6 +6,7 @@ package player
 */
 type PlayerSt struct {
 	UID             int                  // 游戏服务器 uid
+	VIP_Lev         int                  // VIP 等级
 	Name            string               // 玩家的名字
 	HeadURL         string               // 玩家的头像
 	Sex             string               // 玩家的性别

@@ -39,17 +39,21 @@ func QueryFromDB(db *sql.DB) {
 func (this *mysql_db) ReadUserInfoData(uid string) bool {
 	return false
 	fmt.Println("ReadUserInfoDataReadUserInfoDataReadUserInfoDataReadUserInfoData")
-	rows, err := this.STdb.Query("SELECT 1 FROM t_userinfo  where uid = '" + uid + "' limit 1")
+	rows, err := this.STdb.Query("SELECT 1 FROM t_userinfo  where uid = " + uid + " limit 1")
 	CheckErr(err)
 	if err != nil {
 		fmt.Println("error:", err)
 	} else {
+		fmt.Println("没有错误!")
 	}
 
-	data, _ := rows.Columns()
-	if len(data) > 0 {
-		return true
+	if rows != nil {
+		data, _ := rows.Columns()
+		if len(data) > 0 {
+			return true
+		}
+	} else {
+		return false
 	}
-
 	return false
 }
