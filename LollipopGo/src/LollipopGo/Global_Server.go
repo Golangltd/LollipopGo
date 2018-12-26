@@ -44,7 +44,8 @@ func initNetRPC() {
 	client, err := jsonrpc.Dial("tcp", service)
 	if err != nil {
 		log.Debug("dial error:", err)
-		panic("dial RPC Servre error")
+		//panic("dial RPC Servre error")
+		return
 	}
 	ConnRPC = client
 }

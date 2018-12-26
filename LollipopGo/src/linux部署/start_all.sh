@@ -3,9 +3,9 @@ ulimit -c unlimited
 
 OLDPWD=`pwd`
 
-while read d c
+while read d c e
 do
-    cd ./ruilide_bin && ./$d $c &
+    cd ./ruilide_bin && ./$d $c $e &
 	cd -
 
 	sleep 3
