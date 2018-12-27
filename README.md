@@ -18,7 +18,7 @@ QQ群
 
 简书
 -----------
-https://www.jianshu.com/u/9f8cf18345b5
+[https://www.jianshu.com/u/9f8cf18345b5](https://www.jianshu.com/u/9f8cf18345b5)
 
 
 Golang语言社区
