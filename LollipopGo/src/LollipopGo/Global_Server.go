@@ -227,15 +227,12 @@ func DB_Save_RoleST(uid, strname, HeadURL, StrPlayerSchool, Sex, Constellation s
 	return reply
 }
 
-// 链接到网关
 func initConn(conn *websocket.Conn) {
-	// 组装数据
 	data := &Proto2.G2GW_ConnServer{
-		Protocol:  Proto.G_GameGlobal_Proto, // 游戏主要协议
+		Protocol:  Proto.G_GameGlobal_Proto,
 		Protocol2: Proto2.G2GW_ConnServerProto2,
 		ServerID:  util.MD5_LollipopGO("8894" + "Global server"),
 	}
-	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
 	return
 }
