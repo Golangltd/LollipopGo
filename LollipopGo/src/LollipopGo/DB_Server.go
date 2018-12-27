@@ -4,6 +4,7 @@ import (
 	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/player"
+	"LollipopGo/LollipopGo/util"
 	_ "LollipopGo/ReadCSV"
 	"LollipopGo/db/mysql"
 	"Proto"
@@ -83,15 +84,19 @@ func (t *Arith) ModefyPlayerDataGM(args *Proto2.W2GMS_Modify_PlayerData, reply *
 		}
 	}()
 	//--------------------------------------------------------------------------
-	uid := args.UID
-	itype := args.Itype
-	modifynum := args.ModifyNum
+	uid := util.Str2int_LollipopGo(args.UID)
+	itype := util.Str2int_LollipopGo(args.Itype)
+	modifynum := util.Str2int_LollipopGo(args.ModifyNum)
 	//--------------------------------------------------------------------------
 	switch itype {
-	case Proto2.MODIFY_COIN:
-	case Proto2.MODIFY_LEV:
-	case Proto2.MODIFY_MASONRY:
-	case Proto2.MODIFY_MCARD:
+	case Proto2.MODIFY_COIN, Proto2.MODIFY_LEV, Proto2.MODIFY_MASONRY,
+		Proto2.MODIFY_MCARD, Proto2.MODIFY_VIP_LEV:
+		bret := Mysyl_DB.DB.Modefy_PlayerDataGM(uid, itype, modifynum)
+		*reply = Proto2.GMS2W_Modify_PlayerData{
+			Protocol:  Proto.G_GameGM_Proto,
+			Protocol2: Proto2.GMS2W_Modify_PlayerDataProto2,
+			Isucc:     bret,
+		}
 	default:
 		log.Debug("数据类型不存在!")
 	}
