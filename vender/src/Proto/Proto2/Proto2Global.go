@@ -28,7 +28,7 @@ type G2GW_PlayerEntryHall struct {
 	PlayerName    string // 玩家的名字
 	HeadUrl       string // 头像
 	Constellation string // 星座
-	PlayerSchool  string
+	PlayerSchool  string // 学校
 	Sex           string // 性别
 	Token         string // 数据验证
 }
