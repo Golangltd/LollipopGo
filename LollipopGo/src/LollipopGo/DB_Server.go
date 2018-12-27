@@ -22,12 +22,8 @@ var (
 )
 
 func init() {
-
-	// 注册结构体 + 方法 -->
-	// 将结构体的方法注册到rpc中
 	arith := new(Arith)
 	rpc.Register(arith)
-
 	return
 }
 

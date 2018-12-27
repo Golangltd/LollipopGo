@@ -64,8 +64,8 @@ func main() {
 			return
 		}
 	} else if strServerType == strServerType_GS {
-		strport = "8889"    // 多个 -- server
-		go GameServerINIT() // 游戏服务器的初始化操作
+		strport = "8889"
+		go GameServerINIT()
 		http.Handle("/GolangLtdGS", websocket.Handler(wwwGolangLtd))
 		if err := http.ListenAndServe(":"+strport, nil); err != nil {
 			glog.Error("网络错误", err)
@@ -74,14 +74,12 @@ func main() {
 	} else if strServerType == strServerType_DB {
 		strport = "8890"
 		MainListener(strport)
-		// http.HandleFunc("/GolangLtdDT", GolangLtdDB)
-		// http.ListenAndServe(":"+strport, nil)
 	} else if strServerType == strServerType_DT {
-		strport = "8891" //  登录服务器 -- 大厅服务器
+		strport = "8891"
 		http.HandleFunc("/GolangLtdDT", IndexHandler)
 		http.ListenAndServe(":"+strport, nil)
 	} else if strServerType == strServerType_GM {
-		strport = "8892" //  GM 系统操作 -- 修改金币等操作
+		strport = "8892"
 		http.HandleFunc("/GolangLtdGM", IndexHandlerGM)
 		http.ListenAndServe(":"+strport, nil)
 	} else if strServerType == strServerType_Snake {
