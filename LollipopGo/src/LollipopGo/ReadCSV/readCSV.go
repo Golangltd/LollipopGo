@@ -5,7 +5,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io/ioutil"
-	_ "strconv"
 	"strings"
 )
 
@@ -41,13 +40,6 @@ func ReadCsv_ConfigFile_GameInfoST_Fun() bool {
 		// 保存数据更新数据
 		M_CSV.Set(Infotmp.GameID, 0)
 	}
-	fmt.Println(conf.G_GameList)
-	//fmt.Println("fmt.Println(M_CSV)", M_CSV)
-
-	// ddd := make(map[interface{}]interface{})
-	// M_CSV.LollipopGo_RLockRange(ddd)
-	// fmt.Println("fmt.Println(ddd)", ddd)
-
 	return true
 }
 
