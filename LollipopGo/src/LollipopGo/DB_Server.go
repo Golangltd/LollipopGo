@@ -121,21 +121,13 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 			fmt.Println("Global server 异常错误", ErrorST)
 		}
 	}()
-
-	fmt.Println("SavePlayerST2DB")
-	fmt.Println("玩家数据保存----->args.UID:", args.UID)
 	// 1 解析数据 *reply = args.A * args.B
 	roleUID := args.UID
-	fmt.Println("SavePlayerST2DB:", roleUID)
-
-	// return nil
 	// 2 保存或者更新数据
 	if Mysyl_DB.DB != nil {
 		_, data := Mysyl_DB.DB.InsertPlayerST2DB(args)
 		*reply = data
-		fmt.Println("+++++++++++++++++++", reply)
 	} else {
-		fmt.Println("0000000000000000000")
 	}
 	return nil
 }
@@ -162,7 +154,6 @@ func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
 		GameList:   conf.G_GameList,
 		BannerList: conf.G_BannerList,
 	}
-
 	return nil
 }
 
