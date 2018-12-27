@@ -23,6 +23,7 @@ const (
 type G2GW_PlayerEntryHall struct {
 	Protocol      int
 	Protocol2     int
+	UID           string // 用户唯一ID
 	OpenID        string // 用户唯一ID
 	PlayerName    string // 玩家的名字
 	HeadUrl       string // 头像
