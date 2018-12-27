@@ -243,8 +243,9 @@ func DB_Save_RoleST(uid, strname, HeadURL, StrPlayerSchool, Sex, Constellation s
 		//ConnRPC.Call("Arith.SavePlayerST2DB", args, &reply)
 		divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
 		replyCall := <-divCall.Done
-		fmt.Println("333333333333333++", replyCall.Reply)
-		fmt.Println("333333333333333++", reply)
+		_ = replyCall.Reply
+		// fmt.Println("333333333333333++", replyCall.Reply)
+		// fmt.Println("333333333333333++", reply)
 	} else {
 		fmt.Println("ConnRPC == nil")
 	}
@@ -259,7 +260,7 @@ func initConn(conn *websocket.Conn) {
 		Protocol2: Proto2.G2GW_ConnServerProto2,
 		ServerID:  util.MD5_LollipopGO("8894" + "Global server"),
 	}
-	fmt.Println(data)
+	// fmt.Println(data)
 	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
 	return
