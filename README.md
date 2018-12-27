@@ -20,6 +20,9 @@ QQ群
 -----------
 [https://www.jianshu.com/u/9f8cf18345b5](https://www.jianshu.com/u/9f8cf18345b5)
 
+腾讯云+社区专栏
+-----------
+[https://cloud.tencent.com/developer/column/2170](https://cloud.tencent.com/developer/column/2170)
 
 Golang语言社区
 -----------
