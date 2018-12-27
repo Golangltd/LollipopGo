@@ -53,7 +53,6 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 	}
 	StPersonal := ProtocolData["Personal"].(map[string]interface{})
 	// StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
-	// StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
 	// StDefaultAward := ProtocolData["DefaultAward"].(map[string]interface{})
 
 	// 发给客户端模拟
