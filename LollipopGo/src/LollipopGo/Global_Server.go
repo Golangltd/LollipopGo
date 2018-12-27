@@ -202,7 +202,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 func DB_Save_RoleST(uid, strname, HeadURL, StrPlayerSchool, Sex, Constellation string, Lev, HallExp, CoinNum, MasonryNum, MCard int) player.PlayerSt {
 
 	args := player.PlayerSt{
-		UID:           util.Str2int_LollipopGo("787"),
+		UID:           util.Str2int_LollipopGo(uid),
 		VIP_Lev:       0,
 		Name:          strname,
 		HeadURL:       HeadURL,
