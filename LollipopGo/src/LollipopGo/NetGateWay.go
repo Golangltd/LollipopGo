@@ -185,15 +185,6 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 	}
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 
-	// 发给客户端模拟
-	// data := &Proto2.S2GWS_PlayerLogin{
-	// 	Protocol:  6,
-	// 	Protocol2: 2,
-	// 	OpenID:    util.MD5_LollipopGO(StrPlayerUID + "GateWay"),
-	// }
-	// 发送数据
-	// this.PlayerSendMessage(data)
-	// 保存玩家数据到内存 M
 	//================================推送消息处理===================================
 	// 保存在线的玩家的数据信息
 	onlineUser := &NetDataConn{
