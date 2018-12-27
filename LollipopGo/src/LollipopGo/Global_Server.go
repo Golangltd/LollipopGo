@@ -150,6 +150,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 
 	fmt.Println("G2GW_PlayerEntryHallProto2Fucn Entry Func(){}")
 	// 返回数据给GateWay
+	StrUID := ProtocolData["UID"].(string)
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrPlayerName := ProtocolData["PlayerName"].(string)
 	StrHeadUrl := ProtocolData["HeadUrl"].(string)
@@ -164,7 +165,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	csv.M_CSV.LollipopGo_RLockRange(ddd)
 	// 查询数据库,找出游戏服务器的uid信息
 	// 返回的数据操作
-	datadb := DB_Save_RoleST(StrOpenID, StrPlayerName, StrHeadUrl, StrPlayerSchool, StrSex, StrConstellation, 0, 0, 2000, 0, 0)
+	datadb := DB_Save_RoleST(StrUID, StrPlayerName, StrHeadUrl, StrPlayerSchool, StrSex, StrConstellation, 0, 0, 2000, 0, 0)
 	fmt.Println("--------------------------:", datadb)
 	// 个人数据
 	personalmap := make(map[string]*player.PlayerSt)

@@ -175,6 +175,7 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 	data := &Proto2.G2GW_PlayerEntryHall{
 		Protocol:      Proto.G_GameGlobal_Proto,
 		Protocol2:     Proto2.G2GW_PlayerEntryHallProto2,
+		UID:           StrPlayerUID,
 		OpenID:        util.MD5_LollipopGO(StrPlayerUID + "GateWay"),
 		PlayerName:    StrPlayerName,
 		HeadUrl:       StrHeadUrl,
