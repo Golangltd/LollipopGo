@@ -80,7 +80,6 @@ func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(w, "88901")
 		return
 	}
-
 	fmt.Fprintln(w, "请用Get 方式请求!")
 	return
 }
@@ -93,7 +92,6 @@ func ModefyGamePlayerData(uid, itype, modifynum string) interface{} {
 		Itype:     itype,
 		ModifyNum: modifynum,
 	}
-
 	// 返回的数据
 	var reply Proto2.GMS2W_Modify_PlayerData
 	//--------------------------------------------------------------------------
@@ -107,7 +105,6 @@ func ModefyGamePlayerData(uid, itype, modifynum string) interface{} {
 	replyCall := <-divCall.Done // will be equal to divCall
 	fmt.Println(replyCall.Reply)
 	//--------------------------------------------------------------------------
-
 	// 返回的数据
 	fmt.Println("the arith.mutiply is :", reply)
 	return reply
