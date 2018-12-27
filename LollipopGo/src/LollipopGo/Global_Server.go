@@ -34,7 +34,6 @@ func init() {
 		return
 	}
 	fmt.Println("链接 gateway server 成功!")
-	// 初始化数据
 	initNetRPC()
 	return
 }
@@ -60,9 +59,7 @@ func initGateWayNet() bool {
 		return false
 	}
 	Conn = conn
-	// 协程支持  --接受线程操作 全球协议操作
 	go GameServerReceiveG(Conn)
-	// 发送链接的协议 ---》
 	initConn(Conn)
 	return true
 }
@@ -179,22 +176,6 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	fmt.Println("--------------------------:", datadb)
 	// 个人数据
 	personalmap := make(map[string]*player.PlayerSt)
-	// personal := new(player.PlayerSt)
-	// personal.UID = 1
-	// personal.VIP_Lev = 0
-	// personal.Name = StrPlayerName
-	// personal.HeadURL = StrHeadUrl
-	// personal.PlayerSchool = StrPlayerSchool
-	// personal.Sex = StrSex
-	// personal.Lev = 0
-	// personal.HallExp = 0
-	// personal.CoinNum = 2000 // 数据等待
-	// personal.MasonryNum = datadb.MasonryNum
-	// personal.MCard = 0
-	// personal.Constellation = StrConstellation
-	// personal.HistoryGameList = nil // 历史游戏
-	// personal.HistoryRaceList = nil // 历史比赛
-	// personal.MedalList = ""        // 勋章列表，策划配表
 	personalmap["1"] = &datadb
 
 	// 组装数据
@@ -213,7 +194,6 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		DefaultAward:  nil,
 	}
 	fmt.Println(data)
-	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
 	return
 
@@ -244,8 +224,6 @@ func DB_Save_RoleST(uid, strname, HeadURL, StrPlayerSchool, Sex, Constellation s
 		divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
 		replyCall := <-divCall.Done
 		_ = replyCall.Reply
-		// fmt.Println("333333333333333++", replyCall.Reply)
-		// fmt.Println("333333333333333++", reply)
 	} else {
 		fmt.Println("ConnRPC == nil")
 	}
@@ -260,7 +238,6 @@ func initConn(conn *websocket.Conn) {
 		Protocol2: Proto2.G2GW_ConnServerProto2,
 		ServerID:  util.MD5_LollipopGO("8894" + "Global server"),
 	}
-	// fmt.Println(data)
 	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
 	return
