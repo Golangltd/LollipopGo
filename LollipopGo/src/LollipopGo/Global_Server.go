@@ -48,7 +48,6 @@ func initNetRPC() {
 }
 
 func initGateWayNet() bool {
-
 	fmt.Println("用户客户端客户端模拟！")
 	url := "ws://" + *addrG + "/GolangLtd"
 	conn, err := websocket.Dial(url, "", "test://golang/")
@@ -71,7 +70,6 @@ func GameServerReceiveG(ws *websocket.Conn) {
 			fmt.Println(err.Error())
 			continue
 		}
-		// decode
 		fmt.Println(strings.Trim("", "\""))
 		fmt.Println(content)
 		content = strings.Replace(content, "\"", "", -1)
@@ -80,8 +78,6 @@ func GameServerReceiveG(ws *websocket.Conn) {
 			fmt.Println(errr)
 			continue
 		}
-		// 解析数据 --
-		fmt.Println("返回数据：", string(contentstr))
 		go SyncMeassgeFunG(string(contentstr))
 	}
 }
@@ -92,7 +88,6 @@ func SyncMeassgeFunG(content string) {
 	r.req = content
 
 	if ProtocolData, err := r.Json2map(); err == nil {
-		// 处理我们的函数
 		HandleCltProtocolG(ProtocolData["Protocol"], ProtocolData["Protocol2"], ProtocolData)
 	} else {
 		log.Debug("解析失败：", err.Error())
