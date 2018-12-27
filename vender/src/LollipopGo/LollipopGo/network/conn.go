@@ -15,3 +15,14 @@ type Conn interface {
 	Close()
 	Destroy()
 }
+
+type CST struct {
+	UID string
+}
+
+func init() {
+	var ts Conn
+	data := new(CST)
+	ts = data
+	return
+}
