@@ -4,7 +4,7 @@ package Proto2
 const (
 	GAMEINIT                      = iota // GAMEINIT == 0
 	W2GMS_Modify_PlayerDataProto2        // W2GMS_Modify_PlayerDataProto2 == 1 修改玩家的数据 :web请求 GM 系统
-	GMS2W_Modify_PlayerDataProto2        // GMS2W_Modify_PlayerDataProto2 == 1 修改玩家的数据
+	GMS2W_Modify_PlayerDataProto2        // GMS2W_Modify_PlayerDataProto2 == 2 修改玩家的数据
 )
 
 //------------------------------------------------------------------------------
@@ -23,6 +23,7 @@ const (
 	MODIFY_LEV            //  MODIFY_LEV == 2      修改等级,大厅的等级
 	MODIFY_MASONRY        //  MODIFY_MASONRY == 3  修改砖石
 	MODIFY_MCARD          //  MODIFY_MCARD == 4    修改福卡
+	MODIFY_VIP_LEV        //  MODIFY_VIP_LEV == 5  修改VIP等级
 )
 
 //------------------------------------------------------------------------------
@@ -31,9 +32,9 @@ const (
 type W2GMS_Modify_PlayerData struct {
 	Protocol  int
 	Protocol2 int
-	UID       int // 玩家的唯一ID信息
-	Itype     int // MODIFYINIT 查看枚举
-	ModifyNum int // 正数表示增加，负数标识减少
+	UID       string // 玩家的唯一ID信息
+	Itype     string // MODIFYINIT 查看枚举
+	ModifyNum string // 正数表示增加，负数标识减少
 }
 
 // GMS2W_Modify_PlayerDataProto2

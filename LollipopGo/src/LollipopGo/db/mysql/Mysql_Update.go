@@ -13,18 +13,31 @@ import (
 */
 
 // GM 或者数据更新玩家数据操作
-func (this *mysql_db) Modefy_PlayerDataGM(uid, itype, number int) {
+func (this *mysql_db) Modefy_PlayerDataGM(uid, itype, number int) bool {
 	// 默认修改VIP
-	strSql := "update userinfo_copy set vip=? where uid=?"
+	strSql := ""
 	if itype == Proto2.MODIFY_COIN {
-		strSql = "update userinfo_copy set vip=? where uid=?"
+		strSql = "update t_userinfo_copy set coinnum=? where uid=?"
+	} else if itype == Proto2.MODIFY_MASONRY {
+		strSql = "update t_userinfo_copy set masonrynum=? where uid=?"
+	} else if itype == Proto2.MODIFY_MCARD {
+		strSql = "update t_userinfo_copy set mcard=? where uid=?"
 	} else if itype == Proto2.MODIFY_LEV {
-		strSql = "update userinfo_copy set vip=? where uid=?"
-	} else if itype == Proto2.MODIFY_LEV {
-		strSql = "update userinfo_copy set vip=? where uid=?"
-	} else if itype == Proto2.MODIFY_LEV {
-		strSql = "update userinfo_copy set vip=? where uid=?"
+		strSql = "update t_userinfo_copy set lev=? where uid=?"
+		if number > 100 {
+			number = 99
+		}
+	} else if itype == Proto2.MODIFY_VIP_LEV {
+		strSql = "update t_userinfo_copy set vip=? where uid=?"
+		if number > 100 {
+			number = 99
+		}
 	}
+
+	if len(strSql) == 0 {
+		return false
+	}
+
 	// 修改数据
 	stmt, err := this.STdb.Prepare(strSql)
 	CheckErr(err)
@@ -32,7 +45,8 @@ func (this *mysql_db) Modefy_PlayerDataGM(uid, itype, number int) {
 	affect, err := res.RowsAffected()
 	fmt.Println("更新数据：", affect)
 	CheckErr(err)
-	return
+
+	return true
 }
 
 //------------------------------------------------------------------------------

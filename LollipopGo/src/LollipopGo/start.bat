@@ -13,4 +13,8 @@ echo LollipopGo.exe 8894 GL
 echo DBServer:数据库服务器启动(rpc)
 start LollipopGo.exe 8890 DB
 
+
+echo GM server :服务器启动(http)
+echo LollipopGo.exe 8892 GM
+
 exit

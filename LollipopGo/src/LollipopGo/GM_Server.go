@@ -21,6 +21,7 @@ import (
 */
 
 var ConnRPC_GM *rpc.Client // 保存全局数据
+// 链接 http://127.0.0.1:8892/GolangLtdGM?Protocol=11&Protocol2=1&UID=&Itype=&ModifyNum=
 
 // 初始化RPC
 func init() {
@@ -52,12 +53,21 @@ func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 					// 修改数据玩家的结构的数据信息
 					// DB server 获取 rpc 操作
 					//------------------------------------------------------
+					UID, bUID := req.Form["UID"]
+					Itype, bItype := req.Form["Itype"]
+					ModifyNum, bModifyNum := req.Form["ModifyNum"]
 					// 修改Gm数据
-					data := DB_rpc_()
-					b, _ := json.Marshal(data)
-					fmt.Fprint(w, base64.StdEncoding.EncodeToString(b))
-					//------------------------------------------------------
-					return
+					if bUID && bItype && bModifyNum {
+						data := ModefyGamePlayerData(UID[0], Itype[0], ModifyNum[0])
+						b, _ := json.Marshal(data)
+						fmt.Fprint(w, base64.StdEncoding.EncodeToString(b))
+						//------------------------------------------------------
+						return
+					} else {
+						fmt.Fprint(w, base64.StdEncoding.EncodeToString([]byte("参数错误!")))
+						//------------------------------------------------------
+						return
+					}
 				default:
 					fmt.Fprintln(w, "88902")
 					return
@@ -76,7 +86,7 @@ func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 }
 
 // GM 修改数据
-func ModefyGamePlayerData(uid, itype, modifynum int) interface{} {
+func ModefyGamePlayerData(uid, itype, modifynum string) interface{} {
 	// 发送的数据
 	args := Proto2.W2GMS_Modify_PlayerData{
 		UID:       uid,
