@@ -122,7 +122,7 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 		}
 	}()
 	// 1 解析数据 *reply = args.A * args.B
-	roleUID := args.UID
+	// roleUID := args.UID
 	// 2 保存或者更新数据
 	if Mysyl_DB.DB != nil {
 		_, data := Mysyl_DB.DB.InsertPlayerST2DB(args)
