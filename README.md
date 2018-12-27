@@ -16,6 +16,11 @@ QQ群
 -----------
 221273219
 
+简书
+-----------
+https://www.jianshu.com/u/9f8cf18345b5
+
+
 Golang语言社区
 -----------
 
@@ -24,6 +29,8 @@ Golang语言社区
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
 <li>LollipopGo架构 最新版本: v1.0.20181225</li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" title="Title">腾讯课堂</a></li>
+<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" title="Title">网易云课堂</a></li>
+<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" title="Title">B站(bilibili.com)</a></li>
 </ol>
 
 架构整体流程图
