@@ -24,10 +24,9 @@ import (
 */
 
 var addrG = flag.String("addrG", "127.0.0.1:8888", "http service address")
-var Conn *websocket.Conn // 保存用户的链接信息，数据会在主动匹配成功后进行链接
+var Conn *websocket.Conn
 var ConnRPC *rpc.Client
 
-// 初始化操作
 func init() {
 	if !initGateWayNet() {
 		fmt.Println("链接 gateway server 失败!")
@@ -38,7 +37,6 @@ func init() {
 	return
 }
 
-// 初始化RPC
 func initNetRPC() {
 	client, err := jsonrpc.Dial("tcp", service)
 	if err != nil {
