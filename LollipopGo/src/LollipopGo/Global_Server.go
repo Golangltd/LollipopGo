@@ -156,7 +156,6 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 
 	fmt.Println("G2GW_PlayerEntryHallProto2Fucn Entry Func(){}")
-
 	// 返回数据给GateWay
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrPlayerName := ProtocolData["PlayerName"].(string)
@@ -220,7 +219,7 @@ func DB_Save_RoleST(uid, strname, HeadURL, StrPlayerSchool, Sex, Constellation s
 	var reply player.PlayerSt
 	// 异步调用【结构的方法】
 	if ConnRPC != nil {
-		//ConnRPC.Call("Arith.SavePlayerST2DB", args, &reply)
+		// ConnRPC.Call("Arith.SavePlayerST2DB", args, &reply) 同步调用
 		divCall := ConnRPC.Go("Arith.SavePlayerST2DB", args, &reply, nil)
 		replyCall := <-divCall.Done
 		_ = replyCall.Reply
