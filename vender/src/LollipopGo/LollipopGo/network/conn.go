@@ -4,10 +4,9 @@ package network
   网络模块
 	1. 接口函数
 	2. 处理问题的方法，谁去实现？实现接口的结构去实现。
-	3.
 */
 
-type Conn interface {
+type Conner interface {
 	ConnGateWayServer(data interface{})
 	PlayerSendMessage(data interface{})
 	HandleCltProtocol(protocol interface{}, protocol2 interface{}, ProtocolData map[string]interface{})
@@ -16,13 +15,7 @@ type Conn interface {
 	Destroy()
 }
 
-type CST struct {
-	UID string
-}
-
-func init() {
-	var ts Conn
-	data := new(CST)
-	ts = data
+// 注册绑定接口
+func RegisterBind(conner Conner) {
 	return
 }
