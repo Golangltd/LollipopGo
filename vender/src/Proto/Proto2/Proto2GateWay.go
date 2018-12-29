@@ -4,6 +4,7 @@ import (
 	"LollipopGo/LollipopGo/player"
 )
 
+// G_GateWay_Proto
 const (
 	ININGATEWAY                 = iota // ININGATEWAY == 0
 	C2GWS_PlayerLoginProto2            // C2GWS_PlayerLoginProto2 == 1 登陆协议
@@ -30,6 +31,7 @@ type C2GWS_PlayerEntryGame struct {
 type S2GWS_PlayerEntryGame struct {
 	Protocol  int
 	Protocol2 int
+	RoomList  interface{}
 }
 
 //------------------------------------------------------------------------------
@@ -38,7 +40,7 @@ type GateWay_Relink struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
-	Timestamp int // 时间戳
+	Timestamp int
 }
 
 //------------------------------------------------------------------------------
