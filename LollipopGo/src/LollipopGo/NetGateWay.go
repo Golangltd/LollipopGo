@@ -1,6 +1,7 @@
 package main
 
 import (
+	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/util"
 	"Proto"
@@ -127,10 +128,37 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 功能函数处理 --  心跳函数处理
 			this.GWHeartBeat(ProtocolData)
 		}
+	case float64(Proto2.C2GWS_PlayerEntryGameProto2):
+		{
+			// 功能函数处理 --  选择游戏列表的数据
+			this.PlayerEntryGame(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+func (this *NetDataConn) PlayerEntryGame(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["GameID"] == nil {
+		panic("进入游戏协议参数错误！")
+		return
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+	StrGameID := ProtocolData["GameID"].(string)
+	StrTimestamp := ProtocolData["Timestamp"].(string)
+	_ = StrOpenID
+	_ = StrTimestamp
+	data := &Proto2.S2GWS_PlayerEntryGame{
+		Protocol:  Proto.G_GateWay_Proto,
+		Protocol2: Proto2.S2GWS_PlayerEntryGameProto2,
+		RoomList:  conf.G_RoomList[StrGameID],
+	}
+	// 发送数据
+	fmt.Println("房间列表:", data)
+	this.PlayerSendMessage(data)
 	return
 }
 
