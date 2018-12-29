@@ -127,8 +127,6 @@ func ReadCsv_ConfigFile_RoomListST_Fun() bool {
 			}
 		}
 	}
-
-	fmt.Println("+++++++++", conf.G_RoomList)
 	return true
 }
 
