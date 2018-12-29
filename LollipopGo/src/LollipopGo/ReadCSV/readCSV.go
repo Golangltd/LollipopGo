@@ -78,6 +78,7 @@ func ReadCsv_ConfigFile_BannerInfoST_Fun() bool {
 //------------------------------------------------------------------------------
 
 // 房间列表
+// 数据在网关服务器 --- update
 func ReadCsv_ConfigFile_RoomListST_Fun() bool {
 	// 获取数据，按照文件
 	fileName := "roomlist.csv"
