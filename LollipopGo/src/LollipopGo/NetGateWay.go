@@ -13,6 +13,57 @@ import (
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+// DSQ Server 子协议的处理
+func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interface{}) {
+
+	switch protocol2 {
+	case float64(Proto2.DSQ2GW_ConnServerProto2):
+		{
+			// 网关主动链接进来，做数据链接的保存
+			this.DSQConnServerFunc(ProtocolData)
+		}
+	default:
+		panic("子协议：不存在！！！")
+	}
+
+	return
+}
+
+// Global server 保存
+func (this *NetDataConn) DSQConnServerFunc(ProtocolData map[string]interface{}) {
+	if ProtocolData["ServerID"] == nil {
+		panic("ServerID 数据为空!")
+		return
+	}
+
+	fmt.Println("DSQ server conn entry gateway!!!")
+	StrServerID := ProtocolData["ServerID"].(string)
+	strGlobalServer = StrServerID
+	// 1 发送数据
+	data := &Proto2.GW2DSQ_ConnServer{
+		Protocol:  Proto.G_GameDSQ_Proto, // 游戏主要协议
+		Protocol2: Proto2.GW2DSQ_ConnServerProto2,
+		ServerID:  StrServerID,
+	}
+	// 发送数据
+	this.PlayerSendMessage(data)
+
+	// 2 保存DSQ的链接信息
+	//================================推送消息处理===================================
+	// 保存在线的玩家的数据信息
+	onlineServer := &NetDataConn{
+		Connection:    this.Connection, // 链接的数据信息
+		MapSafeServer: this.MapSafeServer,
+	}
+	// 保存玩家数据到内存
+	this.MapSafeServer.Put(StrServerID+"|DSQ_Server", onlineServer)
+	//==============================================================================
+	return
+}
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // Global Server 子协议的处理
 func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolData map[string]interface{}) {
 
