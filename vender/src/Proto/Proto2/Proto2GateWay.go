@@ -15,7 +15,27 @@ const (
 	S2GWS_PlayerChooseGameProto2            // S2GWS_PlayerChooseGameProto2 == 6
 	C2GWS_PlayerChooseGameModeProto2        // C2GWS_PlayerChooseGameModeProto2 == 7  // 玩家选择游戏模式
 	S2GWS_PlayerChooseGameModeProto2        // S2GWS_PlayerChooseGameModeProto2 == 8
+	C2GWS_PlayerGameInitProto2              // C2GWS_PlayerGameInitProto2 == 9  // 匹配成功后，客户端下发获取初始化牌型
+	S2GWS_PlayerGameInitProto2              // S2GWS_PlayerGameInitProto2 == 10
 )
+
+//------------------------------------------------------------------------------
+// C2GWS_PlayerGameInitProto2
+type C2GWS_PlayerGameInit struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	RoomUID   int
+}
+
+// S2GWS_PlayerGameInitProto2
+type S2GWS_PlayerGameInit struct {
+	Protocol   int
+	Protocol2  int
+	OpenID     string
+	RoomUID    int
+	ChessBoard [4][4]int // 棋盘的数据
+}
 
 //------------------------------------------------------------------------------
 // C2GWS_PlayerChooseGameModeProto2
