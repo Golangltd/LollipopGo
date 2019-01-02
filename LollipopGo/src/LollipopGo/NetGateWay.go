@@ -184,14 +184,6 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 	return
 }
 
-type G2GW_PlayerMatchGame struct {
-	Protocol  int
-	Protocol2 int
-	OpenID    string // 玩家唯一标识
-	Itype     int    // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
-	RoomID    int    // 房间ID
-}
-
 func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interface{}) {
 	if ProtocolData["OpenID"] == nil ||
 		ProtocolData["RoomID"] == nil ||
