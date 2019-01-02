@@ -2,9 +2,12 @@ package Proto2
 
 //  G_GameDSQ_Proto == 10    斗兽棋
 const (
-	INITDSQ               = iota //  INITDSQ == 0
-	GW2DSQ_InitGameProto2        //  GW2DSQ_InitGameProto2   == 1  初始化协议
-	DSQ2GW_InitGameProto2        //  GW2DSQ_InitGameProto2   == 1
+	INITDSQ                 = iota //  INITDSQ == 0
+	DSQ2GW_ConnServerProto2        //  DSQ2GW_ConnServerProto2 == 1 DSQ主动链接 主动链接 gateway 进行注册
+	GW2DSQ_ConnServerProto2        //  GW2DSQ_ConnServerProto2 == 2 选择链接
+	GW2DSQ_InitGameProto2          //  GW2DSQ_InitGameProto2   == 3  初始化协议-- 相当于注册
+	DSQ2GW_InitGameProto2          //  GW2DSQ_InitGameProto2   == 4
+
 )
 
 // 斗兽棋的棋子类型
@@ -44,6 +47,21 @@ const (
 )
 
 //------------------------------------------------------------------------------
+// DSQ2GW_ConnServerProto2
+type DSQ2GW_ConnServer struct {
+	Protocol  int
+	Protocol2 int
+	ServerID  string //全局配置 唯一的也是
+}
+
+// GW2DSQ_ConnServerProto2
+type GW2DSQ_ConnServer struct {
+	Protocol  int
+	Protocol2 int
+	ServerID  string //全局配置 唯一的也是
+}
+
+//------------------------------------------------------------------------------
 // GW2DSQ_InitGameProto2
 type GW2DSQ_InitGame struct {
 	Protocol  int
@@ -56,7 +74,8 @@ type GW2DSQ_InitGame struct {
 type DSQ2GW_InitGame struct {
 	Protocol  int
 	Protocol2 int
-	Isucc     bool       // 是否初始化成功
+	OpenID    string
+	RoomID    string
 	InitData  [4][4]*int // 斗兽棋的棋盘的数据
 }
 

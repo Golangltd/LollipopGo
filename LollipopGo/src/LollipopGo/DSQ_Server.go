@@ -59,13 +59,13 @@ type RoomPlayerDSQ struct {
 
 // 初始化操作
 func init() {
-	// if !initDSQGateWayNet() {
-	// 	fmt.Println("链接 gateway server 失败!")
-	// 	return
-	// }
-	// fmt.Println("链接 gateway server 成功!")
-	// // 初始化数据
-	// initDSQNetRPC()
+	if !initDSQGateWayNet() {
+		fmt.Println("链接 gateway server 失败!")
+		return
+	}
+	fmt.Println("链接 gateway server 成功!")
+	// 初始化数据
+	initDSQNetRPC()
 	return
 }
 
@@ -100,9 +100,9 @@ func initDSQGateWayNet() bool {
 // 链接到网关
 func initConnDSQ(conn *websocket.Conn) {
 	// 协议修改
-	data := &Proto2.G2GW_ConnServer{
-		Protocol:  Proto.G_GameGlobal_Proto, // 游戏主要协议
-		Protocol2: Proto2.G2GW_ConnServerProto2,
+	data := &Proto2.DSQ2GW_ConnServer{
+		Protocol:  Proto.G_GameDSQ_Proto, // 游戏主要协议
+		Protocol2: Proto2.DSQ2GW_ConnServerProto2,
 		ServerID:  util.MD5_LollipopGO("8895" + "DSQ server"),
 	}
 	fmt.Println(data)
