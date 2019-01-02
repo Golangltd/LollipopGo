@@ -47,6 +47,7 @@ func main() {
 	strServerType_GM := "GM"
 	strServerType_GL := "GL"
 	strServerType_Snake := "Snake"
+	// strServerType_Snake := "DSQ"
 	if len(os.Args) > 1 {
 		strport = os.Args[1]
 		strServerType = os.Args[2]

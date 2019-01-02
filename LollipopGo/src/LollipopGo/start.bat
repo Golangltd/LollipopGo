@@ -17,4 +17,8 @@ start LollipopGo.exe 8890 DB
 echo GM server :服务器启动(http)
 echo LollipopGo.exe 8892 GM
 
+
+echo DSQ server :服务器启动(websocket)
+echo LollipopGo.exe 8893 DSQ
+
 exit

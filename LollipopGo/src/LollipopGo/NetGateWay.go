@@ -43,7 +43,7 @@ func (this *NetDataConn) DSQGameInitFunc(ProtocolData map[string]interface{}) {
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string)
-	iiqipan := ProtocolData["RoomID"].([4][4]int)
+	iiqipan := ProtocolData["InitData"].([4][4]int)
 
 	// 组装数据
 	data := &Proto2.S2GWS_PlayerGameInit{
