@@ -177,6 +177,15 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 功能函数处理 --  选择游戏对战类型
 			this.PlayerChooseGameModeGame(ProtocolData)
 		}
+		/*
+			--------------------------------------------------------------------
+			                    Game server 斗兽棋
+			--------------------------------------------------------------------
+		*/
+	case float64(Proto2.C2GWS_PlayerGameInitProto2):
+		{
+			// 功能函数处理 --  选择游戏对战类型
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
@@ -205,7 +214,7 @@ func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interf
 		RoomID:    iRoomID,   // 房间ID
 	}
 
-	// 发送给global server
+	// 发送给 global server
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	return
 }
