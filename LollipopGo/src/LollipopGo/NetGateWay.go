@@ -3,6 +3,7 @@ package main
 import (
 	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/log"
+	"LollipopGo/LollipopGo/match"
 	"LollipopGo/LollipopGo/util"
 	"Proto"
 	"Proto/Proto2"
@@ -48,7 +49,7 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	// 获取数据
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomUID := ProtocolData["RoomUID"].(int)
-	MatchPlayerST := ProtocolData["MatchPlayer"].(map[string]interface{})
+	MatchPlayerST := ProtocolData["MatchPlayer"].(map[string]*match.RoomMatch)
 	ChessBoard := ProtocolData["ChessBoard"].([4][4]int)
 	iResultID := ProtocolData["ResultID"].(int)
 
@@ -64,7 +65,10 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	}
 
 	// 发送数据  --
-	this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
+	// this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
+	// 发送给匹配的人的
+	this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerAOpenID, "connect", data_send)
+	this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerBOpenID, "connect", data_send)
 	return
 }
 

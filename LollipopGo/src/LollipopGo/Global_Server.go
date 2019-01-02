@@ -4,6 +4,7 @@ import (
 	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/error"
 	"LollipopGo/LollipopGo/log"
+	"LollipopGo/LollipopGo/match"
 	"Proto"
 	"Proto/Proto2"
 	"flag"
@@ -177,31 +178,31 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	data := conf.RoomListData[StrRoomID]
 	fmt.Println("针对某房间ID去获取，相应的数据的", data)
 	dataplayer := DB_Save_RoleSTBak(StrOpenID)
+	match.Putdata(dataplayer)
 	if util.Str2int_LollipopGo(data.NeedLev) > dataplayer.Lev {
 		data_send.ResultID = Error.Lev_lack
-		goto GolangLTD
+		PlayerSendToServer(conn, data_send)
+		return
 	} else if util.Str2int_LollipopGo(data.NeedPiece) > dataplayer.CoinNum {
 		data_send.ResultID = Error.Coin_lack
-		goto GolangLTD
+		PlayerSendToServer(conn, data_send)
+		return
 	}
-	// 3. 进行匹配
-	// 4. 创建房间
-	// 5. 组装数据
-
-GolangLTD:
+	dar := <-match.MatchData_Chan
+	data_send.MatchPlayer = dar
 	fmt.Println(data_send)
 	PlayerSendToServer(conn, data_send)
 	return
 }
 
 // 保存数据都DB 人物信息
-func DB_Save_RoleSTBak(openid string) player.PlayerSt {
+func DB_Save_RoleSTBak(openid string) *player.PlayerSt {
 
 	args := player.PlayerSt{
 		OpenID: openid,
 	}
 
-	var reply player.PlayerSt
+	var reply *player.PlayerSt
 	// 异步调用【结构的方法】
 	if ConnRPC != nil {
 		// ConnRPC.Call("Arith.GetPlayerST2DB", args, &reply) 同步调用
