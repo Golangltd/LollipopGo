@@ -22,10 +22,39 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 			// 网关主动链接进来，做数据链接的保存
 			this.DSQConnServerFunc(ProtocolData)
 		}
+	case float64(Proto2.DSQ2GW_InitGameProto2):
+		{
+			// 网关初始化棋牌数据
+			this.DSQGameInitFunc(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+// DSQ 返回给玩家
+func (this *NetDataConn) DSQGameInitFunc(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomID"] == nil {
+		panic("玩家数据错误!!!")
+		return
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+	StrRoomID := ProtocolData["RoomID"].(string)
+	iiqipan := ProtocolData["RoomID"].([4][4]int)
+
+	// 组装数据
+	data := &Proto2.S2GWS_PlayerGameInit{
+		Protocol:   Proto.G_GateWay_Proto,
+		Protocol2:  Proto2.S2GWS_PlayerGameInitProto2,
+		OpenID:     StrOpenID,
+		RoomUID:    util.Str2int_LollipopGo(StrRoomID),
+		ChessBoard: iiqipan,
+	}
+
+	this.SendClientDataFunc(data.OpenID, "connect", data)
 	return
 }
 
