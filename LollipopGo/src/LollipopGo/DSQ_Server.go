@@ -168,8 +168,8 @@ func HandleCltProtocolDSQ(protocol interface{}, protocol2 interface{}, ProtocolD
 	// 协议处理
 	switch protocol {
 	case float64(Proto.G_GameGlobal_Proto):
-		{ // Global Server 主要协议处理
-			fmt.Println("Global server 主协议!!!")
+		{ // DSQ Server 主要协议处理
+			fmt.Println("DSQ server 主协议!!!")
 			HandleCltProtocol2DSQ(protocol2, ProtocolData)
 
 		}
@@ -185,11 +185,11 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 	switch protocol2 {
 	case float64(Proto2.GW2G_ConnServerProto2):
 		{ // 网关返回数据
-			fmt.Println("gateway server 返回给global server 数据信息！！！")
+			fmt.Println("gateway server DSQ server 数据信息！！！")
 		}
-	case float64(Proto2.G2GW_PlayerEntryHallProto2):
-		{ // 网关请求获取大厅数据
-			fmt.Println("玩家请求获取大厅数：默认获奖列表、跑马灯等")
+	case float64(Proto2.GW2DSQ_InitGameProto2):
+		{ // 网关请求获取棋盘初始化数据
+			fmt.Println("网关请求获取棋盘初始化数据等")
 			// G2GW_PlayerEntryHallProto2Fucn(Conn, ProtocolData)
 		}
 

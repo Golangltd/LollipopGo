@@ -26,6 +26,7 @@ var icount, icounttmp int
 
 // server data;推送数据时候用
 var strGlobalServer string = ""
+var strDSQServer string = ""
 
 // 游戏服务器的初始化
 func init() {

@@ -29,7 +29,7 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 	return
 }
 
-// Global server 保存
+// DSQ server 保存
 func (this *NetDataConn) DSQConnServerFunc(ProtocolData map[string]interface{}) {
 	if ProtocolData["ServerID"] == nil {
 		panic("ServerID 数据为空!")
@@ -38,7 +38,7 @@ func (this *NetDataConn) DSQConnServerFunc(ProtocolData map[string]interface{}) 
 
 	fmt.Println("DSQ server conn entry gateway!!!")
 	StrServerID := ProtocolData["ServerID"].(string)
-	strGlobalServer = StrServerID
+	strDSQServer = StrServerID
 	// 1 发送数据
 	data := &Proto2.GW2DSQ_ConnServer{
 		Protocol:  Proto.G_GameDSQ_Proto, // 游戏主要协议
@@ -236,11 +236,35 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 	case float64(Proto2.C2GWS_PlayerGameInitProto2):
 		{
 			// 功能函数处理 --  选择游戏对战类型
+			this.PlayerEntryGameModeDSQGame(ProtocolData)
 		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+func (this *NetDataConn) PlayerEntryGameModeDSQGame(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomID"] == nil {
+		panic("初始化游戏错误！")
+		return
+	}
+
+	// 获取数据
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := ProtocolData["RoomID"].(int)
+
+	data := &Proto2.GW2DSQ_InitGame{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.GW2DSQ_InitGameProto2,
+		OpenID:    StrOpenID,                        // 玩家唯一标识
+		RoomID:    util.Int2str_LollipopGo(iRoomID), // 房间ID
+	}
+
+	// 发送给 DSQ server
+	this.SendServerDataFunc(strDSQServer, "DSQ_Server", data)
 	return
 }
 
