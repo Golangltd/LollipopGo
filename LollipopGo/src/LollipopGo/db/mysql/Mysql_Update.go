@@ -17,18 +17,18 @@ func (this *mysql_db) Modefy_PlayerDataGM(uid, itype, number int) bool {
 	// 默认修改VIP
 	strSql := ""
 	if itype == Proto2.MODIFY_COIN {
-		strSql = "update t_userinfo_copy set coinnum=? where uid=?"
+		strSql = "update t_userinfo set coinnum=? where uid=?"
 	} else if itype == Proto2.MODIFY_MASONRY {
-		strSql = "update t_userinfo_copy set masonrynum=? where uid=?"
+		strSql = "update t_userinfo set masonrynum=? where uid=?"
 	} else if itype == Proto2.MODIFY_MCARD {
-		strSql = "update t_userinfo_copy set mcard=? where uid=?"
+		strSql = "update t_userinfo set mcard=? where uid=?"
 	} else if itype == Proto2.MODIFY_LEV {
-		strSql = "update t_userinfo_copy set lev=? where uid=?"
+		strSql = "update t_userinfo set lev=? where uid=?"
 		if number > 100 {
 			number = 99
 		}
 	} else if itype == Proto2.MODIFY_VIP_LEV {
-		strSql = "update t_userinfo_copy set vip=? where uid=?"
+		strSql = "update t_userinfo set vip=? where uid=?"
 		if number > 100 {
 			number = 99
 		}

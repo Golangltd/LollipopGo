@@ -20,4 +20,5 @@ type PlayerSt struct {
 	HistoryGameList map[int]*HistoryGame // 历史游戏
 	HistoryRaceList map[int]*HistoryRace // 历史比赛
 	MedalList       string               // 勋章列表，策划配表
+	OpenID          string               // MD5数据
 }

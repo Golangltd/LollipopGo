@@ -26,10 +26,45 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 			// Global server 返回给服务器
 			this.GWPlayerLoginGL(ProtocolData)
 		}
+	case float64(Proto2.GW2G_PlayerMatchGameProto2):
+		{
+			// Global server 玩家匹配的协议
+			this.GWPlayerMatchGameGL(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+// Global server 返回给gateway server
+func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}) {
+
+	if ProtocolData["RoomUID"] == nil {
+		log.Debug("Global server data is wrong:RoomUID is nil!")
+		return
+	}
+	// 获取数据
+	StrOpenID := ProtocolData["OpenID"].(string)
+	StrRoomUID := ProtocolData["RoomUID"].(int)
+	MatchPlayerST := ProtocolData["MatchPlayer"].(map[string]interface{})
+	ChessBoard := ProtocolData["ChessBoard"].([4][4]int)
+	iResultID := ProtocolData["ResultID"].(int)
+
+	// 数据
+	data_send := &Proto2.GW2G_PlayerMatchGame{
+		Protocol:    Proto.G_GameGlobal_Proto, // 游戏主要协议
+		Protocol2:   Proto2.GW2G_PlayerMatchGameProto2,
+		OpenID:      StrOpenID, // 玩家唯一标识
+		RoomUID:     StrRoomUID,
+		MatchPlayer: MatchPlayerST,
+		ChessBoard:  ChessBoard,
+		ResultID:    iResultID,
+	}
+
+	// 发送数据  --
+	this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	return
 }
 
@@ -128,15 +163,54 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 功能函数处理 --  心跳函数处理
 			this.GWHeartBeat(ProtocolData)
 		}
-	case float64(Proto2.C2GWS_PlayerEntryGameProto2):
+	case float64(Proto2.C2GWS_PlayerChooseGameProto2):
 		{
 			// 功能函数处理 --  选择游戏列表的数据
 			this.PlayerEntryGame(ProtocolData)
+		}
+	case float64(Proto2.C2GWS_PlayerChooseGameModeProto2):
+		{
+			// 功能函数处理 --  选择游戏对战类型
+			this.PlayerChooseGameModeGame(ProtocolData)
 		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+type G2GW_PlayerMatchGame struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一标识
+	Itype     int    // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
+	RoomID    int    // 房间ID
+}
+
+func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomID"] == nil ||
+		ProtocolData["Itype"] == nil {
+		panic("选择游戏对战类型协议参数错误！")
+		return
+	}
+
+	// 获取数据
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := ProtocolData["RoomID"].(int)
+	Itype := ProtocolData["Itype"].(int)
+
+	data := &Proto2.G2GW_PlayerMatchGame{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.G2GW_PlayerMatchGameProto2,
+		OpenID:    StrOpenID, // 玩家唯一标识
+		Itype:     Itype,     // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
+		RoomID:    iRoomID,   // 房间ID
+	}
+
+	// 发送给global server
+	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	return
 }
 
@@ -151,9 +225,9 @@ func (this *NetDataConn) PlayerEntryGame(ProtocolData map[string]interface{}) {
 	StrTimestamp := ProtocolData["Timestamp"].(string)
 	_ = StrOpenID
 	_ = StrTimestamp
-	data := &Proto2.S2GWS_PlayerEntryGame{
+	data := &Proto2.S2GWS_PlayerChooseGame{
 		Protocol:  Proto.G_GateWay_Proto,
-		Protocol2: Proto2.S2GWS_PlayerEntryGameProto2,
+		Protocol2: Proto2.S2GWS_PlayerChooseGameProto2,
 		RoomList:  conf.G_RoomList[StrGameID],
 	}
 	// 发送数据

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"LollipopGo/LollipopGo/conf"
+	"LollipopGo/LollipopGo/error"
 	"LollipopGo/LollipopGo/log"
 	"Proto"
 	"Proto/Proto2"
@@ -134,22 +136,86 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 			fmt.Println("gateway server 返回给global server 数据信息！！！")
 		}
 	case float64(Proto2.G2GW_PlayerEntryHallProto2):
-		{ // 网关请求获取大厅数据
-			fmt.Println("玩家请求获取大厅数：默认获奖列表、跑马灯等")
+		{
 			G2GW_PlayerEntryHallProto2Fucn(Conn, ProtocolData)
 		}
-
+	case float64(Proto2.G2GW_PlayerMatchGameProto2):
+		{
+			fmt.Println("玩家请求玩家匹配！")
+			G2GW_PlayerMatchGameProto2Fucn(Conn, ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 	return
 }
 
-// 返回给玩家数据
+// 玩家匹配
+func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomID"] == nil ||
+		ProtocolData["Itype"] == nil {
+		panic("选择游戏对战类型协议参数错误！")
+		return
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+	StrRoomID := ProtocolData["RoomID"].(string) //匹配数据
+	StrItype := ProtocolData["Itype"].(string)
+	_ = StrItype
+
+	// 数据
+	data_send := &Proto2.GW2G_PlayerMatchGame{
+		Protocol:  Proto.G_GameGlobal_Proto, // 游戏主要协议
+		Protocol2: Proto2.GW2G_PlayerMatchGameProto2,
+		OpenID:    StrOpenID, // 玩家唯一标识
+		// RoomUID:     0,
+		// MatchPlayer: nil,
+		// ChessBoard:  {{}, {}, {}, {}},
+		ResultID: 0,
+	}
+
+	data := conf.RoomListData[StrRoomID]
+	fmt.Println("针对某房间ID去获取，相应的数据的", data)
+	dataplayer := DB_Save_RoleSTBak(StrOpenID)
+	if util.Str2int_LollipopGo(data.NeedLev) > dataplayer.Lev {
+		data_send.ResultID = Error.Lev_lack
+		goto GolangLTD
+	} else if util.Str2int_LollipopGo(data.NeedPiece) > dataplayer.CoinNum {
+		data_send.ResultID = Error.Coin_lack
+		goto GolangLTD
+	}
+	// 3. 进行匹配
+	// 4. 创建房间
+	// 5. 组装数据
+
+GolangLTD:
+	fmt.Println(data_send)
+	PlayerSendToServer(conn, data_send)
+	return
+}
+
+// 保存数据都DB 人物信息
+func DB_Save_RoleSTBak(openid string) player.PlayerSt {
+
+	args := player.PlayerSt{
+		OpenID: openid,
+	}
+
+	var reply player.PlayerSt
+	// 异步调用【结构的方法】
+	if ConnRPC != nil {
+		// ConnRPC.Call("Arith.GetPlayerST2DB", args, &reply) 同步调用
+		divCall := ConnRPC.Go("Arith.GetPlayerST2DB", args, &reply, nil)
+		replyCall := <-divCall.Done
+		_ = replyCall.Reply
+	} else {
+		fmt.Println("ConnRPC == nil")
+	}
+	return reply
+}
+
 func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 
-	fmt.Println("G2GW_PlayerEntryHallProto2Fucn Entry Func(){}")
-	// 返回数据给GateWay
 	StrUID := ProtocolData["UID"].(string)
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrPlayerName := ProtocolData["PlayerName"].(string)
@@ -170,6 +236,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	// 个人数据
 	personalmap := make(map[string]*player.PlayerSt)
 	personalmap["1"] = &datadb
+	_ = personalmap["1"].OpenID
 
 	// 组装数据
 	data := &Proto2.GW2G_PlayerEntryHall{
@@ -188,6 +255,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	}
 	fmt.Println(data)
 	PlayerSendToServer(conn, data)
+	// 保存玩家的数据  -- 主要是为了
 	return
 
 }

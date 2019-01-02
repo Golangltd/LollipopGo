@@ -15,8 +15,31 @@ const (
 	GW2G_PlayerMatchProto2            // GW2G_PlayerMatchProto2 == 5 服务器返回数据对应匹配机制
 	G2GW_PlayerEntryHallProto2        // G2GW_PlayerEntryHallProto2 == 6 玩家进入大厅，显示的数据
 	GW2G_PlayerEntryHallProto2        // GW2G_PlayerEntryHallProto2 == 7
+	G2GW_PlayerMatchGameProto2        // G2GW_PlayerMatchGameProto2 == 8 玩家选择游戏匹配
+	GW2G_PlayerMatchGameProto2        // GW2G_PlayerMatchGameProto2 == 9
 
 )
+
+//------------------------------------------------------------------------------
+// G2GW_PlayerMatchGameProto2
+type G2GW_PlayerMatchGame struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一标识
+	Itype     int    // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
+	RoomID    int    // 房间ID
+}
+
+// GW2G_PlayerMatchGameProto2
+type GW2G_PlayerMatchGame struct {
+	Protocol    int
+	Protocol2   int
+	OpenID      string                 // 玩家唯一标识
+	RoomUID     int                    // 房间ID；注意匹配失败或者超时，数据为空
+	MatchPlayer map[string]interface{} // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
+	ChessBoard  [4][4]int              // 棋盘的数据
+	ResultID    int                    // 结果ID
+}
 
 //------------------------------------------------------------------------------
 // G2GW_PlayerEntryHallProto2

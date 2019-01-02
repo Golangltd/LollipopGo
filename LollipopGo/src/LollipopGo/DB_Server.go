@@ -63,6 +63,34 @@ type Args struct {
 }
 
 //------------------------------------------------------------------------------
+// 获取玩家的数据
+// 玩家用户保存
+func (t *Arith) GetPlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) error {
+	defer func() {
+		if err := recover(); err != nil {
+			strerr := fmt.Sprintf("%s", err)
+			//发消息给客户端
+			ErrorST := Proto2.G_Error_All{
+				Protocol:  Proto.G_Error_Proto,      // 主协议
+				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				ErrCode:   "80006",
+				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
+			}
+			fmt.Println("Global server 异常错误", ErrorST)
+		}
+	}()
+	// 1 解析数据 *reply = args.A * args.B
+	// roleUID := args.UID
+	// 2 保存或者更新数据
+	if Mysyl_DB.DB != nil {
+		_, data := Mysyl_DB.DB.ReadUserInfoDataByOpenID(args)
+		*reply = data
+	} else {
+	}
+	return nil
+}
+
+//------------------------------------------------------------------------------
 // 修改GM系统
 func (t *Arith) ModefyPlayerDataGM(args *Proto2.W2GMS_Modify_PlayerData, reply *Proto2.GMS2W_Modify_PlayerData) error {
 	//--------------------------------------------------------------------------

@@ -42,9 +42,9 @@ func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) (bool, player.Pla
 	}
 	// 获取时间戳
 	tmptime := util.GetNowUnix_LollipopGo()
-	stmt, err := this.STdb.Prepare("insert t_userinfo_copy set uid=?,vip=?,name=?,headurl=?,school=?,sex=?,hallexp=?,coinnum=?,masonrynum=?,mcard=?,constellation=?,medallist=?,createtime=?")
+	stmt, err := this.STdb.Prepare("insert t_userinfo set uid=?,openid=?,vip=?,name=?,headurl=?,school=?,sex=?,hallexp=?,coinnum=?,masonrynum=?,mcard=?,constellation=?,medallist=?,createtime=?")
 	CheckErr(err)
-	res, err := stmt.Exec(data.UID, data.VIP_Lev, data.Name, data.HeadURL, data.PlayerSchool, data.Sex, data.HallExp, data.CoinNum, data.MasonryNum, data.MCard, data.Constellation, data.MedalList, tmptime)
+	res, err := stmt.Exec(data.UID, data.OpenID, data.VIP_Lev, data.Name, data.HeadURL, data.PlayerSchool, data.Sex, data.HallExp, data.CoinNum, data.MasonryNum, data.MCard, data.Constellation, data.MedalList, tmptime)
 	CheckErr(err)
 	id, err := res.LastInsertId()
 	CheckErr(err)
