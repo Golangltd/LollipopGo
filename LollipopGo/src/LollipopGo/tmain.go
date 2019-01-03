@@ -18,6 +18,8 @@ import (
 	"code.google.com/p/go.net/websocket"
 )
 
+var strServerType = "GW"
+
 func init() {
 	// 加载配置
 	LollipopGoconf.LogLevel = conf.Server.LogLevel
@@ -39,7 +41,6 @@ func main() {
 		return
 	}
 	strport := "8888"
-	strServerType := "GW"
 	strServerType_GW := "GW"
 	strServerType_GS := "GS"
 	strServerType_DB := "DB"
@@ -47,7 +48,7 @@ func main() {
 	strServerType_GM := "GM"
 	strServerType_GL := "GL"
 	strServerType_Snake := "Snake"
-	// strServerType_Snake := "DSQ"
+	strServerType_DSQ := "DSQ"
 	if len(os.Args) > 1 {
 		strport = os.Args[1]
 		strServerType = os.Args[2]
@@ -98,6 +99,14 @@ func main() {
 	} else if strServerType == strServerType_GL {
 		strport = "8894"
 		http.Handle("/GolangLtdGL", websocket.Handler(wwwGolangLtd))
+		if err := http.ListenAndServe(":"+strport, nil); err != nil {
+			glog.Error("网络错误", err)
+			return
+		}
+	} else if strServerType == strServerType_DSQ {
+		strport = "8885"
+		// go GameServerINIT()
+		http.Handle("/GolangLtdDSQ", websocket.Handler(wwwGolangLtd))
 		if err := http.ListenAndServe(":"+strport, nil); err != nil {
 			glog.Error("网络错误", err)
 			return

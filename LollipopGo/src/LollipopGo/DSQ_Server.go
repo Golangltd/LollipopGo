@@ -58,14 +58,16 @@ type RoomPlayerDSQ struct {
 */
 
 // 初始化操作
-func init1() {
-	if !initDSQGateWayNet() {
-		fmt.Println("链接 gateway server 失败!")
-		return
+func init() {
+	if strServerType == "DSQ" {
+		if !initDSQGateWayNet() {
+			fmt.Println("链接 gateway server 失败!")
+			return
+		}
+		fmt.Println("链接 gateway server 成功!")
+		// 初始化数据
+		initDSQNetRPC()
 	}
-	fmt.Println("链接 gateway server 成功!")
-	// 初始化数据
-	initDSQNetRPC()
 	return
 }
 
