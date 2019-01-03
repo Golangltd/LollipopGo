@@ -277,6 +277,7 @@ func DB_Save_RoleST(uid, strname, HeadURL, StrPlayerSchool, Sex, Constellation s
 		MasonryNum:    MasonryNum,
 		MCard:         MCard,
 		Constellation: Constellation,
+		OpenID:        util.MD5_LollipopGO(uid),
 	}
 
 	var reply player.PlayerSt
