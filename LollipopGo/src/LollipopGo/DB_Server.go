@@ -161,9 +161,10 @@ func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
 	// *reply = args.A * args.B
 	// 组装数据
 	data := &player.GateWayList{
-		ServerID:        1001,
-		ServerName:      "大厅服务器",
-		ServerIPAndPort: "gateway.a.babaliuliu.com:8888",
+		ServerID:   1001,
+		ServerName: "大厅服务器",
+		// ServerIPAndPort: "gateway.a.babaliuliu.com:8888", // 测试环境
+		ServerIPAndPort: "gateway.b.babaliuliu.com:8888", // 本机  test149.babaliuliu.com
 		State:           "空闲",
 		OLPlayerNum:     1024,
 		MaxPlayerNum:    5000,
