@@ -159,7 +159,7 @@ type GateWay_Relink struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
-	Timestamp int
+	Timestamp string
 }
 
 //------------------------------------------------------------------------------
