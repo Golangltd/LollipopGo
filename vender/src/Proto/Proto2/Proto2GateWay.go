@@ -92,6 +92,7 @@ type S2GWS_PlayerStirChess struct {
 	Protocol2 int
 	OpenID    string // 谁翻动了棋子
 	StirPos   string // 翻动的位置  格式:x,y
+	ChessNum  int    // 1 - 16 正数
 }
 
 //------------------------------------------------------------------------------
