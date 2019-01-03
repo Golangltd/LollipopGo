@@ -15,22 +15,17 @@ func wwwGolangLtd(ws *websocket.Conn) {
 	// data = json{}
 	data := ws.Request().URL.Query().Get("data")
 	fmt.Println("data:", data)
-
-	// 网络信息
 	NetDataConntmp := &NetDataConn{
 		Connection:    ws,
 		StrMd5:        "",
 		MapSafe:       M,
 		MapSafeServer: MServer,
 	}
-	// 指针接受者  处理消息
 	NetDataConntmp.PullFromClient()
 }
 
 // 公用的send函数
 func PlayerSendToServer(conn *websocket.Conn, data interface{}) {
-
-	// 2 结构体转换成json数据
 	jsons, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println("err:", err.Error())
