@@ -19,7 +19,7 @@ const (
 	S2GWS_PlayerGameInitProto2              // S2GWS_PlayerGameInitProto2 == 10
 
 	/*
-	   斗兽棋
+	   斗兽棋 0表示空 1-8 A方，9-16 B方
 	*/
 	C2GWS_PlayerStirChessProto2 // C2GWS_PlayerStirChessProto2 == 11   玩家翻棋子
 	S2GWS_PlayerStirChessProto2 // S2GWS_PlayerStirChessProto2 == 12   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
@@ -82,6 +82,7 @@ type C2GWS_PlayerStirChess struct {
 	Protocol2 int
 	OpenID    string
 	RoomUID   int
+	StirPos   string // 翻动的位置 格式: x,y
 }
 
 // S2GWS_PlayerStirChessProto2
@@ -90,7 +91,7 @@ type S2GWS_PlayerStirChess struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string // 谁翻动了棋子
-	StirPos   string // 翻动的位置  x,y
+	StirPos   string // 翻动的位置  格式:x,y
 }
 
 //------------------------------------------------------------------------------
@@ -108,7 +109,7 @@ type S2GWS_PlayerGameInit struct {
 	Protocol2  int
 	OpenID     string
 	RoomUID    int
-	ChessBoard [4][4]int // 棋盘的数据
+	ChessBoard [4][4]int // 棋盘的数据 0表示空
 }
 
 //------------------------------------------------------------------------------
@@ -130,7 +131,7 @@ type S2GWS_PlayerChooseGameMode struct {
 	OpenID      string                 // 玩家唯一标识
 	RoomUID     int                    // 房间ID；注意匹配失败或者超时，数据为空
 	MatchPlayer map[string]interface{} // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
-	ChessBoard  [4][4]int              // 棋盘的数据
+	ChessBoard  [4][4]int              // 棋盘的数据；0表示空
 	ResultID    int                    // 结果ID
 }
 
