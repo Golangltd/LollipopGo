@@ -309,7 +309,6 @@ func (this *NetDataConn) PlayerRelinkGateWay(ProtocolData map[string]interface{}
 		panic("断线重新链接 openid 错误！")
 		return
 	}
-
 	strOPenID := ProtocolData["OpenID"].(string)
 	return
 }
