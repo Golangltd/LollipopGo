@@ -12,20 +12,20 @@ package main
 	 8. 可扩展性,动态拓展
 */
 
-////
-//func init() {
-//	return
-//}
+//
+func init() {
+	return
+}
 
-////------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-//func main() {
-//	strport := "8888"
-//	http.HandleFunc("/GolangLtd", IndexHandlerGM)
-//	http.ListenAndServe(":"+strport, nil)
-//	return
-//}
+func main() {
+	strport := "8888"
+	http.HandleFunc("/GolangLtd", IndexHandlerGM)
+	http.ListenAndServe(":"+strport, nil)
+	return
+}
 
-//func IndexHandlerGM(w http.ResponseWriter, r *http.Request) {
-//	fmt.Fprintln(w, "Golang语言社区 www.Golang.Ltd")
-//}
+func IndexHandlerGM(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Golang语言社区 www.Golang.Ltd")
+}

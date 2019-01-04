@@ -267,6 +267,21 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 功能函数处理 --  选择游戏对战类型
 			this.PlayerEntryGameModeDSQGame(ProtocolData)
 		}
+	case float64(Proto2.C2GWS_PlayerStirChessProto2):
+		{
+			// 玩家翻棋
+			this.PlayerStirChessDSQGame(ProtocolData)
+		}
+	case float64(Proto2.C2GWS_PlayerMoveChessProto2):
+		{
+			// 玩家移动棋子
+			this.PlayerMoveChessDSQGame(ProtocolData)
+		}
+	case float64(Proto2.C2GWS_PlayerGiveUpProto2):
+		{
+			// 玩家认输--放弃
+			this.PlayerGiveUpDSQGame(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
@@ -274,6 +289,26 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 	return
 }
 
+// 玩家认输--放弃
+func (this *NetDataConn) PlayerGiveUpDSQGame(ProtocolData map[string]interface{}) {
+
+	return
+}
+
+// 玩家移动棋子
+func (this *NetDataConn) PlayerMoveChessDSQGame(ProtocolData map[string]interface{}) {
+
+	return
+}
+
+// 玩家翻棋
+func (this *NetDataConn) PlayerStirChessDSQGame(ProtocolData map[string]interface{}) {
+	// StrOpenID := ProtocolData["OpenID"].(string)
+	// iRoomID := ProtocolData["RoomID"].(int)
+	return
+}
+
+//------------------------------------------------------------------------------
 func (this *NetDataConn) PlayerEntryGameModeDSQGame(ProtocolData map[string]interface{}) {
 	if ProtocolData["OpenID"] == nil ||
 		ProtocolData["RoomID"] == nil {
@@ -304,11 +339,13 @@ func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interf
 		panic("选择游戏对战类型协议参数错误！")
 		return
 	}
+	fmt.Println("iRoomID:", typeof(ProtocolData["RoomID"]))
+	fmt.Println("Itype:", typeof(ProtocolData["Itype"]))
 
 	// 获取数据
 	StrOpenID := ProtocolData["OpenID"].(string)
-	iRoomID := ProtocolData["RoomID"].(int)
-	Itype := ProtocolData["Itype"].(int)
+	iRoomID := ProtocolData["RoomID"].(string)
+	Itype := ProtocolData["Itype"].(string)
 
 	data := &Proto2.G2GW_PlayerMatchGame{
 		Protocol:  Proto.G_GameGlobal_Proto,
@@ -317,6 +354,9 @@ func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interf
 		Itype:     Itype,     // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
 		RoomID:    iRoomID,   // 房间ID
 	}
+
+	// 发送数据
+	// this.PlayerSendMessage(data)
 
 	// 发送给 global server
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
@@ -340,6 +380,7 @@ func (this *NetDataConn) PlayerEntryGame(ProtocolData map[string]interface{}) {
 		RoomList:  conf.G_RoomList[StrGameID],
 	}
 	// 发送数据
+	fmt.Println("StrGameID:", StrGameID)
 	fmt.Println("房间列表:", data)
 	this.PlayerSendMessage(data)
 	return
