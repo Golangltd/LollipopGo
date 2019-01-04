@@ -266,6 +266,11 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 功能函数处理 --  选择游戏对战类型
 			this.PlayerChooseGameModeGame(ProtocolData)
 		}
+	case float64(Proto2.GateWay_RelinkProto2):
+		{
+			// 断线重新链接
+			this.PlayerRelinkGateWay(ProtocolData)
+		}
 		/*
 			--------------------------------------------------------------------
 			                    Game server 斗兽棋
@@ -294,6 +299,18 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 	default:
 		panic("子协议：不存在！！！")
 	}
+
+	return
+}
+
+// 断线重新链接
+func (this *NetDataConn) PlayerRelinkGateWay(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("断线重新链接 openid 错误！")
+		return
+	}
+
+	strOPenID := ProtocolData["OpenID"].(string)
 
 	return
 }
