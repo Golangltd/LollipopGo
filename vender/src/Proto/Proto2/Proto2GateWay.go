@@ -120,8 +120,8 @@ type C2GWS_PlayerChooseGameMode struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string // 玩家唯一标识
-	Itype     int    // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
-	RoomID    int    // 房间ID
+	Itype     string // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
+	RoomID    string // 房间ID
 }
 
 // S2GWS_PlayerChooseGameModeProto2
