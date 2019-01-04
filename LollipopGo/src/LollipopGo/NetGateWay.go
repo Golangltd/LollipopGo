@@ -311,7 +311,6 @@ func (this *NetDataConn) PlayerRelinkGateWay(ProtocolData map[string]interface{}
 	}
 
 	strOPenID := ProtocolData["OpenID"].(string)
-
 	return
 }
 
