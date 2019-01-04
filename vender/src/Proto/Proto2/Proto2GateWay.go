@@ -17,20 +17,57 @@ const (
 	S2GWS_PlayerChooseGameModeProto2        // S2GWS_PlayerChooseGameModeProto2 == 8
 	C2GWS_PlayerGameInitProto2              // C2GWS_PlayerGameInitProto2 == 9  // 匹配成功后，客户端下发获取初始化牌型
 	S2GWS_PlayerGameInitProto2              // S2GWS_PlayerGameInitProto2 == 10
+	C2GWS_QuitMacthProto2                   // C2GWS_QuitMacthProto2 == 11 退出协议
+	S2GWS_QuitMacthProto2                   // S2GWS_QuitMacthProto2 == 12
+	GateWay_LogoutProto2                    // GateWay_LogoutProto2  == 13 玩家登出
 
 	/*
 	   斗兽棋 0表示空 1-8 A方，9-16 B方
 	*/
-	C2GWS_PlayerStirChessProto2 // C2GWS_PlayerStirChessProto2 == 11   玩家翻棋子
-	S2GWS_PlayerStirChessProto2 // S2GWS_PlayerStirChessProto2 == 12   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
-
-	C2GWS_PlayerMoveChessProto2 // C2GWS_PlayerMoveChessProto2 == 13   玩家移动
-	S2GWS_PlayerMoveChessProto2 // S2GWS_PlayerMoveChessProto2 == 14   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
-
-	C2GWS_PlayerGiveUpProto2 // C2GWS_PlayerGiveUpProto2 == 15  玩家放弃、认输
-
-	BroadCast_GameOverProto2 // BroadCast_GameOverProto2 == 16  广播玩家游戏结束
+	C2GWS_PlayerStirChessProto2 // C2GWS_PlayerStirChessProto2 == 14   玩家翻棋子
+	S2GWS_PlayerStirChessProto2 // S2GWS_PlayerStirChessProto2 == 15   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
+	C2GWS_PlayerMoveChessProto2 // C2GWS_PlayerMoveChessProto2 == 16   玩家移动
+	S2GWS_PlayerMoveChessProto2 // S2GWS_PlayerMoveChessProto2 == 17   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
+	C2GWS_PlayerGiveUpProto2    // C2GWS_PlayerGiveUpProto2 == 18  玩家放弃、认输
+	BroadCast_GameOverProto2    // BroadCast_GameOverProto2 == 19  广播玩家游戏结束
 )
+
+//------------------------------------------------------------------------------
+// GateWay_RelinkProto2
+// 重新链接网关
+type GateWay_Relink struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一ID
+	ResultID  int    // 结果ID == 1表示成功； 0：表示失败
+}
+
+//------------------------------------------------------------------------------
+// C2GWS_QuitMacthProto2
+// 玩家退出匹配
+type C2GWS_QuitMacth struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+}
+
+// S2GWS_QuitMacthProto2
+// 玩家退出匹配  服务器清理数据
+type S2GWS_QuitMacth struct {
+	Protocol  int
+	Protocol2 int
+	ResultID  int // 结果ID == 1表示成功； 0：表示失败
+}
+
+//------------------------------------------------------------------------------
+// GateWay_LogoutProto2
+// 玩家登出
+type GateWay_Logout struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一ID
+	ResultID  int    // 结果ID
+}
 
 //------------------------------------------------------------------------------
 // BroadCast_GameOverProto2
