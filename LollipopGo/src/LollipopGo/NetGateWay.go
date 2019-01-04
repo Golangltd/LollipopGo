@@ -128,10 +128,16 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	}
 	// 获取数据
 	StrOpenID := ProtocolData["OpenID"].(string)
-	StrRoomUID := ProtocolData["RoomUID"].(int)
-	MatchPlayerST := ProtocolData["MatchPlayer"].(map[string]*match.RoomMatch)
-	ChessBoard := ProtocolData["ChessBoard"].([4][4]int)
-	iResultID := ProtocolData["ResultID"].(int)
+	StrRoomUID := int(ProtocolData["RoomUID"].(float64))
+	MatchPlayerST := make(map[string]*match.RoomMatch)
+	if ProtocolData["MatchPlayer"] != nil {
+		MatchPlayerST = ProtocolData["MatchPlayer"].(map[string]*match.RoomMatch)
+	}
+	var ChessBoard []interface{}
+	if ProtocolData["ChessBoard"] != nil {
+		ChessBoard = ProtocolData["ChessBoard"].([]interface{})
+	}
+	iResultID := int(ProtocolData["ResultID"].(float64))
 
 	// 数据
 	data_send := &Proto2.GW2G_PlayerMatchGame{
@@ -147,8 +153,11 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	// 发送数据  --
 	// this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	// 发送给匹配的人的
-	this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerAOpenID, "connect", data_send)
-	this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerBOpenID, "connect", data_send)
+	if data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)] != nil {
+		this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerAOpenID, "connect", data_send)
+		this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerBOpenID, "connect", data_send)
+	}
+
 	return
 }
 
@@ -355,9 +364,7 @@ func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interf
 		RoomID:    iRoomID,   // 房间ID
 	}
 
-	// 发送数据
 	// this.PlayerSendMessage(data)
-
 	// 发送给 global server
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	return

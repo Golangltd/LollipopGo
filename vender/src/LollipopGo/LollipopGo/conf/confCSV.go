@@ -1,16 +1,18 @@
 package conf
 
 // csv配置表
-var G_GameList map[string]*GameList   // 游戏大厅列表
-var G_BannerList map[string]*Banner   // 游戏轮播列表
-var G_RoomList map[string]interface{} // 房间列表
-var RoomListData map[string]*RoomList // 房间列表
+var G_GameList map[string]*GameList      // 游戏大厅列表
+var G_BannerList map[string]*Banner      // 游戏轮播列表
+var G_RoomList map[string]interface{}    // 房间列表
+var RoomListData map[string]*RoomList    // 房间列表
+var RoomListDatabak map[string]*RoomList // 房间列表
 
 func init() {
 	G_GameList = make(map[string]*GameList)
 	G_BannerList = make(map[string]*Banner)
 	G_RoomList = make(map[string]interface{})
 	RoomListData = make(map[string]*RoomList)
+	RoomListDatabak = make(map[string]*RoomList)
 	return
 }
 
