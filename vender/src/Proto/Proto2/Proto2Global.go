@@ -38,7 +38,7 @@ type GW2G_PlayerMatchGame struct {
 	OpenID      string                      // 玩家唯一标识
 	RoomUID     int                         // 房间ID；注意匹配失败或者超时，数据为空
 	MatchPlayer map[string]*match.RoomMatch // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
-	ChessBoard  [4][4]int                   // 棋盘的数据
+	ChessBoard  []interface{}               // 棋盘的数据
 	ResultID    int                         // 结果ID
 }
 

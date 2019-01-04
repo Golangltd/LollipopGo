@@ -109,10 +109,12 @@ func ReadCsv_ConfigFile_RoomListST_Fun() bool {
 		if len(roomidtemp) == 0 {
 			roomidtemp = s
 			conf.RoomListData[Infotmp.RoomID] = Infotmp
+			conf.RoomListDatabak[Infotmp.RoomID] = Infotmp
 
 		} else {
 			if roomidtemp == s {
 				conf.RoomListData[Infotmp.RoomID] = Infotmp
+				conf.RoomListDatabak[Infotmp.RoomID] = Infotmp
 				fmt.Println("+++++++++", conf.RoomListData)
 				// 仅仅有一个游戏的时候
 				if i == sz-1 {

@@ -175,10 +175,14 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		ResultID: 0,
 	}
 
-	data := conf.RoomListData[StrRoomID]
-	fmt.Println("针对某房间ID去获取，相应的数据的", data)
+	data := conf.RoomListDatabak[StrRoomID]
+	// fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data, StrRoomID)
 	dataplayer := DB_Save_RoleSTBak(StrOpenID)
 	match.Putdata(dataplayer)
+	//fmt.Println(data.NeedLev)
+	data.NeedLev = string([]byte(data.NeedLev)[2:])
+	//fmt.Println(data.NeedLev)
+	//fmt.Println(dataplayer.Lev)
 	if util.Str2int_LollipopGo(data.NeedLev) > dataplayer.Lev {
 		data_send.ResultID = Error.Lev_lack
 		PlayerSendToServer(conn, data_send)
