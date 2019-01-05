@@ -220,18 +220,21 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		PlayerSendToServer(conn, data_send)
 		return
 	}
-	// 定时器 30s
-	go PlayerMatchTime(conn, StrOpenID, data_send)
-	if false {
+
+	if len(match.MatchData) > 1 {
 		dar := <-match.MatchData_Chan
 		data_send.MatchPlayer = dar
 		fmt.Println(data_send)
 		PlayerSendToServer(conn, data_send)
+	} else {
+		// 定时器 30s
+		go PlayerMatchTime(conn, StrOpenID, data_send)
 	}
 
 	return
 }
 
+// 定时匹配
 func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G_PlayerMatchGame) {
 	icount := 0
 	for {
@@ -243,8 +246,9 @@ func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G
 					PlayerSendToServer(conn, data_send)
 					return
 				}
-				dar := <-match.MatchData_Chan
-				if dar != nil {
+
+				if len(match.MatchData_Chan) > 1 {
+					dar := <-match.MatchData_Chan
 					data_send.MatchPlayer = dar
 					fmt.Println(data_send)
 					PlayerSendToServer(conn, data_send)

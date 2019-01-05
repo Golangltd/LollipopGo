@@ -133,9 +133,9 @@ func (this *NetDataConn) GWPlayerQuitMatchGameGL(ProtocolData map[string]interfa
 	StrOpenID := ProtocolData["OpenID"].(string)
 	iResultID := ProtocolData["ResultID"].(float64)
 
-	data := &Proto2.S2GWS_QuitMacth{
+	data := &Proto2.S2GWS_QuitMatch{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
-		Protocol2: Proto2.S2GWS_QuitMacthProto2,
+		Protocol2: Proto2.S2GWS_QuitMatchProto2,
 		OpenID:    StrOpenID,
 		ResultID:  int(iResultID),
 	}
@@ -296,7 +296,7 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 断线重新链接
 			this.PlayerRelinkGateWay(ProtocolData)
 		}
-	case float64(Proto2.C2GWS_QuitMacthProto2):
+	case float64(Proto2.C2GWS_QuitMatchProto2):
 		{
 			// 玩家取消匹配
 			this.PlayerQuitMacthGame(ProtocolData)

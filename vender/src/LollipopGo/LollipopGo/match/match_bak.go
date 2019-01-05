@@ -123,3 +123,6 @@ func GetMatchPlayer(OpenID string) bool {
 	_, ok := QuitMatchData[OpenID]
 	return ok
 }
+func SetMatchqueue() {
+
+}
