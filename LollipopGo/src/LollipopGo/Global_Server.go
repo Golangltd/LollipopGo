@@ -38,6 +38,7 @@ func init() {
 	}
 	fmt.Println("链接 gateway server 成功!")
 	initNetRPC()
+
 	return
 }
 
@@ -188,7 +189,6 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string) //  匹配数据
 	StrItype := ProtocolData["Itype"].(string)   //  1 是正常匹配 2 是快速匹配
-	// 加入到匹配里
 
 	// 数据
 	data_send := &Proto2.GW2G_PlayerMatchGame{
@@ -200,6 +200,12 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		// ChessBoard:  {{}, {}, {}, {}},
 		ResultID: 0,
 	}
+	if match.GetMatchQueue(StrOpenID) {
+		data_send.ResultID = Error.IsMatch
+		PlayerSendToServer(conn, data_send)
+		return
+	}
+	match.SetMatchQueue(StrOpenID)
 
 	if StrItype == "2" { //快速匹配
 		PlayerSendToServer(conn, data_send)
@@ -226,15 +232,14 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		data_send.MatchPlayer = dar
 		fmt.Println(data_send)
 		PlayerSendToServer(conn, data_send)
+		match.DelMatchQueue(StrOpenID)
 	} else {
-		// 定时器 30s
 		go PlayerMatchTime(conn, StrOpenID, data_send)
 	}
 
 	return
 }
 
-// 定时匹配
 func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G_PlayerMatchGame) {
 	icount := 0
 	for {
@@ -252,6 +257,7 @@ func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G
 					data_send.MatchPlayer = dar
 					fmt.Println(data_send)
 					PlayerSendToServer(conn, data_send)
+					match.DelMatchQueue(OpenID)
 					return
 				}
 				icount++
