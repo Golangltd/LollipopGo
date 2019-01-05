@@ -157,7 +157,6 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	} else {
 		this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	}
-
 	return
 }
 
@@ -271,6 +270,11 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 断线重新链接
 			this.PlayerRelinkGateWay(ProtocolData)
 		}
+	case float64(Proto2.C2GWS_QuitMacthProto2):
+		{
+			// 玩家取消匹配
+			this.PlayerQuitMacthGame(ProtocolData)
+		}
 		/*
 			--------------------------------------------------------------------
 			                    Game server 斗兽棋
@@ -300,6 +304,23 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+// 玩家退出匹配
+func (this *NetDataConn) PlayerQuitMacthGame(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("玩家退出匹配的协议 openid 错误！")
+		return
+	}
+	strOPenID := ProtocolData["OpenID"].(string)
+	data := &Proto2.GW2G_PlayerQuitMatchGame{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.GW2G_PlayerQuitMatchGameProto2,
+		OpenID:    strOPenID,
+	}
+	// 发送给 global server
+	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	return
 }
 

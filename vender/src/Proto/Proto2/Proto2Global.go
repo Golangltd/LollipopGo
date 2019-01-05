@@ -8,18 +8,37 @@ import (
 // G_GameGlobal_Proto == 9  负责全局的游戏逻辑 的子协议
 // 注：server类型为单点
 const (
-	ININGlobal                 = iota // 0
-	G2GW_ConnServerProto2             // G2GW_ConnServerProto2 == 1 Global主动链接 gateway
-	GW2G_ConnServerProto2             // GW2G_ConnServerProto2 == 2 选择链接
-	GW2G_HeartBeatProto2              // GW2G_HeartBeatProto2 ==  3  心跳协议  保活的操作
-	G2GW_PlayerMatchProto2            // G2GW_PlayerMatchProto2 == 4 玩家发送匹配的协议
-	GW2G_PlayerMatchProto2            // GW2G_PlayerMatchProto2 == 5 服务器返回数据对应匹配机制
-	G2GW_PlayerEntryHallProto2        // G2GW_PlayerEntryHallProto2 == 6 玩家进入大厅，显示的数据
-	GW2G_PlayerEntryHallProto2        // GW2G_PlayerEntryHallProto2 == 7
-	G2GW_PlayerMatchGameProto2        // G2GW_PlayerMatchGameProto2 == 8 玩家选择游戏匹配
-	GW2G_PlayerMatchGameProto2        // GW2G_PlayerMatchGameProto2 == 9
+	ININGlobal                     = iota // 0
+	G2GW_ConnServerProto2                 // G2GW_ConnServerProto2 == 1 Global主动链接 gateway
+	GW2G_ConnServerProto2                 // GW2G_ConnServerProto2 == 2 选择链接
+	GW2G_HeartBeatProto2                  // GW2G_HeartBeatProto2 ==  3  心跳协议  保活的操作
+	G2GW_PlayerMatchProto2                // G2GW_PlayerMatchProto2 == 4 玩家发送匹配的协议
+	GW2G_PlayerMatchProto2                // GW2G_PlayerMatchProto2 == 5 服务器返回数据对应匹配机制
+	G2GW_PlayerEntryHallProto2            // G2GW_PlayerEntryHallProto2 == 6 玩家进入大厅，显示的数据
+	GW2G_PlayerEntryHallProto2            // GW2G_PlayerEntryHallProto2 == 7
+	G2GW_PlayerMatchGameProto2            // G2GW_PlayerMatchGameProto2 == 8 玩家选择游戏匹配
+	GW2G_PlayerMatchGameProto2            // GW2G_PlayerMatchGameProto2 == 9
+	GW2G_PlayerQuitMatchGameProto2        // GW2G_PlayerQuitMatchGameProto2 == 10 玩家退出匹配
+	G2GW_PlayerQuitMatchGameProto2        // G2GW_PlayerQuitMatchGameProto2 == 11 玩家退出匹配
 
 )
+
+//------------------------------------------------------------------------------
+// GW2G_PlayerQuitMatchGameProto2
+// GateWay -->  Global server
+type GW2G_PlayerQuitMatchGame struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一标识
+}
+
+// G2GW_PlayerQuitMatchGameProto2
+// 退出的协议
+type G2GW_PlayerQuitMatchGame struct {
+	Protocol  int
+	Protocol2 int
+	ResultID  int // 结果ID == 1表示成功； 0：表示失败
+}
 
 //------------------------------------------------------------------------------
 // G2GW_PlayerMatchGameProto2
