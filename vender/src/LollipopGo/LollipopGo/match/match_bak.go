@@ -10,13 +10,14 @@ import (
 //------------------------------------------------------------------------------
 
 var (
-	Match_Chan     chan *player.PlayerSt
-	MatchData_Chan chan map[string]*RoomMatch
-	Imax           int = 0
-	ChanMax        int = 1000
-	MatchSpeed         = time.Millisecond * 500
-	MatchData      map[string]*RoomMatch
-	QuitMatchData  map[string]string
+	Match_Chan       chan *player.PlayerSt
+	MatchData_Chan   chan map[string]*RoomMatch
+	Imax             int = 0
+	ChanMax          int = 1000
+	MatchSpeed           = time.Millisecond * 500
+	PlaterMatchSpeed     = time.Second * 1
+	MatchData        map[string]*RoomMatch
+	QuitMatchData    map[string]string
 )
 
 //------------------------------------------------------------------------------
@@ -72,6 +73,9 @@ func DoingMatch() {
 			// 获取房间ID信息
 			if iicount%2 == 1 {
 				roomid = util.Int2str_LollipopGo(int(util.GetNowUnix_LollipopGo()))
+				if MatchData[roomid] == nil {
+					continue
+				}
 				MatchData[roomid].PlayerAOpenID = data.OpenID
 			}
 			MatchData[roomid].RoomUID = roomid

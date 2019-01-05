@@ -1,6 +1,7 @@
 package Proto2
 
 import (
+	"LollipopGo/LollipopGo/match"
 	"LollipopGo/LollipopGo/player"
 )
 
@@ -56,6 +57,7 @@ type C2GWS_QuitMacth struct {
 type S2GWS_QuitMacth struct {
 	Protocol  int
 	Protocol2 int
+	OpenID    string
 	ResultID  int // 结果ID == 1表示成功； 0：表示失败
 }
 
@@ -166,11 +168,11 @@ type C2GWS_PlayerChooseGameMode struct {
 type S2GWS_PlayerChooseGameMode struct {
 	Protocol    int
 	Protocol2   int
-	OpenID      string                 // 玩家唯一标识
-	RoomUID     int                    // 房间ID；注意匹配失败或者超时，数据为空
-	MatchPlayer map[string]interface{} // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
-	ChessBoard  [4][4]int              // 棋盘的数据；0表示空
-	ResultID    int                    // 结果ID
+	OpenID      string                      // 玩家唯一标识
+	RoomUID     int                         // 房间ID；注意匹配失败或者超时，数据为空
+	MatchPlayer map[string]*match.RoomMatch // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
+	ChessBoard  []interface{}               // 棋盘的数据
+	ResultID    int                         // 结果ID
 }
 
 //------------------------------------------------------------------------------

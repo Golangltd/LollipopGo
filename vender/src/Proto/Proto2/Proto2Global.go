@@ -37,7 +37,8 @@ type GW2G_PlayerQuitMatchGame struct {
 type G2GW_PlayerQuitMatchGame struct {
 	Protocol  int
 	Protocol2 int
-	ResultID  int // 结果ID == 1表示成功； 0：表示失败
+	OpenID    string // 玩家唯一标识
+	ResultID  int    // 结果ID == 1表示成功； 0：表示失败
 }
 
 //------------------------------------------------------------------------------

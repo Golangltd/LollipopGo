@@ -12,6 +12,7 @@ import (
 	"net/rpc"
 	"net/rpc/jsonrpc"
 	"strings"
+	"time"
 
 	"LollipopGo/LollipopGo/util"
 	"LollipopGo/ReadCSV"
@@ -169,6 +170,7 @@ func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[s
 	data_send := &Proto2.G2GW_PlayerQuitMatchGame{
 		Protocol:  Proto.G_GameGlobal_Proto,
 		Protocol2: Proto2.G2GW_PlayerQuitMatchGameProto2,
+		OpenID:    StrOpenID,
 		ResultID:  0,
 	}
 	PlayerSendToServer(conn, data_send)
@@ -209,8 +211,6 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	dataplayer := DB_Save_RoleSTBak(StrOpenID)
 	match.Putdata(dataplayer)
 	s := string([]byte(data.NeedLev)[2:])
-	//fmt.Println(data.NeedLev)
-	//fmt.Println(dataplayer.Lev)
 	if util.Str2int_LollipopGo(s) > dataplayer.Lev {
 		data_send.ResultID = Error.Lev_lack
 		PlayerSendToServer(conn, data_send)
@@ -220,11 +220,40 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		PlayerSendToServer(conn, data_send)
 		return
 	}
-	dar := <-match.MatchData_Chan
-	data_send.MatchPlayer = dar
-	fmt.Println(data_send)
-	PlayerSendToServer(conn, data_send)
+	// 定时器 30s
+	go PlayerMatchTime(conn, StrOpenID, data_send)
+	if false {
+		dar := <-match.MatchData_Chan
+		data_send.MatchPlayer = dar
+		fmt.Println(data_send)
+		PlayerSendToServer(conn, data_send)
+	}
+
 	return
+}
+
+func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G_PlayerMatchGame) {
+	icount := 0
+	for {
+		select {
+		case <-time.After(match.PlaterMatchSpeed):
+			{
+				fmt.Println(icount)
+				if icount >= 30 {
+					PlayerSendToServer(conn, data_send)
+					return
+				}
+				dar := <-match.MatchData_Chan
+				if dar != nil {
+					data_send.MatchPlayer = dar
+					fmt.Println(data_send)
+					PlayerSendToServer(conn, data_send)
+					return
+				}
+				icount++
+			}
+		}
+	}
 }
 
 // 保存数据都DB 人物信息

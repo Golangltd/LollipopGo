@@ -112,9 +112,35 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 			// Global server 玩家匹配的协议
 			this.GWPlayerMatchGameGL(ProtocolData)
 		}
+	case float64(Proto2.G2GW_PlayerQuitMatchGameProto2):
+		{
+			// Global server 玩家退出匹配的协议
+			this.GWPlayerQuitMatchGameGL(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
+
+	return
+}
+
+// 玩家退出匹配协议
+func (this *NetDataConn) GWPlayerQuitMatchGameGL(ProtocolData map[string]interface{}) {
+	if ProtocolData["ResultID"] == nil {
+		log.Debug("Global server data is wrong:ResultID is nil!")
+		return
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iResultID := ProtocolData["ResultID"].(float64)
+
+	data := &Proto2.S2GWS_QuitMacth{
+		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
+		Protocol2: Proto2.S2GWS_QuitMacthProto2,
+		OpenID:    StrOpenID,
+		ResultID:  int(iResultID),
+	}
+	// 发送数据  --
+	this.SendClientDataFunc(data.OpenID, "connect", data)
 
 	return
 }
@@ -140,9 +166,9 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	iResultID := int(ProtocolData["ResultID"].(float64))
 
 	// 数据
-	data_send := &Proto2.GW2G_PlayerMatchGame{
-		Protocol:    Proto.G_GameGlobal_Proto, // 游戏主要协议
-		Protocol2:   Proto2.GW2G_PlayerMatchGameProto2,
+	data_send := &Proto2.S2GWS_PlayerChooseGameMode{
+		Protocol:    Proto.G_GateWay_Proto, // 游戏主要协议
+		Protocol2:   Proto2.S2GWS_PlayerChooseGameModeProto2,
 		OpenID:      StrOpenID, // 玩家唯一标识
 		RoomUID:     StrRoomUID,
 		MatchPlayer: MatchPlayerST,
