@@ -2,11 +2,13 @@ package Proto2
 
 //  G_GameDSQ_Proto == 10    斗兽棋
 const (
-	INITDSQ                 = iota //  INITDSQ == 0
-	DSQ2GW_ConnServerProto2        //  DSQ2GW_ConnServerProto2 == 1 DSQ主动链接 主动链接 gateway 进行注册
-	GW2DSQ_ConnServerProto2        //  GW2DSQ_ConnServerProto2 == 2 选择链接
-	GW2DSQ_InitGameProto2          //  GW2DSQ_InitGameProto2   == 3  初始化协议-- 相当于注册
-	DSQ2GW_InitGameProto2          //  GW2DSQ_InitGameProto2   == 4
+	INITDSQ                      = iota //  INITDSQ == 0
+	DSQ2GW_ConnServerProto2             //  DSQ2GW_ConnServerProto2 == 1 DSQ主动链接 主动链接 gateway 进行注册
+	GW2DSQ_ConnServerProto2             //  GW2DSQ_ConnServerProto2 == 2 选择链接
+	GW2DSQ_InitGameProto2               //  GW2DSQ_InitGameProto2   == 3  初始化协议-- 相当于注册
+	DSQ2GW_InitGameProto2               //  GW2DSQ_InitGameProto2   == 4
+	GW2DSQ_PlayerStirChessProto2        // GW2DSQ_PlayerStirChessProto2 == 5   玩家翻棋子
+	DSQ2GW_PlayerStirChessProto2        // DSQ2GW_PlayerStirChessProto2 == 6   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
 
 )
 
@@ -45,6 +47,27 @@ const (
 	DATAERROR           // DATAERROR == 8    数据错误    玩家的棋子已经被吃掉不存在了
 	DATANOEXIT          // DATANOEXIT == 9   数据不存在  棋子的数据大于 16或者小于0
 )
+
+//------------------------------------------------------------------------------
+// GW2DSQ_PlayerStirChessProto2
+type GW2DSQ_PlayerStirChess struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	RoomUID   int
+	StirPos   string // 翻动的位置 格式: x,y
+}
+
+// DSQ2GW_PlayerStirChessProto2
+type DSQ2GW_PlayerStirChess struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 谁翻动了棋子
+	StirPos   string // 翻动的位置  格式:x,y
+	ChessNum  int    // 1 - 16 正数
+}
+
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 // DSQ2GW_ConnServerProto2

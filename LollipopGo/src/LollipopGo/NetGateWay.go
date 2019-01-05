@@ -374,8 +374,26 @@ func (this *NetDataConn) PlayerMoveChessDSQGame(ProtocolData map[string]interfac
 
 // 玩家翻棋
 func (this *NetDataConn) PlayerStirChessDSQGame(ProtocolData map[string]interface{}) {
-	// StrOpenID := ProtocolData["OpenID"].(string)
-	// iRoomID := ProtocolData["RoomID"].(int)
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomUID"] == nil ||
+		ProtocolData["StirPos"] == nil {
+		panic("玩家翻棋子协议错误!", ProtocolData)
+	}
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := ProtocolData["RoomUID"].(float64)
+	StrStirPos := ProtocolData["StirPos"].(string)
+	// 发送给DSQ服务器
+	data := &Proto2.GW2DSQ_PlayerStirChess{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.GW2DSQ_PlayerStirChessProto2,
+		OpenID:    StrOpenID,
+		RoomUID:   int(iRoomID),
+		StirPos:   StrStirPos,
+	}
+
+	// 发送给 DSQ server
+	this.SendServerDataFunc(strDSQServer, "DSQ_Server", data)
 	return
 }
 
