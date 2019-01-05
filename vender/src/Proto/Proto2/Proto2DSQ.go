@@ -98,7 +98,7 @@ type DSQ2GW_InitGame struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
-	RoomID    string
+	RoomID    int
 	InitData  [4][4]int // 斗兽棋的棋盘的数据
 }
 

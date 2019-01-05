@@ -32,7 +32,6 @@ func main() {
 
 	data := &GolangLtd{
 		RoomUID:   1,
-		PlayerA:   "123456789",
 		PlayerB:   "987654321",
 		Default:   data1,
 		ChessData: re,
@@ -40,9 +39,9 @@ func main() {
 
 	SaveChessData[1] = data
 	// 保存数据
-	cache.Add("haode", 0, data)
+	cache.Add(111, 0, data)
 	// 获取数据
-	res, err1 := cache.Value("haode")
+	res, err1 := cache.Value(111)
 	if err1 != nil {
 		fmt.Println(err1)
 		return
@@ -56,6 +55,6 @@ func main() {
 	fmt.Println("result:", res.Data().(*GolangLtd).Default[1][2])
 	res.Data().(*GolangLtd).Default[1][2] = 18
 	fmt.Println("result:", res.Data().(*GolangLtd).Default)
-	fmt.Println("result:", res.Data().(*GolangLtd).Default[1][2])
+	fmt.Println("result:", res.Data().(*GolangLtd).PlayerA)
 	//--------------------------------------------------------------------------
 }

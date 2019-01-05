@@ -377,7 +377,7 @@ func (this *NetDataConn) PlayerStirChessDSQGame(ProtocolData map[string]interfac
 	if ProtocolData["OpenID"] == nil ||
 		ProtocolData["RoomUID"] == nil ||
 		ProtocolData["StirPos"] == nil {
-		panic("玩家翻棋子协议错误!", ProtocolData)
+		panic("玩家翻棋子协议错误!")
 	}
 
 	StrOpenID := ProtocolData["OpenID"].(string)
