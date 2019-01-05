@@ -4,9 +4,9 @@ import (
 	"LollipopGo/LollipopGo/log"
 	"Proto"
 	"Proto/Proto2"
+	"cache2go"
 	"flag"
 	"fmt"
-	_ "fmt"
 	"net/rpc"
 	"net/rpc/jsonrpc"
 	"strings"
@@ -27,13 +27,14 @@ var DSQ_qi = []int{                                                            /
 	Proto2.Elephant, Proto2.Lion, Proto2.Tiger, Proto2.Leopard, Proto2.Wolf, Proto2.Dog, Proto2.Cat, Proto2.Mouse,
 	Proto2.Mouse + Proto2.Elephant, Proto2.Mouse + Proto2.Lion, Proto2.Mouse + Proto2.Tiger, Proto2.Mouse + Proto2.Leopard,
 	Proto2.Mouse + Proto2.Wolf, Proto2.Mouse + Proto2.Dog, Proto2.Mouse + Proto2.Cat, 2 * Proto2.Mouse}
+var cacheDSQ *cache2go.CacheTable
 
-// 斗兽棋游戏结构
-// 每个房间都存在一个
 type RoomPlayerDSQ struct {
+	RoomID    int
 	OpenIDA   string
 	OpenIDB   string
-	InitData  [4][4]int // 斗兽棋的棋盘的数据
+	Default   [4][4]int // 未翻牌的
+	ChessData [4][4]int // 棋盘数据
 	WhoChuPai string    // 当前谁出牌
 	GoAround  int       // 回合，如果每人出10次都没有吃子，系统推送平局;第七个回合提示数据 第10局平局
 }
@@ -78,6 +79,7 @@ func initDSQNetRPC() {
 		log.Debug("dial error:", err)
 	}
 	ConnDSQRPC = client
+	cacheDSQ = cache2go.Cache("myCache")
 }
 
 // 初始化网关
@@ -209,12 +211,12 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 
 	if ProtocolData["OpenID"] == nil ||
 		ProtocolData["RoomUID"] == nil {
-		panic("玩家翻棋子的协议参数错误", ProtocolData)
+		panic(ProtocolData)
 		return
 	}
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	iRoomID := ProtocolData["RoomUID"].(float64)
+	//	iRoomID := ProtocolData["RoomUID"].(float64)
 	StrStirPos := ProtocolData["StirPos"].(string)
 	// 通过位置获取对应的数据
 
@@ -223,7 +225,7 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 		Protocol2: Proto2.DSQ2GW_PlayerStirChessProto2,
 		OpenID:    StrOpenID,
 		StirPos:   StrStirPos,
-		ChessNum:  DSQ_Pai,
+		//		ChessNum:  DSQ_Pai,
 	}
 	// 发送数据
 	PlayerSendToServer(conn, data)
@@ -234,28 +236,128 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 
 	if ProtocolData["OpenID"] == nil ||
-		ProtocolData["RoomID"] == nil {
+		ProtocolData["RoomUID"] == nil {
 		panic("玩家数据错误!!!")
 		return
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
-	StrRoomID := ProtocolData["RoomID"].(string)
-	// 初始化牌型 --- 且需要和玩家的数据经行保存
-	// 1 需要数据绑定 房间ID去绑定数据
-	// 2 将玩家的结构体保存，也就是 playerA playerB  绑定到roomUID map
-
+	iRoomID := int(ProtocolData["RoomUID"].(float64))
+	data1 := [4][4]int{{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
+		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
+		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
+		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1}}
 	DSQ_Pai := InitDSQ(DSQ_qi)
+	savedata := &RoomPlayerDSQ{
+		RoomID:    iRoomID,
+		Default:   data1,
+		ChessData: DSQ_Pai,
+	}
+	CacheSaveRoomData(iRoomID, savedata, StrOpenID)
 
-	// 组装数据
 	data := &Proto2.DSQ2GW_InitGame{
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_InitGameProto2,
 		OpenID:    StrOpenID,
-		RoomID:    StrRoomID,
+		RoomID:    iRoomID,
 		InitData:  DSQ_Pai,
 	}
-	// 发送数据
+
 	PlayerSendToServer(conn, data)
+}
+
+//------------------------------------------------------------------------------
+func CacheSaveRoomData(iRoomID int, data *RoomPlayerDSQ, openid string) {
+	cacheDSQ.Add(iRoomID, 0, data)
+	CacheSavePlayerUID(iRoomID, openid)
+}
+
+func CacheSavePlayerUID(iRoomID int, player string) {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("没有对应数据")
+		return
+	}
+	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDA)
+	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDB)
+	if len(res.Data().(*RoomPlayerDSQ).OpenIDA) == 0 {
+		res.Data().(*RoomPlayerDSQ).OpenIDA = player
+	} else {
+		res.Data().(*RoomPlayerDSQ).OpenIDB = player
+	}
+	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDA)
+	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDB)
+	return
+}
+
+func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("棋盘数据更新失败！")
+		return
+	}
+	ipos_x := 0
+	ipos_y := 0
+	strsplit := Strings_Split(Update_pos, ",")
+	if len(strsplit) != 2 {
+		panic("棋盘数据更新失败！")
+		return
+	}
+	for i := 0; i < len(strsplit); i++ {
+		if i == 0 {
+			ipos_x = util.Str2int_LollipopGo(strsplit[i])
+		} else {
+			ipos_y = util.Str2int_LollipopGo(strsplit[i])
+		}
+	}
+	fmt.Println("修改的棋盘的坐标", ipos_x, ipos_y)
+	// 测试数据
+	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y])
+	res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = value
+	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y])
+	return
+}
+
+// 获取默认棋牌数据是否翻开
+// true 表示翻开了
+// itype ==1 查询是否翻开
+// itype ==2 修改数据
+func CacheGetChessDefaultData(iRoomID int, Update_pos string, itype int, valve int) bool {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("棋盘数据获取数据失败！")
+		return false
+	}
+	ipos_x := 0
+	ipos_y := 0
+	strsplit := Strings_Split(Update_pos, ",")
+	if len(strsplit) != 2 {
+		panic("棋盘数据获取数据失败！")
+		return false
+	}
+	for i := 0; i < len(strsplit); i++ {
+		if i == 0 {
+			ipos_x = util.Str2int_LollipopGo(strsplit[i])
+		} else {
+			ipos_y = util.Str2int_LollipopGo(strsplit[i])
+		}
+	}
+	fmt.Println("修改的棋盘的坐标", ipos_x, ipos_y)
+	if itype == 1 {
+		// 获取
+		fmt.Println("result:", res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y])
+		idata := res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y]
+		if idata == (2*Proto2.Mouse + 1) {
+			return false
+		} else {
+			return true
+		}
+	} else if itype == 2 {
+		// 修改翻盘结构
+		fmt.Println("result:", res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y])
+		res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y] = valve
+		return true
+	}
+	return false
 }
 
 //------------------------------------------------------------------------------
