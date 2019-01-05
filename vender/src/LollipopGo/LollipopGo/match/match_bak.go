@@ -3,6 +3,7 @@ package match
 import (
 	"LollipopGo/LollipopGo/player"
 	"LollipopGo/LollipopGo/util"
+	"cache2go"
 	"fmt"
 	"time"
 )
@@ -18,6 +19,7 @@ var (
 	PlaterMatchSpeed     = time.Second * 1
 	MatchData        map[string]*RoomMatch
 	QuitMatchData    map[string]string
+	cache            *cache2go.CacheTable
 )
 
 //------------------------------------------------------------------------------
@@ -37,6 +39,7 @@ func init() {
 	MatchData = make(map[string]*RoomMatch)
 	MatchData_Chan = make(chan map[string]*RoomMatch, ChanMax)
 	QuitMatchData = make(map[string]string)
+	cache = cache2go.Cache("myCache")
 	go Sort_timer()
 }
 
@@ -112,17 +115,35 @@ func Sort_timer() {
 }
 
 func SetQuitMatch(OpenID string) {
-	QuitMatchData[OpenID] = OpenID
+	cache.Add(OpenID+"QuitMatch", 0, "exit")
 }
 
 func DelQuitMatchList(OpenID string) {
-	delete(QuitMatchData, OpenID)
+	cache.Delete(OpenID + "QuitMatch")
 }
 
 func GetMatchPlayer(OpenID string) bool {
-	_, ok := QuitMatchData[OpenID]
+	ok := false
+	_, err1 := cache.Value(OpenID + "QuitMatch")
+	if err1 == nil {
+		ok = true
+	}
 	return ok
 }
-func SetMatchqueue() {
 
+func GetMatchQueue(OpenID string) bool {
+	ok := false
+	_, err1 := cache.Value(OpenID + "MatchQueue")
+	if err1 == nil {
+		ok = true
+	}
+	return ok
+}
+
+func SetMatchQueue(OpenID string) {
+	cache.Add(OpenID+"MatchQueue", 0, "exit")
+}
+
+func DelMatchQueue(OpenID string) {
+	cache.Delete(OpenID + "MatchQueue")
 }
