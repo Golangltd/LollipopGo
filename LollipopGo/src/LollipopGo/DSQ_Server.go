@@ -79,7 +79,7 @@ func initDSQNetRPC() {
 		log.Debug("dial error:", err)
 	}
 	ConnDSQRPC = client
-	cacheDSQ = cache2go.Cache("myCache")
+	cacheDSQ = cache2go.Cache("LollipopGo_DSQ")
 }
 
 // 初始化网关
@@ -175,7 +175,6 @@ func HandleCltProtocolDSQ(protocol interface{}, protocol2 interface{}, ProtocolD
 		{ // DSQ Server 主要协议处理
 			fmt.Println("DSQ server 主协议!!!")
 			HandleCltProtocol2DSQ(protocol2, ProtocolData)
-
 		}
 	default:
 		panic("主协议：不存在！！！")
