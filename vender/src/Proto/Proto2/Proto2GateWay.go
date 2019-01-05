@@ -132,6 +132,7 @@ type S2GWS_PlayerStirChess struct {
 	OpenID    string // 谁翻动了棋子
 	StirPos   string // 翻动的位置  格式:x,y
 	ChessNum  int    // 1 - 16 正数
+	ResultID  int    // 错误ID
 }
 
 //------------------------------------------------------------------------------
