@@ -186,18 +186,48 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 
 	switch protocol2 {
 	case float64(Proto2.GW2G_ConnServerProto2):
-		{ // 网关返回数据
+		{
 			fmt.Println("gateway server DSQ server 数据信息！！！")
 		}
 	case float64(Proto2.GW2DSQ_InitGameProto2):
-		{ // 网关请求获取棋盘初始化数据
+		{
 			fmt.Println("网关请求获取棋盘初始化数据等")
 			DSQ2GW_PlayerGameInitProto2Fucn(ConnDSQ, ProtocolData)
 		}
-
+	case float64(Proto2.GW2DSQ_PlayerStirChessProto2):
+		{
+			fmt.Println("玩家翻棋子的协议")
+			GW2DSQ_PlayerStirChessProto2Fucn(ConnDSQ, ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
+	return
+}
+
+func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomUID"] == nil {
+		panic("玩家翻棋子的协议参数错误", ProtocolData)
+		return
+	}
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := ProtocolData["RoomUID"].(float64)
+	StrStirPos := ProtocolData["StirPos"].(string)
+	// 通过位置获取对应的数据
+
+	data := &Proto2.DSQ2GW_PlayerStirChess{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.DSQ2GW_PlayerStirChessProto2,
+		OpenID:    StrOpenID,
+		StirPos:   StrStirPos,
+		ChessNum:  DSQ_Pai,
+	}
+	// 发送数据
+	PlayerSendToServer(conn, data)
+
 	return
 }
 
@@ -211,6 +241,9 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string)
 	// 初始化牌型 --- 且需要和玩家的数据经行保存
+	// 1 需要数据绑定 房间ID去绑定数据
+	// 2 将玩家的结构体保存，也就是 playerA playerB  绑定到roomUID map
+
 	DSQ_Pai := InitDSQ(DSQ_qi)
 
 	// 组装数据

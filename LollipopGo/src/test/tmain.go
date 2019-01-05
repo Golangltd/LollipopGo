@@ -18,7 +18,7 @@ var Match_Chan chan *Match_player
 var Imax int = 0
 
 // 初始化
-func init() {
+func init1() {
 
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}
 	re := InitDSQ(data)
@@ -73,7 +73,7 @@ func InitDSQ(data1 []int) [4][4]int {
 }
 
 // 主函数
-func main1() {
+func main11() {
 
 	// 第一个数据：
 	idata := &Match_player{

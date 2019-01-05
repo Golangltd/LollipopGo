@@ -62,18 +62,15 @@ func DoingMatch() {
 	for i := 0; i < Imax; i++ {
 		if icount == 1 {
 			fmt.Println(Match_Chan, "等待匹配")
-			// 30s 就剔除
 			continue
 		}
 		if data, ok := <-Match_Chan; ok {
 			fmt.Println(data)
-			// 屏蔽退出
 			if GetMatchPlayer(data.OpenID) {
 				fmt.Println(data.OpenID, "玩家已经退出！")
 				continue
 			}
 			Data[util.Int2str_LollipopGo(i+1)] = data
-			// 获取房间ID信息
 			if iicount%2 == 1 {
 				roomid = util.Int2str_LollipopGo(int(util.GetNowUnix_LollipopGo()))
 				if MatchData[roomid] == nil {
