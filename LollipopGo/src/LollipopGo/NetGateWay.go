@@ -151,7 +151,7 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	}
 
 	// 发送数据  --
-	// this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
+	this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	// 发送给匹配的人的
 	if data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)] != nil {
 		this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerAOpenID, "connect", data_send)
@@ -309,7 +309,7 @@ func (this *NetDataConn) PlayerRelinkGateWay(ProtocolData map[string]interface{}
 		panic("断线重新链接 openid 错误！")
 		return
 	}
-	strOPenID := ProtocolData["OpenID"].(string)
+	//	strOPenID := ProtocolData["OpenID"].(string)
 	return
 }
 
