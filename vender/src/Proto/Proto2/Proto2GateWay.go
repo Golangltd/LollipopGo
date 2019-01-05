@@ -192,7 +192,7 @@ type S2GWS_PlayerChooseGame struct {
 
 //------------------------------------------------------------------------------
 // 断线重连  网关
-type GateWay_Relink struct {
+type GateWay_Relink1 struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string

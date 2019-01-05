@@ -99,20 +99,20 @@ func SyncMeassgeFunG(content string) {
 
 //  主协议处理
 func HandleCltProtocolG(protocol interface{}, protocol2 interface{}, ProtocolData map[string]interface{}) {
-	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
-		if err := recover(); err != nil {
-			strerr := fmt.Sprintf("%s", err)
-			//发消息给客户端
-			ErrorST := Proto2.G_Error_All{
-				Protocol:  Proto.G_Error_Proto,      // 主协议
-				Protocol2: Proto2.G_Error_All_Proto, // 子协议
-				ErrCode:   "80006",
-				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
-			}
-			// 发送给玩家数据
-			fmt.Println("Global server的主协议!!!", ErrorST)
-		}
-	}()
+	// defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+	// 	if err := recover(); err != nil {
+	// 		strerr := fmt.Sprintf("%s", err)
+	// 		//发消息给客户端
+	// 		ErrorST := Proto2.G_Error_All{
+	// 			Protocol:  Proto.G_Error_Proto,      // 主协议
+	// 			Protocol2: Proto2.G_Error_All_Proto, // 子协议
+	// 			ErrCode:   "80006",
+	// 			ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
+	// 		}
+	// 		// 发送给玩家数据
+	// 		fmt.Println("Global server的主协议!!!", ErrorST)
+	// 	}
+	// }()
 
 	// 协议处理
 	switch protocol {
@@ -162,7 +162,21 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string) //匹配数据
 	StrItype := ProtocolData["Itype"].(string)
-	_ = StrItype
+
+	if StrItype == "2" {
+		// 数据
+		data_send := &Proto2.GW2G_PlayerMatchGame{
+			Protocol:  Proto.G_GameGlobal_Proto, // 游戏主要协议
+			Protocol2: Proto2.GW2G_PlayerMatchGameProto2,
+			OpenID:    StrOpenID, // 玩家唯一标识
+			// RoomUID:     0,
+			// MatchPlayer: nil,
+			// ChessBoard:  {{}, {}, {}, {}},
+			ResultID: 0,
+		}
+		PlayerSendToServer(conn, data_send)
+		return
+	}
 
 	// 数据
 	data_send := &Proto2.GW2G_PlayerMatchGame{
@@ -176,14 +190,13 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	}
 
 	data := conf.RoomListDatabak[StrRoomID]
-	// fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data, StrRoomID)
+	fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data.NeedLev, StrRoomID)
 	dataplayer := DB_Save_RoleSTBak(StrOpenID)
 	match.Putdata(dataplayer)
-	//fmt.Println(data.NeedLev)
-	data.NeedLev = string([]byte(data.NeedLev)[2:])
+	s := string([]byte(data.NeedLev)[2:])
 	//fmt.Println(data.NeedLev)
 	//fmt.Println(dataplayer.Lev)
-	if util.Str2int_LollipopGo(data.NeedLev) > dataplayer.Lev {
+	if util.Str2int_LollipopGo(s) > dataplayer.Lev {
 		data_send.ResultID = Error.Lev_lack
 		PlayerSendToServer(conn, data_send)
 		return
