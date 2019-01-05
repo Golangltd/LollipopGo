@@ -16,6 +16,7 @@ var (
 	ChanMax        int = 1000
 	MatchSpeed         = time.Millisecond * 500
 	MatchData      map[string]*RoomMatch
+	QuitMatchData  map[string]string
 )
 
 //------------------------------------------------------------------------------
@@ -34,6 +35,7 @@ func init() {
 	Match_Chan = make(chan *player.PlayerSt, ChanMax)
 	MatchData = make(map[string]*RoomMatch)
 	MatchData_Chan = make(chan map[string]*RoomMatch, ChanMax)
+	QuitMatchData = make(map[string]string)
 	go Sort_timer()
 }
 
@@ -61,6 +63,11 @@ func DoingMatch() {
 		}
 		if data, ok := <-Match_Chan; ok {
 			fmt.Println(data)
+			// 屏蔽退出
+			if GetMatchPlayer(data.OpenID) {
+				fmt.Println(data.OpenID, "玩家已经退出！")
+				continue
+			}
 			Data[util.Int2str_LollipopGo(i+1)] = data
 			// 获取房间ID信息
 			if iicount%2 == 1 {
@@ -90,13 +97,25 @@ func DoingMatch() {
 }
 
 func Sort_timer() {
-	timer := time.NewTimer(MatchSpeed)
 	for {
 		select {
-		case <-timer.C:
+		case <-time.After(MatchSpeed):
 			{
 				DoingMatch()
 			}
 		}
 	}
+}
+
+func SetQuitMatch(OpenID string) {
+	QuitMatchData[OpenID] = OpenID
+}
+
+func DelQuitMatchList(OpenID string) {
+	delete(QuitMatchData, OpenID)
+}
+
+func GetMatchPlayer(OpenID string) bool {
+	_, ok := QuitMatchData[OpenID]
+	return ok
 }

@@ -145,9 +145,33 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 			fmt.Println("玩家请求玩家匹配！")
 			G2GW_PlayerMatchGameProto2Fucn(Conn, ProtocolData)
 		}
+	case float64(Proto2.GW2G_PlayerQuitMatchGameProto2):
+		{
+			fmt.Println("玩家主动退出匹配！")
+			G2GW_PlayerQuitMatchGameProto2Fucn(Conn, ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
+	return
+}
+
+// 玩家主动退出匹配
+func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("玩家主动退出匹配!")
+		return
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+	// 玩家主动退出
+	match.SetQuitMatch(StrOpenID)
+	// 发送消息
+	data_send := &Proto2.G2GW_PlayerQuitMatchGame{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.G2GW_PlayerQuitMatchGameProto2,
+		ResultID:  0,
+	}
+	PlayerSendToServer(conn, data_send)
 	return
 }
 
@@ -160,23 +184,9 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		return
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
-	StrRoomID := ProtocolData["RoomID"].(string) //匹配数据
-	StrItype := ProtocolData["Itype"].(string)
-
-	if StrItype == "2" {
-		// 数据
-		data_send := &Proto2.GW2G_PlayerMatchGame{
-			Protocol:  Proto.G_GameGlobal_Proto, // 游戏主要协议
-			Protocol2: Proto2.GW2G_PlayerMatchGameProto2,
-			OpenID:    StrOpenID, // 玩家唯一标识
-			// RoomUID:     0,
-			// MatchPlayer: nil,
-			// ChessBoard:  {{}, {}, {}, {}},
-			ResultID: 0,
-		}
-		PlayerSendToServer(conn, data_send)
-		return
-	}
+	StrRoomID := ProtocolData["RoomID"].(string) //  匹配数据
+	StrItype := ProtocolData["Itype"].(string)   //  1 是正常匹配 2 是快速匹配
+	// 加入到匹配里
 
 	// 数据
 	data_send := &Proto2.GW2G_PlayerMatchGame{
@@ -187,6 +197,11 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		// MatchPlayer: nil,
 		// ChessBoard:  {{}, {}, {}, {}},
 		ResultID: 0,
+	}
+
+	if StrItype == "2" { //快速匹配
+		PlayerSendToServer(conn, data_send)
+		return
 	}
 
 	data := conf.RoomListDatabak[StrRoomID]
