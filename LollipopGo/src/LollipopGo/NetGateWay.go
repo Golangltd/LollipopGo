@@ -150,12 +150,12 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 		ResultID:    iResultID,
 	}
 
-	// 发送数据  --
-	this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	// 发送给匹配的人的
 	if data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)] != nil {
 		this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerAOpenID, "connect", data_send)
 		this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerBOpenID, "connect", data_send)
+	} else {
+		this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	}
 
 	return
