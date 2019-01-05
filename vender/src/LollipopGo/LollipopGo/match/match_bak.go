@@ -142,6 +142,7 @@ func GetMatchQueue(OpenID string) bool {
 
 func SetMatchQueue(OpenID string) {
 	cache.Add(OpenID+"MatchQueue", 0, "exit")
+	DelQuitMatchList(OpenID)
 }
 
 func DelMatchQueue(OpenID string) {
