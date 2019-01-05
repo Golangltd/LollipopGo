@@ -18,8 +18,8 @@ const (
 	S2GWS_PlayerChooseGameModeProto2        // S2GWS_PlayerChooseGameModeProto2 == 8
 	C2GWS_PlayerGameInitProto2              // C2GWS_PlayerGameInitProto2 == 9  // 匹配成功后，客户端下发获取初始化牌型
 	S2GWS_PlayerGameInitProto2              // S2GWS_PlayerGameInitProto2 == 10
-	C2GWS_QuitMacthProto2                   // C2GWS_QuitMacthProto2 == 11 退出协议
-	S2GWS_QuitMacthProto2                   // S2GWS_QuitMacthProto2 == 12
+	C2GWS_QuitMatchProto2                   // C2GWS_QuitMatchProto2 == 11 退出协议
+	S2GWS_QuitMatchProto2                   // S2GWS_QuitMatchProto2 == 12
 	GateWay_LogoutProto2                    // GateWay_LogoutProto2  == 13 玩家登出
 
 	/*
@@ -44,17 +44,17 @@ type GateWay_Relink struct {
 }
 
 //------------------------------------------------------------------------------
-// C2GWS_QuitMacthProto2
+// C2GWS_QuitMatchProto2
 // 玩家退出匹配
-type C2GWS_QuitMacth struct {
+type C2GWS_QuitMatch struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
 }
 
-// S2GWS_QuitMacthProto2
+// S2GWS_QuitMatchProto2
 // 玩家退出匹配  服务器清理数据
-type S2GWS_QuitMacth struct {
+type S2GWS_QuitMatch struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
