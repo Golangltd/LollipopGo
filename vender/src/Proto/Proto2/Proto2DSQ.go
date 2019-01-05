@@ -63,8 +63,10 @@ type DSQ2GW_PlayerStirChess struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string // 谁翻动了棋子
+	OpenID_b  string // 另外一个人的ID
 	StirPos   string // 翻动的位置  格式:x,y
 	ChessNum  int    // 1 - 16 正数
+	ResultID  int
 }
 
 //------------------------------------------------------------------------------

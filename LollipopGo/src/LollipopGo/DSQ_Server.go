@@ -23,7 +23,7 @@ var addrDSQ = flag.String("addrDSQ", "127.0.0.1:8888", "http service address") /
 var ConnDSQ *websocket.Conn                                                    // 保存用户的链接信息，数据会在主动匹配成功后进行链接
 var ConnDSQRPC *rpc.Client                                                     // 链接DB server
 var DSQAllMap map[string]*RoomPlayerDSQ                                        // 游戏逻辑存储
-var DSQ_qi = []int{                                                            // 1-8 A ;9-16 B
+var DSQ_qi = []int{                                                            // 1-8 A ;9-16 B ; 17 未翻牌; 18 已翻牌
 	Proto2.Elephant, Proto2.Lion, Proto2.Tiger, Proto2.Leopard, Proto2.Wolf, Proto2.Dog, Proto2.Cat, Proto2.Mouse,
 	Proto2.Mouse + Proto2.Elephant, Proto2.Mouse + Proto2.Lion, Proto2.Mouse + Proto2.Tiger, Proto2.Mouse + Proto2.Leopard,
 	Proto2.Mouse + Proto2.Wolf, Proto2.Mouse + Proto2.Dog, Proto2.Mouse + Proto2.Cat, 2 * Proto2.Mouse}
@@ -216,17 +216,30 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	}
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	//	iRoomID := ProtocolData["RoomUID"].(float64)
+	iRoomID := int(ProtocolData["RoomUID"].(float64))
 	StrStirPos := ProtocolData["StirPos"].(string)
-	// 通过位置获取对应的数据
 
 	data := &Proto2.DSQ2GW_PlayerStirChess{
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_PlayerStirChessProto2,
 		OpenID:    StrOpenID,
+		OpenID_b:  "",
 		StirPos:   StrStirPos,
-		//		ChessNum:  DSQ_Pai,
+		ResultID:  0,
 	}
+	if GetPlayerChupai(StrOpenID) {
+		data.ResultID = 60003
+		PlayerSendToServer(conn, data)
+		return
+	} else {
+		SetPlayerChupai(StrOpenID)
+	}
+
+	// 通过位置获取对应的数据
+	_, idata := CacheGetChessDefaultData(iRoomID, StrStirPos, 2, 18)
+	data.ChessNum = idata
+	stropenid := CacheGetPlayerUID(iRoomID, StrOpenID)
+	data.OpenID_b = stropenid
 	// 发送数据
 	PlayerSendToServer(conn, data)
 
@@ -263,12 +276,46 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 	}
 
 	PlayerSendToServer(conn, data)
+	return
 }
 
 //------------------------------------------------------------------------------
+func SetPlayerChupai(OpenID string) {
+	cacheDSQ.Add(OpenID, 0, "exit")
+}
+
+func DelPlayerChupai(OpenID string) {
+	cacheDSQ.Delete(OpenID)
+}
+
+func GetPlayerChupai(OpenID string) bool {
+	ok := false
+	_, err1 := cacheDSQ.Value(OpenID)
+	if err1 == nil {
+		ok = true
+	}
+	return ok
+}
+
+//------------------------------------------------------------------------------
+
 func CacheSaveRoomData(iRoomID int, data *RoomPlayerDSQ, openid string) {
 	cacheDSQ.Add(iRoomID, 0, data)
 	CacheSavePlayerUID(iRoomID, openid)
+}
+
+func CacheGetPlayerUID(iRoomID int, player string) string {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("没有对应数据")
+		return ""
+	}
+	if res.Data().(*RoomPlayerDSQ).OpenIDA == player {
+		return res.Data().(*RoomPlayerDSQ).OpenIDB
+	} else {
+		return res.Data().(*RoomPlayerDSQ).OpenIDA
+	}
+	return ""
 }
 
 func CacheSavePlayerUID(iRoomID int, player string) {
@@ -290,11 +337,13 @@ func CacheSavePlayerUID(iRoomID int, player string) {
 }
 
 func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
+
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
 		panic("棋盘数据更新失败！")
 		return
 	}
+
 	ipos_x := 0
 	ipos_y := 0
 	strsplit := Strings_Split(Update_pos, ",")
@@ -321,18 +370,18 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 // true 表示翻开了
 // itype ==1 查询是否翻开
 // itype ==2 修改数据
-func CacheGetChessDefaultData(iRoomID int, Update_pos string, itype int, valve int) bool {
+func CacheGetChessDefaultData(iRoomID int, Update_pos string, itype int, valve int) (bool, int) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
 		panic("棋盘数据获取数据失败！")
-		return false
+		return false, -1
 	}
 	ipos_x := 0
 	ipos_y := 0
 	strsplit := Strings_Split(Update_pos, ",")
 	if len(strsplit) != 2 {
 		panic("棋盘数据获取数据失败！")
-		return false
+		return false, -1
 	}
 	for i := 0; i < len(strsplit); i++ {
 		if i == 0 {
@@ -347,17 +396,17 @@ func CacheGetChessDefaultData(iRoomID int, Update_pos string, itype int, valve i
 		fmt.Println("result:", res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y])
 		idata := res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y]
 		if idata == (2*Proto2.Mouse + 1) {
-			return false
+			return false, -1
 		} else {
-			return true
+			return true, -1
 		}
 	} else if itype == 2 {
 		// 修改翻盘结构
 		fmt.Println("result:", res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y])
 		res.Data().(*RoomPlayerDSQ).Default[ipos_x][ipos_y] = valve
-		return true
+		return true, res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y]
 	}
-	return false
+	return false, -1
 }
 
 //------------------------------------------------------------------------------

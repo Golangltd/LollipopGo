@@ -27,10 +27,36 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 			// 网关初始化棋牌数据
 			this.DSQGameInitFunc(ProtocolData)
 		}
+	case float64(Proto2.DSQ2GW_PlayerStirChessProto2):
+		{
+			// 翻牌的协议
+			this.PlayerStirChessFunc(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+func (this *NetDataConn) PlayerStirChessFunc(ProtocolData map[string]interface{}) {
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	StrOpenID_b := ProtocolData["OpenID_b"].(string)
+	StrStirPos := ProtocolData["StirPos"].(string)
+	iChessNum := int(ProtocolData["ChessNum"].(float64))
+	iResultID := int(ProtocolData["ResultID"].(float64))
+	// 组装数据
+	data := &Proto2.S2GWS_PlayerStirChess{
+		Protocol:  Proto.G_GateWay_Proto,
+		Protocol2: Proto2.S2GWS_PlayerStirChessProto2,
+		OpenID:    StrOpenID,
+		StirPos:   StrStirPos,
+		ChessNum:  iChessNum,
+		ResultID:  iResultID,
+	}
+	this.SendClientDataFunc(data.OpenID, "connect", data)
+	this.SendClientDataFunc(StrOpenID_b, "connect", data)
 	return
 }
 
