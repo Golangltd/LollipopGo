@@ -394,7 +394,28 @@ func (this *NetDataConn) PlayerGiveUpDSQGame(ProtocolData map[string]interface{}
 
 // 玩家移动棋子
 func (this *NetDataConn) PlayerMoveChessDSQGame(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomUID"] == nil ||
+		ProtocolData["OldPos"] == nil ||
+		ProtocolData["MoveDir"] == nil {
+		panic("玩家移动棋子协议错误!")
+	}
 
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := ProtocolData["RoomUID"].(float64)
+	StrOldPos := ProtocolData["OldPos"].(string)
+	iMoveDir := int(ProtocolData["MoveDir"].(float64))
+
+	data := &Proto2.GW2DSQ_PlayerMoveChess{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.GW2DSQ_PlayerMoveChessProto2,
+		OpenID:    StrOpenID,
+		RoomUID:   int(iRoomID),
+		OldPos:    StrOldPos,
+		MoveDir:   iMoveDir,
+	}
+
+	this.SendServerDataFunc(strDSQServer, "DSQ_Server", data)
 	return
 }
 
