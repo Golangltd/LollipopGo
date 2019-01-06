@@ -9,6 +9,8 @@ const (
 	DSQ2GW_InitGameProto2               //  GW2DSQ_InitGameProto2   == 4
 	GW2DSQ_PlayerStirChessProto2        // GW2DSQ_PlayerStirChessProto2 == 5   玩家翻棋子
 	DSQ2GW_PlayerStirChessProto2        // DSQ2GW_PlayerStirChessProto2 == 6   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
+	GW2DSQ_PlayerMoveChessProto2        // GW2DSQ_PlayerMoveChessProto2 == 7   玩家移动棋子
+	DSQ2GW_PlayerMoveChessProto2        // DSQ2GW_PlayerMoveChessProto2 == 8
 
 )
 
@@ -47,6 +49,30 @@ const (
 	DATAERROR           // DATAERROR == 8    数据错误    玩家的棋子已经被吃掉不存在了
 	DATANOEXIT          // DATANOEXIT == 9   数据不存在  棋子的数据大于 16或者小于0
 )
+
+//------------------------------------------------------------------------------
+// GW2DSQ_PlayerMoveChessProto2
+type GW2DSQ_PlayerMoveChess struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	RoomUID   int
+	OldPos    string // 原来坐标
+	MoveDir   int    // 移动的方向，UP == 1，DOWN 	== 2，LEFT 	== 3，RIGHT 	== 4
+}
+
+// DSQ2GW_PlayerMoveChessProto2
+// 广播 同一个房间
+type DSQ2GW_PlayerMoveChess struct {
+	Protocol  int
+	Protocol2 int
+	OpenIDA   string
+	OpenIDB   string
+	RoomUID   int
+	OldPos    string // 原来坐标
+	NewPos    string // 新坐标
+	ResultID  int
+}
 
 //------------------------------------------------------------------------------
 // GW2DSQ_PlayerStirChessProto2

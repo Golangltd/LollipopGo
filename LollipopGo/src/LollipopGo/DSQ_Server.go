@@ -200,9 +200,53 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 			fmt.Println("玩家翻棋子的协议")
 			GW2DSQ_PlayerStirChessProto2Fucn(ConnDSQ, ProtocolData)
 		}
+	case float64(Proto2.GW2DSQ_PlayerMoveChessProto2):
+		{
+			fmt.Println("玩家移动棋子的协议")
+			GW2DSQ_PlayerMoveChessProto2Fucn(ConnDSQ, ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
+	return
+}
+
+func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomUID"] == nil {
+		panic(ProtocolData)
+		return
+	}
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := int(ProtocolData["RoomUID"].(float64))
+	StrOldPos := ProtocolData["OldPos"].(string)
+	iMoveDir := int(ProtocolData["MoveDir"].(float64))
+	if GetPlayerChupai(StrOpenID) {
+		data := &Proto2.DSQ2GW_PlayerMoveChess{
+			Protocol:  Proto.G_GameDSQ_Proto,
+			Protocol2: Proto2.DSQ2GW_PlayerMoveChessProto2,
+		}
+		data.ResultID = 60003
+		PlayerSendToServer(conn, data)
+		return
+	} else {
+		SetPlayerChupai(StrOpenID)
+	}
+
+	// 1，是否可以移动（一定位置是都已经翻，移动的位置是否是自己人）
+	// 2，移动成功，更新棋盘位置
+	stropenida, stropenidb, strnewpos := CacheMoveChessIsUpdateData(iRoomID, StrOldPos, iMoveDir)
+	data := &Proto2.DSQ2GW_PlayerMoveChess{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.DSQ2GW_PlayerMoveChessProto2,
+		OpenIDA:   stropenida,
+		OpenIDB:   stropenidb,
+		RoomUID:   iRoomID,
+		OldPos:    StrOldPos,
+		NewPos:    strnewpos,
+	}
+	PlayerSendToServer(conn, data)
 	return
 }
 
@@ -391,6 +435,68 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 	res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = value
 	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y])
 	return
+}
+
+// 移动期盼是否可以移动
+func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int) (string, string, string) {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("棋盘数据获取数据失败！")
+		return "", "", ""
+	}
+	ipos_x := 0
+	ipos_y := 0
+	strsplit := Strings_Split(Update_pos, ",")
+	if len(strsplit) != 2 {
+		panic("棋盘数据获取数据失败！")
+		return "", "", ""
+	}
+	for i := 0; i < len(strsplit); i++ {
+		if i == 0 {
+			ipos_x = util.Str2int_LollipopGo(strsplit[i])
+		} else {
+			ipos_y = util.Str2int_LollipopGo(strsplit[i])
+		}
+	}
+	fmt.Println("修改的棋盘的坐标", ipos_x, ipos_y)
+	// 原来的值：
+	iyuanlai := res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y]
+
+	// 方向
+	if MoveDir == Proto2.UP {
+		ipos_y -= 1
+	} else if MoveDir == Proto2.DOWN {
+		ipos_y += 1
+	} else if MoveDir == Proto2.LEFT {
+		ipos_x -= 1
+	} else if MoveDir == Proto2.RIGHT {
+		ipos_x += 1
+	}
+	ihoulai := res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y]
+	// 移动的位置
+	bret, _ := CacheGetChessDefaultData(iRoomID, util.Int2str_LollipopGo(ipos_x)+","+util.Int2str_LollipopGo(ipos_y), 1, 0)
+	if !bret {
+		return "", "", ""
+	}
+	// 判断是否可以吃，1 大小； 2 是都是同一方
+	if iyuanlai > 8 && ihoulai > 8 {
+		return "", "", ""
+	} else if iyuanlai <= 8 && ihoulai <= 8 {
+		return "", "", ""
+	} else if (iyuanlai <= 8 && ihoulai > 8) ||
+		(iyuanlai > 8 && ihoulai <= 8) {
+
+		if iyuanlai > ihoulai-Proto2.Mouse {
+
+		} else if iyuanlai == ihoulai-Proto2.Mouse {
+
+		} else if iyuanlai < ihoulai-Proto2.Mouse {
+
+		}
+		return "", "", ""
+	}
+
+	return "", "", ""
 }
 
 // 获取默认棋牌数据是否翻开
