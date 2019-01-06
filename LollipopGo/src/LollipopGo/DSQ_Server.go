@@ -254,6 +254,18 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
 	iRoomID := int(ProtocolData["RoomUID"].(float64))
+	retdata, bret := CacheGetRoomDataByPlayer(iRoomID, StrOpenID)
+	if bret {
+		data := &Proto2.DSQ2GW_InitGame{
+			Protocol:  Proto.G_GameDSQ_Proto,
+			Protocol2: Proto2.DSQ2GW_InitGameProto2,
+			OpenID:    StrOpenID,
+			RoomID:    iRoomID,
+			InitData:  retdata,
+		}
+		PlayerSendToServer(conn, data)
+		return
+	}
 	data1 := [4][4]int{{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
 		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
 		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
@@ -333,6 +345,22 @@ func CacheSavePlayerUID(iRoomID int, player string) {
 	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDA)
 	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDB)
 	return
+}
+
+func CacheGetRoomDataByPlayer(iRoomID int, opneid string) ([4][4]int, bool) {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("棋盘数据更新失败！")
+		return [4][4]int{{}, {}, {}, {}}, false
+	}
+	fmt.Println("n>1获取棋盘数据", iRoomID, opneid)
+
+	if res.Data().(*RoomPlayerDSQ).OpenIDA == opneid ||
+		res.Data().(*RoomPlayerDSQ).OpenIDB == opneid {
+		return res.Data().(*RoomPlayerDSQ).ChessData, true
+	}
+
+	return [4][4]int{{}, {}, {}, {}}, false
 }
 
 func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
