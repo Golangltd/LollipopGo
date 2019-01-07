@@ -235,6 +235,7 @@ type S2GWS_PlayerLogin struct {
 	Personal      map[string]interface{}   // 个人信息
 	DefaultMsg    map[string]*player.MsgST // 默认跑马灯消息
 	DefaultAward  map[string]interface{}   // 默认兑换列表
+	AllPlayer     map[string]interface{}   // 玩家的信息
 }
 
 //------------------------------------------------------------------------------
