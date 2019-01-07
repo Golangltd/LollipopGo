@@ -97,6 +97,7 @@ func (this *NetDataConn) DSQGameInitFunc(ProtocolData map[string]interface{}) {
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string)
+	iSeatNum := int(ProtocolData["SeatNum"].(float64))
 	iiqipan := ProtocolData["InitData"].([]interface{})
 
 	// 组装数据
@@ -105,6 +106,7 @@ func (this *NetDataConn) DSQGameInitFunc(ProtocolData map[string]interface{}) {
 		Protocol2:  Proto2.S2GWS_PlayerGameInitProto2,
 		OpenID:     StrOpenID,
 		RoomUID:    util.Str2int_LollipopGo(StrRoomID),
+		SeatNum:    iSeatNum,
 		ChessBoard: iiqipan,
 	}
 

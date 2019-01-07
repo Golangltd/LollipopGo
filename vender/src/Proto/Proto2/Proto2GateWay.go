@@ -151,6 +151,7 @@ type S2GWS_PlayerGameInit struct {
 	Protocol2  int
 	OpenID     string
 	RoomUID    int
+	SeatNum    int           // 0 1
 	ChessBoard []interface{} // 棋盘的数据 0表示空
 }
 
