@@ -32,10 +32,38 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 			// 翻牌的协议
 			this.PlayerStirChessFunc(ProtocolData)
 		}
+	case float64(Proto2.DSQ2GW_PlayerMoveChessProto2):
+		{
+			// 移动的协议
+			this.PlayerMoveChessFunc(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+func (this *NetDataConn) PlayerMoveChessFunc(ProtocolData map[string]interface{}) {
+
+	StrOpenIDA := ProtocolData["OpenIDA"].(string)
+	StrOpenIDB := ProtocolData["OpenIDB"].(string)
+	iRoomUID := int(ProtocolData["RoomUID"].(float64))
+	StrOldPos := ProtocolData["OldPos"].(string)
+	StrNewPos := ProtocolData["NewPos"].(string)
+	iResultID := int(ProtocolData["ResultID"].(float64))
+
+	data := &Proto2.S2GWS_PlayerMoveChess{
+		Protocol:  Proto.G_GateWay_Proto,
+		Protocol2: Proto2.S2GWS_PlayerMoveChessProto2,
+		OpenID:    StrOpenIDA,
+		RoomUID:   iRoomUID,
+		OldPos:    StrOldPos,
+		NewPos:    StrNewPos,
+		ResultID:  iResultID,
+	}
+	this.SendClientDataFunc(StrOpenIDA, "connect", data)
+	this.SendClientDataFunc(StrOpenIDB, "connect", data)
 	return
 }
 

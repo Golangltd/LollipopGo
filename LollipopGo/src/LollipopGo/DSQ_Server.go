@@ -236,7 +236,7 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 
 	// 1，是否可以移动（一定位置是都已经翻，移动的位置是否是自己人）
 	// 2，移动成功，更新棋盘位置
-	stropenida, stropenidb, strnewpos := CacheMoveChessIsUpdateData(iRoomID, StrOldPos, iMoveDir)
+	stropenida, stropenidb, strnewpos := CacheMoveChessIsUpdateData(iRoomID, StrOldPos, iMoveDir, StrOpenID)
 	data := &Proto2.DSQ2GW_PlayerMoveChess{
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_PlayerMoveChessProto2,
@@ -438,7 +438,7 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 }
 
 // 移动期盼是否可以移动
-func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int) (string, string, string) {
+func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, stropenid string) (string, string, string) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
 		panic("棋盘数据获取数据失败！")
@@ -459,6 +459,7 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int) (st
 		}
 	}
 	fmt.Println("修改的棋盘的坐标", ipos_x, ipos_y)
+	iyunalaiX, iyunalaiY := ipos_x, ipos_y
 	// 原来的值：
 	iyuanlai := res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y]
 
@@ -473,8 +474,9 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int) (st
 		ipos_x += 1
 	}
 	ihoulai := res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y]
+	strnewpos := util.Int2str_LollipopGo(ipos_x) + "," + util.Int2str_LollipopGo(ipos_y)
 	// 移动的位置
-	bret, _ := CacheGetChessDefaultData(iRoomID, util.Int2str_LollipopGo(ipos_x)+","+util.Int2str_LollipopGo(ipos_y), 1, 0)
+	bret, _ := CacheGetChessDefaultData(iRoomID, strnewpos, 1, 0)
 	if !bret {
 		return "", "", ""
 	}
@@ -485,15 +487,23 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int) (st
 		return "", "", ""
 	} else if (iyuanlai <= 8 && ihoulai > 8) ||
 		(iyuanlai > 8 && ihoulai <= 8) {
+		if iyuanlai > ihoulai-Proto2.Mouse { // 可以吃
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 
-		if iyuanlai > ihoulai-Proto2.Mouse {
+		} else if iyuanlai == ihoulai-Proto2.Mouse { // 同归于尽
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = 0
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 
-		} else if iyuanlai == ihoulai-Proto2.Mouse {
-
-		} else if iyuanlai < ihoulai-Proto2.Mouse {
-
+		} else if iyuanlai < ihoulai-Proto2.Mouse { // 自毁
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 		}
-		return "", "", ""
+		sendopenid, otheropenid := "", ""
+		if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
+			sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
+			otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
+		}
+		return sendopenid, otheropenid, strnewpos
 	}
 
 	return "", "", ""

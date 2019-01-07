@@ -112,6 +112,7 @@ type S2GWS_PlayerMoveChess struct {
 	RoomUID   int
 	OldPos    string // 原来坐标
 	NewPos    string // 新坐标
+	ResultID  int    // 错误ID
 }
 
 //------------------------------------------------------------------------------
