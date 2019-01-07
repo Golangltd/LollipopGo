@@ -1,5 +1,9 @@
 package Proto2
 
+import (
+	"LollipopGo/LollipopGo/player"
+)
+
 //  G_GameDSQ_Proto == 10    斗兽棋
 const (
 	INITDSQ                         = iota //  INITDSQ == 0
@@ -67,10 +71,10 @@ type DSQ2GW_BroadCast_GameOver struct {
 	Protocol2       int
 	OpenIDA         string
 	OpenIDB         string
-	FailGameLev_Exp string // 格式: 1,10
-	SuccGameLev_Exp string // 格式: 1,10
-	// FailPlayer      map[string]*player.PlayerSt // 失败者
-	// SuccPlayer      map[string]*player.PlayerSt // 胜利者
+	FailGameLev_Exp string                      // 格式: 1,10
+	SuccGameLev_Exp string                      // 格式: 1,10
+	FailPlayer      map[string]*player.PlayerSt // 失败者
+	SuccPlayer      map[string]*player.PlayerSt // 胜利者
 }
 
 //------------------------------------------------------------------------------
@@ -150,6 +154,7 @@ type DSQ2GW_InitGame struct {
 	Protocol2 int
 	OpenID    string
 	RoomID    string
+	SeatNum   int       // 0 1
 	InitData  [4][4]int // 斗兽棋的棋盘的数据
 }
 

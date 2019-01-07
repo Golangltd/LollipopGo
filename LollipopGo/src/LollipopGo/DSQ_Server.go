@@ -30,13 +30,17 @@ var DSQ_qi = []int{                                                            /
 var cacheDSQ *cache2go.CacheTable
 
 type RoomPlayerDSQ struct {
-	RoomID    int
-	OpenIDA   string
-	OpenIDB   string
-	Default   [4][4]int // 未翻牌的
-	ChessData [4][4]int // 棋盘数据
-	WhoChuPai string    // 当前谁出牌
-	GoAround  int       // 回合，如果每人出10次都没有吃子，系统推送平局;第七个回合提示数据 第10局平局
+	RoomID       int
+	IsRoomID     bool
+	OpenIDA      string
+	OpenIDB      string
+	OpenIDA_Seat int       // 默认是0； 1 表示坐下
+	OpenIDB_Seat int       // 默认是0； 1 表示坐下
+	Default      [4][4]int // 未翻牌的
+	ChessData    [4][4]int // 棋盘数据
+	AChessNum    int       // A的剩余的棋子的数量
+	BChessNum    int       // B的剩余的棋子的数量
+	GoAround     int       // 回合，如果每人出10次都没有吃子，系统推送平局;第七个回合提示数据 第10局平局
 }
 
 /*
@@ -223,9 +227,24 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 		panic(ProtocolData)
 		return
 	}
-	// StrOpenID := ProtocolData["OpenID"].(string)
-	// iRoomID := int(ProtocolData["RoomUID"].(float64))
+	//StrOpenID := ProtocolData["OpenID"].(string)
+	//iRoomID := int(ProtocolData["RoomUID"].(float64))
+	// 1 结算数据，玩家等级的结算
+	// 2 销毁数据
+	// 3 玩家数据的组合
 
+	// 发送数据
+	data := &Proto2.DSQ2GW_BroadCast_GameOver{
+		Protocol:        Proto.G_GameDSQ_Proto,
+		Protocol2:       Proto2.DSQ2GW_BroadCast_GameOverProto2,
+		OpenIDA:         "",
+		OpenIDB:         "",
+		FailGameLev_Exp: "",  // 格式: 1,10
+		SuccGameLev_Exp: "",  // 格式: 1,10
+		FailPlayer:      nil, // 失败者
+		SuccPlayer:      nil, // 胜利者
+	}
+	PlayerSendToServer(conn, data)
 	return
 }
 
@@ -317,18 +336,22 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		panic("玩家数据错误!!!")
 		return
 	}
+	fmt.Println("==================================")
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string)
 	iRoomID := util.Str2int_LollipopGo(StrRoomID)
-	retdata, bret := CacheGetRoomDataByPlayer(iRoomID, StrOpenID)
+	retdata, bret, iret := CacheGetRoomDataByRoomID(iRoomID, StrOpenID)
+	//iret := CacheGetRoomDataByPlayer(iRoomID, StrOpenID)
 	if bret {
 		data := &Proto2.DSQ2GW_InitGame{
 			Protocol:  Proto.G_GameDSQ_Proto,
 			Protocol2: Proto2.DSQ2GW_InitGameProto2,
 			OpenID:    StrOpenID,
 			RoomID:    StrRoomID,
+			SeatNum:   iret,
 			InitData:  retdata,
 		}
+		fmt.Println(data)
 		PlayerSendToServer(conn, data)
 		return
 	}
@@ -339,6 +362,7 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 	DSQ_Pai := InitDSQ(DSQ_qi)
 	savedata := &RoomPlayerDSQ{
 		RoomID:    iRoomID,
+		IsRoomID:  true,
 		Default:   data1,
 		ChessData: DSQ_Pai,
 	}
@@ -354,6 +378,48 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 
 	PlayerSendToServer(conn, data)
 	return
+}
+
+//------------------------------------------------------------------------------
+func CheckGameIsOver(iRoomID int, strpopenid string) bool {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("没有对应数据")
+		return false
+	}
+
+	if res.Data().(*RoomPlayerDSQ).OpenIDA == strpopenid {
+		data := res.Data().(*RoomPlayerDSQ).BChessNum
+		if data == 0 {
+			// 结束
+			return true
+		}
+	}
+
+	if res.Data().(*RoomPlayerDSQ).OpenIDB == strpopenid {
+		data := res.Data().(*RoomPlayerDSQ).AChessNum
+		if data == 0 {
+			// 结束
+			return true
+		}
+	}
+
+	// 1 对比 A\B方 剩余的棋子数来判断 ，如果一方都为零 就输了
+	// 2
+	return false
+
+}
+
+//------------------------------------------------------------------------------
+func SetRecord_A_B_chess(itype int) {
+	// A B
+	cacheDSQ.Add(itype, 0, 1)
+	return
+}
+
+func GetRecord_A_B_chess(itype int) int {
+
+	return 0
 }
 
 //------------------------------------------------------------------------------
@@ -377,6 +443,7 @@ func GetPlayerChupai(OpenID string) bool {
 //------------------------------------------------------------------------------
 
 func CacheSaveRoomData(iRoomID int, data *RoomPlayerDSQ, openid string) {
+	fmt.Println("save data:", data)
 	cacheDSQ.Add(iRoomID, 0, data)
 	CacheSavePlayerUID(iRoomID, openid)
 }
@@ -413,20 +480,54 @@ func CacheSavePlayerUID(iRoomID int, player string) {
 	return
 }
 
-func CacheGetRoomDataByPlayer(iRoomID int, opneid string) ([4][4]int, bool) {
+func CacheGetRoomDataByRoomID(iRoomID int, opneid string) ([4][4]int, bool, int) {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		// panic("棋盘数据更新失败！")
+		return [4][4]int{{}, {}, {}, {}}, false, 0
+	}
+	fmt.Println("n>1获取棋盘数据", iRoomID)
+	if !res.Data().(*RoomPlayerDSQ).IsRoomID {
+		return [4][4]int{{}, {}, {}, {}}, false, 0
+	}
+
+	if len(res.Data().(*RoomPlayerDSQ).OpenIDA) == 0 {
+		res.Data().(*RoomPlayerDSQ).OpenIDA = opneid
+		res.Data().(*RoomPlayerDSQ).OpenIDA_Seat = 1
+		return res.Data().(*RoomPlayerDSQ).ChessData, true, 1
+	}
+
+	if len(res.Data().(*RoomPlayerDSQ).OpenIDB) == 0 {
+		res.Data().(*RoomPlayerDSQ).OpenIDB = opneid
+		res.Data().(*RoomPlayerDSQ).OpenIDB_Seat = 1
+		return res.Data().(*RoomPlayerDSQ).ChessData, true, 0
+	}
+	return [4][4]int{{}, {}, {}, {}}, false, 0
+}
+
+// OpenIDA_Seat int       // 默认是0； 1 表示坐下
+// OpenIDA_Seat int       // 默认是0； 1 表示坐下
+
+func CacheGetRoomDataByPlayer(iRoomID int, opneid string) int {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
 		//panic("棋盘数据更新失败！")
-		return [4][4]int{{}, {}, {}, {}}, false
 	}
 	fmt.Println("n>1获取棋盘数据", iRoomID, opneid)
 
-	if res.Data().(*RoomPlayerDSQ).OpenIDA == opneid ||
-		res.Data().(*RoomPlayerDSQ).OpenIDB == opneid {
-		return res.Data().(*RoomPlayerDSQ).ChessData, true
+	if len(res.Data().(*RoomPlayerDSQ).OpenIDA) == 0 {
+		res.Data().(*RoomPlayerDSQ).OpenIDA = opneid
+		res.Data().(*RoomPlayerDSQ).OpenIDA_Seat = 1
+		return 1
 	}
 
-	return [4][4]int{{}, {}, {}, {}}, false
+	if len(res.Data().(*RoomPlayerDSQ).OpenIDB) == 0 {
+		res.Data().(*RoomPlayerDSQ).OpenIDB = opneid
+		res.Data().(*RoomPlayerDSQ).OpenIDB_Seat = 1
+		return 0
+	}
+	fmt.Println("座位出错", iRoomID, opneid)
+	return 0
 }
 
 func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
@@ -507,24 +608,78 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 		return "", "", ""
 	} else if iyuanlai <= 8 && ihoulai <= 8 {
 		return "", "", ""
-	} else if (iyuanlai <= 8 && ihoulai > 8) ||
-		(iyuanlai > 8 && ihoulai <= 8) {
-		if iyuanlai > ihoulai-Proto2.Mouse { // 可以吃
-			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
-			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+	}
 
-		} else if iyuanlai == ihoulai-Proto2.Mouse { // 同归于尽
-			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = 0
-			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
-
-		} else if iyuanlai < ihoulai-Proto2.Mouse { // 自毁
-			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+	if iyuanlai <= 8 && ihoulai > 8 {
+		if iyuanlai == 1 && ihoulai-Proto2.Mouse == 8 {
+			// 大象吃不了老鼠
+			return "", "", ""
 		}
 		sendopenid, otheropenid := "", ""
 		if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
 			sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
 			otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
 		}
+		if iyuanlai == 8 && ihoulai-Proto2.Mouse == 1 {
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).BChessNum++
+			return sendopenid, otheropenid, strnewpos
+		}
+		if iyuanlai > ihoulai-Proto2.Mouse { // 可以吃
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).BChessNum++
+
+		} else if iyuanlai == ihoulai-Proto2.Mouse { // 同归于尽
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = 0
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).AChessNum++
+			res.Data().(*RoomPlayerDSQ).BChessNum++
+
+		} else if iyuanlai < ihoulai-Proto2.Mouse { // 自毁
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).AChessNum++
+		}
+
+		return sendopenid, otheropenid, strnewpos
+
+	} else if iyuanlai > 8 && ihoulai <= 8 {
+
+		if iyuanlai-Proto2.Mouse == 1 && ihoulai == Proto2.Mouse {
+			// 大象吃不了老鼠
+			return "", "", ""
+		}
+
+		sendopenid, otheropenid := "", ""
+		if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
+			sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
+			otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
+		}
+
+		if iyuanlai-Proto2.Mouse == 8 && ihoulai == 1 {
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).BChessNum++
+			return sendopenid, otheropenid, strnewpos
+		}
+
+		if iyuanlai-Proto2.Mouse > ihoulai { // 可以吃
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).BChessNum++
+
+		} else if iyuanlai-Proto2.Mouse == ihoulai { // 同归于尽
+			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = 0
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).AChessNum++
+			res.Data().(*RoomPlayerDSQ).BChessNum++
+
+		} else if iyuanlai-Proto2.Mouse < ihoulai { // 自毁
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).AChessNum++
+		}
+
 		return sendopenid, otheropenid, strnewpos
 	}
 
