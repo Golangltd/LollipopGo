@@ -341,7 +341,7 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 	StrRoomID := ProtocolData["RoomID"].(string)
 	iRoomID := util.Str2int_LollipopGo(StrRoomID)
 	retdata, bret, iret := CacheGetRoomDataByRoomID(iRoomID, StrOpenID)
-	//iret := CacheGetRoomDataByPlayer(iRoomID, StrOpenID)
+	// iret := CacheGetRoomDataByPlayer(iRoomID, StrOpenID)
 	if bret {
 		data := &Proto2.DSQ2GW_InitGame{
 			Protocol:  Proto.G_GameDSQ_Proto,
@@ -445,7 +445,7 @@ func GetPlayerChupai(OpenID string) bool {
 func CacheSaveRoomData(iRoomID int, data *RoomPlayerDSQ, openid string) {
 	fmt.Println("save data:", data)
 	cacheDSQ.Add(iRoomID, 0, data)
-	CacheSavePlayerUID(iRoomID, openid)
+	//CacheSavePlayerUID(iRoomID, openid)
 }
 
 func CacheGetPlayerUID(iRoomID int, player string) string {
@@ -505,15 +505,20 @@ func CacheGetRoomDataByRoomID(iRoomID int, opneid string) ([4][4]int, bool, int)
 	return [4][4]int{{}, {}, {}, {}}, false, 0
 }
 
-// OpenIDA_Seat int       // 默认是0； 1 表示坐下
-// OpenIDA_Seat int       // 默认是0； 1 表示坐下
-
 func CacheGetRoomDataByPlayer(iRoomID int, opneid string) int {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
 		//panic("棋盘数据更新失败！")
 	}
 	fmt.Println("n>1获取棋盘数据", iRoomID, opneid)
+
+	if res.Data().(*RoomPlayerDSQ).OpenIDA == opneid {
+		return res.Data().(*RoomPlayerDSQ).OpenIDA_Seat
+	}
+
+	if res.Data().(*RoomPlayerDSQ).OpenIDB == opneid {
+		return res.Data().(*RoomPlayerDSQ).OpenIDB_Seat
+	}
 
 	if len(res.Data().(*RoomPlayerDSQ).OpenIDA) == 0 {
 		res.Data().(*RoomPlayerDSQ).OpenIDA = opneid
