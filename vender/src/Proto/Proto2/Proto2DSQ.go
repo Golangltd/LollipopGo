@@ -69,10 +69,10 @@ type GW2DSQ_PlayerGiveUp struct {
 type DSQ2GW_BroadCast_GameOver struct {
 	Protocol        int
 	Protocol2       int
-	OpenIDA         string
-	OpenIDB         string
+	OpenIDA         string                      // 失败者
+	OpenIDB         string                      // 胜利者
 	IsDraw          bool                        // 是否是平局
-	FailGameLev_Exp string                      // 格式: 1,10
+	FailGameLev_Exp string                      // 格式: 1,0
 	SuccGameLev_Exp string                      // 格式: 1,10
 	FailPlayer      map[string]*player.PlayerSt // 失败者
 	SuccPlayer      map[string]*player.PlayerSt // 胜利者

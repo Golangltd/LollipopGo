@@ -391,6 +391,8 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 }
 
 //------------------------------------------------------------------------------
+// 定时器去检测
+// 吃掉棋子去检测
 func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
@@ -400,20 +402,26 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 
 	// 1 对比 A\B方 剩余的棋子数来判断 ，如果一方都为零 就输了
 	// 2 走的数据操作，10个回合没有吃掉棋子
-
 	if res.Data().(*RoomPlayerDSQ).OpenIDA == strpopenid {
 		data := res.Data().(*RoomPlayerDSQ).BChessNum
 		if data == 0 {
 			// 结束
-			// data := &Proto2.DSQ2GW_InitGame{
-			// 	Protocol:  Proto.G_GameDSQ_Proto,
-			// 	Protocol2: Proto2.DSQ2GW_InitGameProto2,
-			// 	OpenID:    StrOpenID,
-			// 	RoomID:    StrRoomID,
-			// 	SeatNum:   1,
-			// 	InitData:  DSQ_Pai,
-			// }
-			// PlayerSendToServer(conn, data)
+			data := &Proto2.DSQ2GW_BroadCast_GameOver{
+				Protocol:        Proto.G_GameDSQ_Proto,
+				Protocol2:       Proto2.DSQ2GW_BroadCast_GameOverProto2,
+				OpenIDA:         "",
+				OpenIDB:         "",
+				IsDraw:          false,
+				FailGameLev_Exp: "" + ",0",
+				SuccGameLev_Exp: "" + ",10",
+			}
+			// 如果是平局
+			if data.IsDraw {
+				data.FailGameLev_Exp = "" + ",0"
+				data.SuccGameLev_Exp = "" + ",0"
+			}
+			// 发送给客户端数据
+			PlayerSendToServer(conn, data)
 			return true
 		}
 	}
@@ -427,7 +435,6 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 	}
 
 	return false
-
 }
 
 //------------------------------------------------------------------------------
