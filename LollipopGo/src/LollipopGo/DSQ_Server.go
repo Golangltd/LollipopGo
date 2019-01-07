@@ -60,15 +60,15 @@ type RoomPlayerDSQ struct {
 
 // 初始化操作
 func init() {
-	if strServerType == "DSQ" {
-		if !initDSQGateWayNet() {
-			fmt.Println("链接 gateway server 失败!")
-			return
-		}
-		fmt.Println("链接 gateway server 成功!")
-		// 初始化数据
-		initDSQNetRPC()
+	//if strServerType == "DSQ" {
+	if !initDSQGateWayNet() {
+		fmt.Println("链接 gateway server 失败!")
+		return
 	}
+	fmt.Println("链接 gateway server 成功!")
+	// 初始化数据
+	initDSQNetRPC()
+	//}
 	return
 }
 
@@ -95,14 +95,15 @@ func initDSQGateWayNet() bool {
 	}
 	ConnDSQ = conn
 	// 协程支持  --接受线程操作 全球协议操作
-	go GameServerReceiveDSQ(Conn)
+	go GameServerReceiveDSQ(ConnDSQ)
 	// 发送链接的协议 ---》
-	initConnDSQ(Conn)
+	initConnDSQ(ConnDSQ)
 	return true
 }
 
 // 链接到网关
 func initConnDSQ(conn *websocket.Conn) {
+	fmt.Println("---------------------------------")
 	// 协议修改
 	data := &Proto2.DSQ2GW_ConnServer{
 		Protocol:  Proto.G_GameDSQ_Proto, // 游戏主要协议
@@ -171,7 +172,7 @@ func HandleCltProtocolDSQ(protocol interface{}, protocol2 interface{}, ProtocolD
 
 	// 协议处理
 	switch protocol {
-	case float64(Proto.G_GameGlobal_Proto):
+	case float64(Proto.G_GameDSQ_Proto):
 		{ // DSQ Server 主要协议处理
 			fmt.Println("DSQ server 主协议!!!")
 			HandleCltProtocol2DSQ(protocol2, ProtocolData)
@@ -205,9 +206,26 @@ func HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolData map[string]interf
 			fmt.Println("玩家移动棋子的协议")
 			GW2DSQ_PlayerMoveChessProto2Fucn(ConnDSQ, ProtocolData)
 		}
+	case float64(Proto2.GW2DSQ_PlayerGiveUpProto2):
+		{
+			fmt.Println("玩家放弃游戏的协议")
+			GW2DSQ_PlayerGiveUpProto2Fucn(ConnDSQ, ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
+	return
+}
+
+func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomUID"] == nil {
+		panic(ProtocolData)
+		return
+	}
+	// StrOpenID := ProtocolData["OpenID"].(string)
+	// iRoomID := int(ProtocolData["RoomUID"].(float64))
+
 	return
 }
 
@@ -295,19 +313,20 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 
 	if ProtocolData["OpenID"] == nil ||
-		ProtocolData["RoomUID"] == nil {
+		ProtocolData["RoomID"] == nil {
 		panic("玩家数据错误!!!")
 		return
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
-	iRoomID := int(ProtocolData["RoomUID"].(float64))
+	StrRoomID := ProtocolData["RoomID"].(string)
+	iRoomID := util.Str2int_LollipopGo(StrRoomID)
 	retdata, bret := CacheGetRoomDataByPlayer(iRoomID, StrOpenID)
 	if bret {
 		data := &Proto2.DSQ2GW_InitGame{
 			Protocol:  Proto.G_GameDSQ_Proto,
 			Protocol2: Proto2.DSQ2GW_InitGameProto2,
 			OpenID:    StrOpenID,
-			RoomID:    iRoomID,
+			RoomID:    StrRoomID,
 			InitData:  retdata,
 		}
 		PlayerSendToServer(conn, data)
@@ -329,7 +348,7 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_InitGameProto2,
 		OpenID:    StrOpenID,
-		RoomID:    iRoomID,
+		RoomID:    StrRoomID,
 		InitData:  DSQ_Pai,
 	}
 
@@ -397,7 +416,7 @@ func CacheSavePlayerUID(iRoomID int, player string) {
 func CacheGetRoomDataByPlayer(iRoomID int, opneid string) ([4][4]int, bool) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("棋盘数据更新失败！")
+		//panic("棋盘数据更新失败！")
 		return [4][4]int{{}, {}, {}, {}}, false
 	}
 	fmt.Println("n>1获取棋盘数据", iRoomID, opneid)

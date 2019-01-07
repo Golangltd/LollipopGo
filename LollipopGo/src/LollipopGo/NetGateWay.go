@@ -97,7 +97,7 @@ func (this *NetDataConn) DSQGameInitFunc(ProtocolData map[string]interface{}) {
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string)
-	iiqipan := ProtocolData["InitData"].([4][4]int)
+	iiqipan := ProtocolData["InitData"].([]interface{})
 
 	// 组装数据
 	data := &Proto2.S2GWS_PlayerGameInit{
@@ -416,7 +416,22 @@ func (this *NetDataConn) PlayerRelinkGateWay(ProtocolData map[string]interface{}
 
 // 玩家认输--放弃
 func (this *NetDataConn) PlayerGiveUpDSQGame(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil ||
+		ProtocolData["RoomUID"] == nil {
+		panic(ProtocolData)
+	}
 
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := ProtocolData["RoomUID"].(float64)
+
+	data := &Proto2.GW2DSQ_PlayerGiveUp{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.GW2DSQ_PlayerGiveUpProto2,
+		OpenID:    StrOpenID,
+		RoomUID:   int(iRoomID),
+	}
+
+	this.SendServerDataFunc(strDSQServer, "DSQ_Server", data)
 	return
 }
 
@@ -475,14 +490,14 @@ func (this *NetDataConn) PlayerStirChessDSQGame(ProtocolData map[string]interfac
 //------------------------------------------------------------------------------
 func (this *NetDataConn) PlayerEntryGameModeDSQGame(ProtocolData map[string]interface{}) {
 	if ProtocolData["OpenID"] == nil ||
-		ProtocolData["RoomID"] == nil {
+		ProtocolData["RoomUID"] == nil {
 		panic("初始化游戏错误！")
 		return
 	}
 
 	// 获取数据
 	StrOpenID := ProtocolData["OpenID"].(string)
-	iRoomID := ProtocolData["RoomID"].(int)
+	iRoomID := int(ProtocolData["RoomUID"].(float64))
 
 	data := &Proto2.GW2DSQ_InitGame{
 		Protocol:  Proto.G_GameDSQ_Proto,
