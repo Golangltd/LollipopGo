@@ -38,10 +38,52 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 			// 移动的协议
 			this.PlayerMoveChessFunc(ProtocolData)
 		}
+	case float64(Proto2.DSQ2GW_BroadCast_GameOverProto2):
+		{
+			// 结算的协议
+			this.BroadCastGameOverFunc(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+//	FailGameLev_Exp string                      // 格式: 1,0
+//	SuccGameLev_Exp string                      // 格式: 1,10
+//	FailPlayer      map[string]*player.PlayerSt // 失败者
+//	SuccPlayer      map[string]*player.PlayerSt // 胜利者
+
+func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface{}) {
+	StrOpenIDA := ProtocolData["OpenIDA"].(string) // 失败者
+	StrOpenIDB := ProtocolData["OpenIDB"].(string) // 成功者
+	BIsDraw := ProtocolData["IsDraw"].(bool)
+
+	data := &Proto2.BroadCast_GameOver{
+		Protocol:  Proto.G_GateWay_Proto,
+		Protocol2: Proto2.BroadCast_GameOverProto2,
+		IsDraw:    BIsDraw,
+	}
+
+	playerdataA := this.GateWayGetPalyerData(StrOpenIDA)
+	playerdataB := this.GateWayGetPalyerData(StrOpenIDB)
+
+	gamelevA := util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev)
+	//gameexpA := playerdataA.GameData["10001"].GameExp
+
+	gamelevB := util.Int2str_LollipopGo(playerdataB.GameData[10001].GameLev)
+	//gameexpB := playerdataB.GameData["10001"].GameExp
+
+	if BIsDraw { // 平局，都不加分
+		data.FailGameLev_Exp = gamelevA + ",0"
+		data.SuccGameLev_Exp = gamelevB + ",0"
+	} else {
+		data.FailGameLev_Exp = gamelevA + ",0"
+		data.SuccGameLev_Exp = gamelevB + ",0"
+	}
+	this.SendClientDataFunc(StrOpenIDA, "connect", data)
+	this.SendClientDataFunc(StrOpenIDB, "connect", data)
 	return
 }
 
@@ -263,6 +305,12 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 		StRacePlayerNum = ProtocolData["RacePlayerNum"].(map[string]interface{})
 	}
 	StPersonal := ProtocolData["Personal"].(map[string]interface{})
+
+	StAllPlayer := make(map[string]interface{})
+	if ProtocolData["AllPlayer"] != nil {
+		StAllPlayer = ProtocolData["AllPlayer"].(map[string]interface{})
+	}
+
 	// StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
 	// StDefaultAward := ProtocolData["DefaultAward"].(map[string]interface{})
 
@@ -280,9 +328,23 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 		Personal:      StPersonal,
 		// DefaultMsg:    StDefaultMsg,
 		// DefaultAward:  StDefaultAward,
+		AllPlayer: StAllPlayer, // 玩家的所有的结构数据
 	}
 	// 发送数据  --
 	this.SendClientDataFunc(data.OpenID, "connect", data)
+	//--------------------------------------------------------------------------
+	//	playerdata := &player.PlayerSt{
+	//		UID:           util.Str2int_LollipopGo(StrPlayerUID),
+	//		Name:          StrPlayerName,
+	//		HeadURL:       StrHeadUrl,
+	//		Sex:           StrSex,
+	//		PlayerSchool:  StrPlayerSchool,
+	//		Constellation: StrConstellation,
+	//		OpenID:        data.OpenID,
+	//	}
+	//	_ = playerdata
+	this.GateWaySavePalyerData(data.OpenID, data.AllPlayer)
+	//--------------------------------------------------------------------------
 	return
 }
 
@@ -392,9 +454,18 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 
 //------------------------------------------------------------------------------
 // 缓存玩家数据
-func (this *NetDataConn) GateWaySavePalyerData(stropenid string, data *player.PlayerSt) {
-	cacheDSQ.Add(stropenid, 0, data)
+func (this *NetDataConn) GateWaySavePalyerData(stropenid string, data map[string]interface{}) {
+	cacheGW.Add(stropenid, 0, data)
 	return
+}
+
+func (this *NetDataConn) GateWayGetPalyerData(stropenid string) *player.PlayerSt {
+	res, err1 := cacheGW.Value(stropenid)
+	if err1 != nil {
+		panic("没有对应数据")
+		return nil
+	}
+	return res.Data().(*player.PlayerSt)
 }
 
 //------------------------------------------------------------------------------
@@ -627,16 +698,16 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	//============================================================================
 	// 缓存玩家数据--但是数据不全  ---  最好在global server返回数据的时候保存
-	playerdata := &player.PlayerSt{
-		UID:           util.Str2int_LollipopGo(StrPlayerUID),
-		Name:          StrPlayerName,
-		HeadURL:       StrHeadUrl,
-		Sex:           StrSex,
-		PlayerSchool:  StrPlayerSchool,
-		Constellation: StrConstellation,
-		OpenID:        data.OpenID,
-	}
-	this.GateWaySavePalyerData(data.OpenID, playerdata)
+	//	playerdata := &player.PlayerSt{
+	//		UID:           util.Str2int_LollipopGo(StrPlayerUID),
+	//		Name:          StrPlayerName,
+	//		HeadURL:       StrHeadUrl,
+	//		Sex:           StrSex,
+	//		PlayerSchool:  StrPlayerSchool,
+	//		Constellation: StrConstellation,
+	//		OpenID:        data.OpenID,
+	//	}
+	//	this.GateWaySavePalyerData(data.OpenID, playerdata)
 	//================================推送消息处理===================================
 	// 保存在线的玩家的数据信息
 	onlineUser := &NetDataConn{

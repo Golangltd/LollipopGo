@@ -228,23 +228,26 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 		return
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
-	//	iRoomID := int(ProtocolData["RoomUID"].(float64))
+	iRoomID := int(ProtocolData["RoomUID"].(float64))
 	// 1 结算数据，玩家等级的结算
 	// 2 销毁数据
 	// 3 玩家数据的组合
 
 	// 发送数据
 	data := &Proto2.DSQ2GW_BroadCast_GameOver{
-		Protocol:        Proto.G_GameDSQ_Proto,
-		Protocol2:       Proto2.DSQ2GW_BroadCast_GameOverProto2,
-		OpenIDA:         StrOpenID,  // 默认失败
-		OpenIDB:         "",         // 胜利者的
-		FailGameLev_Exp: "" + ",0",  // 格式: 1,10
-		SuccGameLev_Exp: "" + ",10", // 格式: 1,10
-		FailPlayer:      nil,        // 失败者
-		SuccPlayer:      nil,        // 胜利者
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.DSQ2GW_BroadCast_GameOverProto2,
+		IsDraw:    false,
+		OpenIDA:   StrOpenID,                                          // 默认失败
+		OpenIDB:   CacheGetOtherPlayerByPlayerUID(iRoomID, StrOpenID), // 胜利者的
+		//		FailGameLev_Exp: "" + ",0",                                                                   // 格式: 1,10
+		//		SuccGameLev_Exp: "" + ",10",                                                                  // 格式: 1,10
+		//		FailPlayer:      nil,                                                                         // 失败者
+		//		SuccPlayer:      nil,                                                                         // 胜利者
 	}
 	PlayerSendToServer(conn, data)
+	// 删除房间数据
+	cacheDSQ.Delete(iRoomID)
 	return
 }
 
@@ -421,7 +424,7 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 				data.SuccGameLev_Exp = "" + ",0"
 			}
 			// 发送给客户端数据
-			PlayerSendToServer(conn, data)
+			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
 	}
