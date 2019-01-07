@@ -227,8 +227,8 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 		panic(ProtocolData)
 		return
 	}
-	//StrOpenID := ProtocolData["OpenID"].(string)
-	//iRoomID := int(ProtocolData["RoomUID"].(float64))
+	StrOpenID := ProtocolData["OpenID"].(string)
+	//	iRoomID := int(ProtocolData["RoomUID"].(float64))
 	// 1 结算数据，玩家等级的结算
 	// 2 销毁数据
 	// 3 玩家数据的组合
@@ -237,12 +237,12 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 	data := &Proto2.DSQ2GW_BroadCast_GameOver{
 		Protocol:        Proto.G_GameDSQ_Proto,
 		Protocol2:       Proto2.DSQ2GW_BroadCast_GameOverProto2,
-		OpenIDA:         "",
-		OpenIDB:         "",
-		FailGameLev_Exp: "",  // 格式: 1,10
-		SuccGameLev_Exp: "",  // 格式: 1,10
-		FailPlayer:      nil, // 失败者
-		SuccPlayer:      nil, // 胜利者
+		OpenIDA:         StrOpenID,  // 默认失败
+		OpenIDB:         "",         // 胜利者的
+		FailGameLev_Exp: "" + ",0",  // 格式: 1,10
+		SuccGameLev_Exp: "" + ",10", // 格式: 1,10
+		FailPlayer:      nil,        // 失败者
+		SuccPlayer:      nil,        // 胜利者
 	}
 	PlayerSendToServer(conn, data)
 	return
@@ -310,19 +310,20 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 		StirPos:   StrStirPos,
 		ResultID:  0,
 	}
-	if GetPlayerChupai(StrOpenID) {
-		data.ResultID = 60003
-		PlayerSendToServer(conn, data)
-		return
-	} else {
-		SetPlayerChupai(StrOpenID)
-	}
+	// if GetPlayerChupai(StrOpenID) {
+	// 	data.ResultID = 60003
+	// 	PlayerSendToServer(conn, data)
+	// 	return
+	// } else {
+	// 	SetPlayerChupai(StrOpenID)
+	// }
 
 	// 通过位置获取对应的数据
 	_, idata := CacheGetChessDefaultData(iRoomID, StrStirPos, 2, 18)
 	data.ChessNum = idata
 	stropenid := CacheGetPlayerUID(iRoomID, StrOpenID)
 	data.OpenID_b = stropenid
+	fmt.Println("++++++++++++++++++++", stropenid)
 	// 发送数据
 	PlayerSendToServer(conn, data)
 
@@ -353,13 +354,19 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		}
 		fmt.Println(data)
 		PlayerSendToServer(conn, data)
+		//
+		//CacheSavePlayerUID(iRoomID, StrOpenID)
 		return
 	}
 	data1 := [4][4]int{{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
 		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
 		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1},
 		{2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1, 2*Proto2.Mouse + 1}}
-	DSQ_Pai := InitDSQ(DSQ_qi)
+	var DSQ_qinei = []int{ // 1-8 A ;9-16 B ; 17 未翻牌; 18 已翻牌
+		Proto2.Elephant, Proto2.Lion, Proto2.Tiger, Proto2.Leopard, Proto2.Wolf, Proto2.Dog, Proto2.Cat, Proto2.Mouse,
+		Proto2.Mouse + Proto2.Elephant, Proto2.Mouse + Proto2.Lion, Proto2.Mouse + Proto2.Tiger, Proto2.Mouse + Proto2.Leopard,
+		Proto2.Mouse + Proto2.Wolf, Proto2.Mouse + Proto2.Dog, Proto2.Mouse + Proto2.Cat, 2 * Proto2.Mouse}
+	DSQ_Pai := InitDSQ(DSQ_qinei)
 	savedata := &RoomPlayerDSQ{
 		RoomID:    iRoomID,
 		IsRoomID:  true,
@@ -368,11 +375,14 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 	}
 	CacheSaveRoomData(iRoomID, savedata, StrOpenID)
 
+	fmt.Println("-------------------------")
+
 	data := &Proto2.DSQ2GW_InitGame{
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_InitGameProto2,
 		OpenID:    StrOpenID,
 		RoomID:    StrRoomID,
+		SeatNum:   1,
 		InitData:  DSQ_Pai,
 	}
 
@@ -445,10 +455,10 @@ func GetPlayerChupai(OpenID string) bool {
 func CacheSaveRoomData(iRoomID int, data *RoomPlayerDSQ, openid string) {
 	fmt.Println("save data:", data)
 	cacheDSQ.Add(iRoomID, 0, data)
-	//CacheSavePlayerUID(iRoomID, openid)
+	CacheSavePlayerUID(iRoomID, openid)
 }
 
-func CacheGetPlayerUID(iRoomID int, player string) string {
+func CacheGetOtherPlayerByPlayerUID(iRoomID int, player string) string {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
 		panic("没有对应数据")
@@ -459,6 +469,26 @@ func CacheGetPlayerUID(iRoomID int, player string) string {
 	} else {
 		return res.Data().(*RoomPlayerDSQ).OpenIDA
 	}
+	return ""
+}
+
+func CacheGetPlayerUID(iRoomID int, player string) string {
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		panic("没有对应数据")
+		return ""
+	}
+	fmt.Println("save data:", player)
+	fmt.Println("save data:", res.Data().(*RoomPlayerDSQ).OpenIDA)
+	fmt.Println("save data:", res.Data().(*RoomPlayerDSQ).OpenIDB)
+
+	if res.Data().(*RoomPlayerDSQ).OpenIDA == player {
+		return res.Data().(*RoomPlayerDSQ).OpenIDB
+	}
+	if res.Data().(*RoomPlayerDSQ).OpenIDB == player {
+		return res.Data().(*RoomPlayerDSQ).OpenIDA
+	}
+
 	return ""
 }
 
@@ -494,14 +524,19 @@ func CacheGetRoomDataByRoomID(iRoomID int, opneid string) ([4][4]int, bool, int)
 	if len(res.Data().(*RoomPlayerDSQ).OpenIDA) == 0 {
 		res.Data().(*RoomPlayerDSQ).OpenIDA = opneid
 		res.Data().(*RoomPlayerDSQ).OpenIDA_Seat = 1
+		fmt.Println("----------------n>1获取棋盘数据res.Data().(*RoomPlayerDSQ).OpenIDB", res.Data().(*RoomPlayerDSQ).OpenIDB)
+		fmt.Println("----------------n>1获取棋盘数据res.Data().(*RoomPlayerDSQ).OpenIDA", res.Data().(*RoomPlayerDSQ).OpenIDA)
 		return res.Data().(*RoomPlayerDSQ).ChessData, true, 1
 	}
 
 	if len(res.Data().(*RoomPlayerDSQ).OpenIDB) == 0 {
 		res.Data().(*RoomPlayerDSQ).OpenIDB = opneid
 		res.Data().(*RoomPlayerDSQ).OpenIDB_Seat = 1
+		fmt.Println("+++++++++++++n>1获取棋盘数据res.Data().(*RoomPlayerDSQ).OpenIDB", res.Data().(*RoomPlayerDSQ).OpenIDB)
+		fmt.Println("++++++++++++++n>1获取棋盘数据res.Data().(*RoomPlayerDSQ).OpenIDA", res.Data().(*RoomPlayerDSQ).OpenIDA)
 		return res.Data().(*RoomPlayerDSQ).ChessData, true, 0
 	}
+
 	return [4][4]int{{}, {}, {}, {}}, false, 0
 }
 
