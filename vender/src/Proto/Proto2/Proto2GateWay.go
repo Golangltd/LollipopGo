@@ -23,7 +23,7 @@ const (
 	GateWay_LogoutProto2                    // GateWay_LogoutProto2  == 13 玩家登出
 
 	/*
-	   斗兽棋 0表示空 1-8 A方，9-16 B方
+	   斗兽棋 0表示空 1-8 A方，9-16 B方 ，17没有翻 ，18翻了
 	*/
 	C2GWS_PlayerStirChessProto2 // C2GWS_PlayerStirChessProto2 == 14   玩家翻棋子
 	S2GWS_PlayerStirChessProto2 // S2GWS_PlayerStirChessProto2 == 15   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
@@ -142,7 +142,7 @@ type C2GWS_PlayerGameInit struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
-	RoomUID   int
+	RoomUID   string
 }
 
 // S2GWS_PlayerGameInitProto2
@@ -151,7 +151,7 @@ type S2GWS_PlayerGameInit struct {
 	Protocol2  int
 	OpenID     string
 	RoomUID    int
-	ChessBoard [4][4]int // 棋盘的数据 0表示空
+	ChessBoard []interface{} // 棋盘的数据 0表示空
 }
 
 //------------------------------------------------------------------------------
