@@ -4,6 +4,7 @@ import (
 	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/match"
+	"LollipopGo/LollipopGo/player"
 	"LollipopGo/LollipopGo/util"
 	"Proto"
 	"Proto/Proto2"
@@ -389,6 +390,15 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 	return
 }
 
+//------------------------------------------------------------------------------
+// 缓存玩家数据
+func (this *NetDataConn) GateWaySavePalyerData(stropenid string, data *player.PlayerSt) {
+	cacheDSQ.Add(stropenid, 0, data)
+	return
+}
+
+//------------------------------------------------------------------------------
+
 // 玩家退出匹配
 func (this *NetDataConn) PlayerQuitMacthGame(ProtocolData map[string]interface{}) {
 	if ProtocolData["OpenID"] == nil {
@@ -615,7 +625,18 @@ func (this *NetDataConn) GWPlayerLogin(ProtocolData map[string]interface{}) {
 		Token:         StrToken,
 	}
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
-
+	//============================================================================
+	// 缓存玩家数据--但是数据不全  ---  最好在global server返回数据的时候保存
+	playerdata := &player.PlayerSt{
+		UID:           util.Str2int_LollipopGo(StrPlayerUID),
+		Name:          StrPlayerName,
+		HeadURL:       StrHeadUrl,
+		Sex:           StrSex,
+		PlayerSchool:  StrPlayerSchool,
+		Constellation: StrConstellation,
+		OpenID:        data.OpenID,
+	}
+	this.GateWaySavePalyerData(data.OpenID, playerdata)
 	//================================推送消息处理===================================
 	// 保存在线的玩家的数据信息
 	onlineUser := &NetDataConn{

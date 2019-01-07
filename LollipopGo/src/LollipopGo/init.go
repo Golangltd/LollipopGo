@@ -3,6 +3,7 @@ package main
 import (
 	_ "LollipopGo/db/mysql"
 	_ "LollipopGo/db/redis"
+	"cache2go"
 	"encoding/base64"
 	"flag"
 	"fmt"
@@ -23,6 +24,7 @@ var MServer *concurrent.ConcurrentMap // 并发安全的server链接
 var addr = flag.String("addr", "127.0.0.1:8888", "http service address")
 var WS *websocket.Conn
 var icount, icounttmp int
+var cacheGW *cache2go.CacheTable // 网关cache
 
 // server data;推送数据时候用
 var strGlobalServer string = ""
@@ -39,6 +41,7 @@ func init() {
 	M = concurrent.NewConcurrentMap()
 	MRoom = concurrent.NewConcurrentMap()
 	MServer = concurrent.NewConcurrentMap()
+	cacheGW = cache2go.Cache("LollipopGo_GateWay")
 	// go G_timer()
 	// go G_timeout_kick_Player()
 	// redis 测试
