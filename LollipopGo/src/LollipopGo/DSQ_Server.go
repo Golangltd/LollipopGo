@@ -259,17 +259,17 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	iRoomID := int(ProtocolData["RoomUID"].(float64))
 	StrOldPos := ProtocolData["OldPos"].(string)
 	iMoveDir := int(ProtocolData["MoveDir"].(float64))
-	if GetPlayerChupai(StrOpenID) {
-		data := &Proto2.DSQ2GW_PlayerMoveChess{
-			Protocol:  Proto.G_GameDSQ_Proto,
-			Protocol2: Proto2.DSQ2GW_PlayerMoveChessProto2,
-		}
-		data.ResultID = 60003
-		PlayerSendToServer(conn, data)
-		return
-	} else {
-		SetPlayerChupai(StrOpenID)
-	}
+	// if GetPlayerChupai(StrOpenID) {
+	// 	data := &Proto2.DSQ2GW_PlayerMoveChess{
+	// 		Protocol:  Proto.G_GameDSQ_Proto,
+	// 		Protocol2: Proto2.DSQ2GW_PlayerMoveChessProto2,
+	// 	}
+	// 	data.ResultID = 60003
+	// 	PlayerSendToServer(conn, data)
+	// 	return
+	// } else {
+	// 	SetPlayerChupai(StrOpenID)
+	// }
 
 	// 1，是否可以移动（一定位置是都已经翻，移动的位置是否是自己人）
 	// 2，移动成功，更新棋盘位置
@@ -283,9 +283,13 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 		OldPos:    StrOldPos,
 		NewPos:    strnewpos,
 	}
+	fmt.Println("++++++++++++++++++++", stropenidb)
+	fmt.Println("++++++++++++++++++++", stropenida)
+	fmt.Println("++++++++++++++++++++", data)
 	if StrOpenID != stropenida {
 		data.OpenIDB = stropenida
 	}
+	fmt.Println("++++++++++++++++++++", data)
 	PlayerSendToServer(conn, data)
 	return
 }
@@ -621,6 +625,7 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			ipos_y = util.Str2int_LollipopGo(strsplit[i])
 		}
 	}
+
 	fmt.Println("修改的棋盘的坐标", ipos_x, ipos_y)
 	iyunalaiX, iyunalaiY := ipos_x, ipos_y
 	// 原来的值：
@@ -636,50 +641,71 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 	} else if MoveDir == Proto2.RIGHT {
 		ipos_x += 1
 	}
+	sendopenid, otheropenid := "", ""
+	if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
+		sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
+		otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
+	} else if res.Data().(*RoomPlayerDSQ).OpenIDB == stropenid {
+		sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDB
+		otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDA
+	}
 	ihoulai := res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y]
 	strnewpos := util.Int2str_LollipopGo(ipos_x) + "," + util.Int2str_LollipopGo(ipos_y)
+	if ihoulai == 0 {
+		res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
+		res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+		return sendopenid, otheropenid, strnewpos
+	}
 	// 移动的位置
 	bret, _ := CacheGetChessDefaultData(iRoomID, strnewpos, 1, 0)
 	if !bret {
-		return "", "", ""
+
+		res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = ihoulai
+		res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = iyuanlai
+		return sendopenid, otheropenid, ""
 	}
 	// 判断是否可以吃，1 大小； 2 是都是同一方
 	if iyuanlai > 8 && ihoulai > 8 {
-		return "", "", ""
+		fmt.Println("都大于8", ipos_x, ipos_y)
+		// res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = ihoulai
+		// res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = iyuanlai
+		return sendopenid, otheropenid, ""
 	} else if iyuanlai <= 8 && ihoulai <= 8 {
-		return "", "", ""
+		fmt.Println("都小于8", ipos_x, ipos_y)
+		// res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = ihoulai
+		// res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = iyuanlai
+		return sendopenid, otheropenid, ""
 	}
 
 	if iyuanlai <= 8 && ihoulai > 8 {
 		if iyuanlai == 1 && ihoulai-Proto2.Mouse == 8 {
 			// 大象吃不了老鼠
-			return "", "", ""
+			return sendopenid, otheropenid, ""
 		}
-		sendopenid, otheropenid := "", ""
-		if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
-			sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
-			otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
-		}
+
 		if iyuanlai == 8 && ihoulai-Proto2.Mouse == 1 {
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).BChessNum++
 			return sendopenid, otheropenid, strnewpos
 		}
-		if iyuanlai > ihoulai-Proto2.Mouse { // 可以吃
+		if iyuanlai < ihoulai-Proto2.Mouse { // 可以吃
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).BChessNum++
+			return sendopenid, otheropenid, strnewpos
 
 		} else if iyuanlai == ihoulai-Proto2.Mouse { // 同归于尽
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = 0
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).AChessNum++
 			res.Data().(*RoomPlayerDSQ).BChessNum++
+			return sendopenid, otheropenid, strnewpos
 
-		} else if iyuanlai < ihoulai-Proto2.Mouse { // 自毁
+		} else if iyuanlai > ihoulai-Proto2.Mouse { // 自毁
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).AChessNum++
+			return sendopenid, otheropenid, strnewpos
 		}
 
 		return sendopenid, otheropenid, strnewpos
@@ -691,11 +717,14 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			return "", "", ""
 		}
 
-		sendopenid, otheropenid := "", ""
-		if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
-			sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
-			otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
-		}
+		// sendopenid, otheropenid := "", ""
+		// if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
+		// 	sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
+		// 	otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
+		// } else if res.Data().(*RoomPlayerDSQ).OpenIDB == stropenid {
+		// 	sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDB
+		// 	otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDA
+		// }
 
 		if iyuanlai-Proto2.Mouse == 8 && ihoulai == 1 {
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
@@ -704,20 +733,23 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			return sendopenid, otheropenid, strnewpos
 		}
 
-		if iyuanlai-Proto2.Mouse > ihoulai { // 可以吃
+		if iyuanlai-Proto2.Mouse < ihoulai { // 可以吃
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).BChessNum++
+			return sendopenid, otheropenid, strnewpos
 
 		} else if iyuanlai-Proto2.Mouse == ihoulai { // 同归于尽
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = 0
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).AChessNum++
 			res.Data().(*RoomPlayerDSQ).BChessNum++
+			return sendopenid, otheropenid, strnewpos
 
 		} else if iyuanlai-Proto2.Mouse < ihoulai { // 自毁
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).AChessNum++
+			return sendopenid, otheropenid, strnewpos
 		}
 
 		return sendopenid, otheropenid, strnewpos
