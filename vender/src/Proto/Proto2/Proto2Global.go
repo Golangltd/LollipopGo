@@ -91,6 +91,7 @@ type GW2G_PlayerEntryHall struct {
 	Personal      map[string]*player.PlayerSt // 个人信息
 	DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
 	DefaultAward  map[string]interface{}      // 默认兑换列表
+	AllPlayer     map[string]interface{}      // 玩家的信息
 }
 
 //------------------------------------------------------------------------------
