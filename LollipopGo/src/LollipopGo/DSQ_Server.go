@@ -283,13 +283,13 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 		OldPos:    StrOldPos,
 		NewPos:    strnewpos,
 	}
-	fmt.Println("++++++++++++++++++++", stropenidb)
-	fmt.Println("++++++++++++++++++++", stropenida)
-	fmt.Println("++++++++++++++++++++", data)
+	// fmt.Println("++++++++++++++++++++", stropenidb)
+	// fmt.Println("++++++++++++++++++++", stropenida)
+	// fmt.Println("++++++++++++++++++++", data)
 	if StrOpenID != stropenida {
 		data.OpenIDB = stropenida
 	}
-	fmt.Println("++++++++++++++++++++", data)
+	// fmt.Println("++++++++++++++++++++", data)
 	PlayerSendToServer(conn, data)
 	return
 }
@@ -327,7 +327,7 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	data.ChessNum = idata
 	stropenid := CacheGetPlayerUID(iRoomID, StrOpenID)
 	data.OpenID_b = stropenid
-	fmt.Println("++++++++++++++++++++", stropenid)
+	// fmt.Println("++++++++++++++++++++", stropenid)
 	// 发送数据
 	PlayerSendToServer(conn, data)
 
@@ -341,7 +341,6 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		panic("玩家数据错误!!!")
 		return
 	}
-	fmt.Println("==================================")
 	StrOpenID := ProtocolData["OpenID"].(string)
 	StrRoomID := ProtocolData["RoomID"].(string)
 	iRoomID := util.Str2int_LollipopGo(StrRoomID)
@@ -378,9 +377,6 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		ChessData: DSQ_Pai,
 	}
 	CacheSaveRoomData(iRoomID, savedata, StrOpenID)
-
-	fmt.Println("-------------------------")
-
 	data := &Proto2.DSQ2GW_InitGame{
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_InitGameProto2,
@@ -402,10 +398,22 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		return false
 	}
 
+	// 1 对比 A\B方 剩余的棋子数来判断 ，如果一方都为零 就输了
+	// 2 走的数据操作，10个回合没有吃掉棋子
+
 	if res.Data().(*RoomPlayerDSQ).OpenIDA == strpopenid {
 		data := res.Data().(*RoomPlayerDSQ).BChessNum
 		if data == 0 {
 			// 结束
+			// data := &Proto2.DSQ2GW_InitGame{
+			// 	Protocol:  Proto.G_GameDSQ_Proto,
+			// 	Protocol2: Proto2.DSQ2GW_InitGameProto2,
+			// 	OpenID:    StrOpenID,
+			// 	RoomID:    StrRoomID,
+			// 	SeatNum:   1,
+			// 	InitData:  DSQ_Pai,
+			// }
+			// PlayerSendToServer(conn, data)
 			return true
 		}
 	}
@@ -418,8 +426,6 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		}
 	}
 
-	// 1 对比 A\B方 剩余的棋子数来判断 ，如果一方都为零 就输了
-	// 2
 	return false
 
 }

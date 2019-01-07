@@ -71,6 +71,7 @@ type DSQ2GW_BroadCast_GameOver struct {
 	Protocol2       int
 	OpenIDA         string
 	OpenIDB         string
+	IsDraw          bool                        // 是否是平局
 	FailGameLev_Exp string                      // 格式: 1,10
 	SuccGameLev_Exp string                      // 格式: 1,10
 	FailPlayer      map[string]*player.PlayerSt // 失败者
