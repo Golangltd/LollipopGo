@@ -21,6 +21,7 @@ const (
 	GW2DSQ_PlayerGiveUpProto2              // GW2DSQ_PlayerGiveUpProto2 == 9玩家放弃
 	DSQ2GW_BroadCast_GameOverProto2        // DSQ2GW_BroadCast_GameOverProto2 ==10 结算
 	DB_GameOverProto2                      // DB_GameOverProto2 ==11 DB结算
+	DSQ_GameHintProto2                     // DSQ_GameHintProto2 ==12 斗兽棋通知
 
 )
 
@@ -59,6 +60,17 @@ const (
 	DATAERROR           // DATAERROR == 8    数据错误    玩家的棋子已经被吃掉不存在了
 	DATANOEXIT          // DATANOEXIT == 9   数据不存在  棋子的数据大于 16或者小于0
 )
+
+//------------------------------------------------------------------------------
+// DSQ_GameHintProto2
+type DSQ_GameHint struct {
+	Protocol  int
+	Protocol2 int
+	OpenIDA   string
+	OpenIDB   string
+	Itype     int
+	ResultID  int
+}
 
 //------------------------------------------------------------------------------
 // 修改DB的协议
