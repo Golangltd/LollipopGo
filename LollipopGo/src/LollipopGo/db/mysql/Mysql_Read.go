@@ -2,6 +2,7 @@ package Mysyl_DB
 
 import (
 	"LollipopGo/LollipopGo/player"
+	_ "Proto/Proto2"
 	"database/sql"
 	"fmt"
 )
@@ -33,6 +34,26 @@ func QueryFromDB(db *sql.DB) {
 		fmt.Println(password)
 		fmt.Println(uid)
 	}
+}
+
+//------------------------------------------------------------------------------
+// 查询表  select 1 from tablename where uid = 'uid' limit 1;
+func (this *mysql_db) ReadUserGameInfoData(openid string) bool {
+	rows, err := this.STdb.Query("SELECT * FROM t_usergameinfo  where openid = " + openid + " limit 1")
+	defer rows.Close()
+	CheckErr(err)
+	if err != nil {
+		fmt.Println("error:", err)
+	} else {
+		fmt.Println("没有错误!")
+	}
+	bret := false
+	for rows.Next() {
+		fmt.Print("查询玩家的游戏列表有数据!!!")
+		bret = true
+	}
+
+	return bret
 }
 
 //------------------------------------------------------------------------------

@@ -4,6 +4,7 @@ import (
 	_ "LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/player"
 	"LollipopGo/LollipopGo/util"
+	"Proto/Proto2"
 	"database/sql"
 	"fmt"
 )
@@ -27,6 +28,33 @@ func insertToDB(db *sql.DB) {
 	} else {
 		fmt.Println("插入数据成功：", id)
 	}
+}
+
+//------------------------------------------------------------------------------
+// 玩家游戏的数据
+func (this *mysql_db) InsertPlayerGameInfoST2DB(data *Proto2.DB_GameOver) bool {
+
+	//先查询数据,是否存在
+	if this.ReadUserGameInfoData(data.OpenID) {
+		this.Modefy_PlayerUserGameInfoDataGM(data)
+		return false
+	}
+	//--------------------------------------------------------------------------
+	tmptime := util.GetNowUnix_LollipopGo()
+	stmt, err := this.STdb.Prepare("insert t_usergameinfo set openid=?,gameid=?,gamelev=?,gameexp=?,gameitem=?,gamescore=?,creattime=?")
+	CheckErr(err)
+	res, err := stmt.Exec(data.OpenID, data.GameID, data.GameLev, data.GameExp, data.GameScore, data.GameItem, data.GameScore, tmptime)
+	CheckErr(err)
+	id, err := res.LastInsertId()
+	CheckErr(err)
+	if err != nil {
+		fmt.Println("插入数据失败")
+		return false
+	} else {
+		fmt.Println("插入数据成功：", id)
+	}
+	//--------------------------------------------------------------------------
+	return true
 }
 
 //------------------------------------------------------------------------------
