@@ -273,6 +273,7 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 	}
 	//--------------------------------------------------------------------------
 	return
+	// gamelev := util.Sort_LollipopGo(conf.DSQGameExp, expdata+data.GameExp)
 }
 
 // 修改数据
