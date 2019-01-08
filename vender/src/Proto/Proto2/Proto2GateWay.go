@@ -51,6 +51,7 @@ type C2GWS_PlayerRelinkGame struct {
 type S2GWS_PlayerRelinkGame struct {
 	Protocol   int
 	Protocol2  int
+	LeafTime   int
 	ChessBoard []interface{} // 棋盘的数据 0表示空 ,17表示还没有翻开
 }
 

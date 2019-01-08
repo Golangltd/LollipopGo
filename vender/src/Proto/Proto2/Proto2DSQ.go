@@ -78,6 +78,7 @@ type DSQ2GW_PlayerRelinkGame struct {
 	Protocol2 int
 	OpenIDA   string
 	OpenIDB   string
+	LeafTime  int
 	ChessData [4][4]int
 }
 
