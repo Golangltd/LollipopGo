@@ -4,6 +4,9 @@ import (
 	"LollipopGo/LollipopGo/player"
 )
 
+var DSQ_GameID int = 10001
+var DSQ_GameExp int = 10
+
 //  G_GameDSQ_Proto == 10    斗兽棋
 const (
 	INITDSQ                         = iota //  INITDSQ == 0

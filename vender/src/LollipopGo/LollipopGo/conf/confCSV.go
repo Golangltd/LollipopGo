@@ -6,6 +6,7 @@ var G_BannerList map[string]*Banner      // 游戏轮播列表
 var G_RoomList map[string]interface{}    // 房间列表
 var RoomListData map[string]*RoomList    // 房间列表
 var RoomListDatabak map[string]*RoomList // 房间列表
+var DSQGameExp map[string]*DSQ_Exp       // 斗兽棋经验列表
 
 func init() {
 	G_GameList = make(map[string]*GameList)
@@ -13,7 +14,16 @@ func init() {
 	G_RoomList = make(map[string]interface{})
 	RoomListData = make(map[string]*RoomList)
 	RoomListDatabak = make(map[string]*RoomList)
+	DSQGameExp = make(map[string]*DSQ_Exp)
 	return
+}
+
+//------------------------------------------------------------------------------
+
+// 斗兽棋 游戏等级列表
+type DSQ_Exp struct {
+	Level string
+	Exp   string
 }
 
 //------------------------------------------------------------------------------

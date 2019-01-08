@@ -37,6 +37,25 @@ func QueryFromDB(db *sql.DB) {
 }
 
 //------------------------------------------------------------------------------
+func (this *mysql_db) ReadUserGameExpInfoData(openid string) int {
+	rows, err := this.STdb.Query("SELECT gameexp FROM t_usergameinfo  where openid = " + openid)
+	defer rows.Close()
+	CheckErr(err)
+	if err != nil {
+		fmt.Println("error:", err)
+	} else {
+		fmt.Println("没有错误!")
+	}
+	for rows.Next() {
+		var icount int = 0
+		rows.Scan(&icount)
+		return icount
+	}
+
+	return 0
+}
+
+//------------------------------------------------------------------------------
 // 查询表  select 1 from tablename where uid = 'uid' limit 1;
 func (this *mysql_db) ReadUserGameInfoData(openid string) bool {
 	rows, err := this.STdb.Query("SELECT * FROM t_usergameinfo  where openid = " + openid + " limit 1")

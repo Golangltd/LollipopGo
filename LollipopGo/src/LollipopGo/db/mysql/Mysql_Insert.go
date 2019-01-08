@@ -33,6 +33,10 @@ func insertToDB(db *sql.DB) {
 //------------------------------------------------------------------------------
 // 玩家游戏的数据
 func (this *mysql_db) InsertPlayerGameInfoST2DB(data *Proto2.DB_GameOver) bool {
+	// 1.先获取经验，然后累加
+	// 2.查表判断
+	expdata := this.ReadUserGameExpInfoData(data.OpenID)
+	_ = expdata
 
 	//先查询数据,是否存在
 	if this.ReadUserGameInfoData(data.OpenID) {
