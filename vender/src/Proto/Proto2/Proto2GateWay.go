@@ -25,14 +25,34 @@ const (
 	/*
 	   斗兽棋 0表示空 1-8 A方，9-16 B方 ，17没有翻 ，18翻了
 	*/
-	C2GWS_PlayerStirChessProto2 // C2GWS_PlayerStirChessProto2 == 14   玩家翻棋子
-	S2GWS_PlayerStirChessProto2 // S2GWS_PlayerStirChessProto2 == 15   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
-	C2GWS_PlayerMoveChessProto2 // C2GWS_PlayerMoveChessProto2 == 16   玩家移动
-	S2GWS_PlayerMoveChessProto2 // S2GWS_PlayerMoveChessProto2 == 17   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
-	C2GWS_PlayerGiveUpProto2    // C2GWS_PlayerGiveUpProto2 == 18  玩家放弃、认输
-	BroadCast_GameOverProto2    // BroadCast_GameOverProto2 == 19  广播玩家游戏结束
-	BroadCast_GameHintProto2    // BroadCast_GameHintProto2 == 20  广播玩家第七个回合没有吃
+	C2GWS_PlayerStirChessProto2  // C2GWS_PlayerStirChessProto2 == 14   玩家翻棋子
+	S2GWS_PlayerStirChessProto2  // S2GWS_PlayerStirChessProto2 == 15
+	C2GWS_PlayerMoveChessProto2  // C2GWS_PlayerMoveChessProto2 == 16   玩家移动
+	S2GWS_PlayerMoveChessProto2  // S2GWS_PlayerMoveChessProto2 == 17
+	C2GWS_PlayerGiveUpProto2     // C2GWS_PlayerGiveUpProto2 == 18  玩家放弃、认输
+	BroadCast_GameOverProto2     // BroadCast_GameOverProto2 == 19  广播玩家游戏结束
+	BroadCast_GameHintProto2     // BroadCast_GameHintProto2 == 20  广播玩家第七个回合没有吃
+	C2GWS_PlayerRelinkGameProto2 // C2GWS_PlayerRelinkGameProto2 == 21  玩家重新链接游戏
+	S2GWS_PlayerRelinkGameProto2 // S2GWS_PlayerRelinkGameProto2 == 22
 )
+
+//------------------------------------------------------------------------------
+// C2GWS_PlayerRelinkGameProto2
+type C2GWS_PlayerRelinkGame struct {
+	Protocol  int
+	Protocol2 int
+	Itype     int // 暂时不用字段
+	OpenID    string
+	RoomUID   int
+}
+
+//------------------------------------------------------------------------------
+// S2GWS_PlayerRelinkGameProto2
+type S2GWS_PlayerRelinkGame struct {
+	Protocol   int
+	Protocol2  int
+	ChessBoard []interface{} // 棋盘的数据 0表示空 ,17表示还没有翻开
+}
 
 //------------------------------------------------------------------------------
 // BroadCast_GameHintProto2
