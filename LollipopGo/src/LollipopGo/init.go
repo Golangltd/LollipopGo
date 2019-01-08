@@ -25,6 +25,7 @@ var addr = flag.String("addr", "127.0.0.1:8888", "http service address")
 var WS *websocket.Conn
 var icount, icounttmp int
 var cacheGW *cache2go.CacheTable // 网关cache
+var DSQGameID = 10001
 
 // server data;推送数据时候用
 var strGlobalServer string = ""
