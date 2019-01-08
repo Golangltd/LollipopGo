@@ -11,14 +11,14 @@ import (
    更新数据，DSQ的修改
 
 */
-func (this *mysql_db) Modefy_PlayerUserGameInfoDataGM(data *Proto2.DB_GameOver) bool {
+func (this *mysql_db) Modefy_PlayerUserGameInfoDataGM(data *Proto2.DB_GameOver, gamelev int) bool {
 
 	strSql := "update t_usergameinfo set gameid=?,gamelev=?,gameexp=?,gameitem=?,gamescore=?,creattime=? where openid=?"
 	// 修改数据
 	stmt, err := this.STdb.Prepare(strSql)
 	CheckErr(err)
 	tmptime := util.GetNowUnix_LollipopGo()
-	res, err := stmt.Exec(data.GameID, data.GameLev, data.GameExp, data.GameScore, data.GameItem, data.GameScore, tmptime, data.OpenID)
+	res, err := stmt.Exec(data.GameID, gamelev, data.GameExp, data.GameScore, data.GameItem, data.GameScore, tmptime, data.OpenID)
 	affect, err := res.RowsAffected()
 	fmt.Println("更新数据：", affect)
 	CheckErr(err)

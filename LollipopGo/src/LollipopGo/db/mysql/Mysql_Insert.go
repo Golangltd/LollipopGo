@@ -1,7 +1,7 @@
 package Mysyl_DB
 
 import (
-	_ "LollipopGo/LollipopGo/log"
+	"LollipopGo/LollipopGo/conf"
 	"LollipopGo/LollipopGo/player"
 	"LollipopGo/LollipopGo/util"
 	"Proto/Proto2"
@@ -36,11 +36,10 @@ func (this *mysql_db) InsertPlayerGameInfoST2DB(data *Proto2.DB_GameOver) bool {
 	// 1.先获取经验，然后累加
 	// 2.查表判断
 	expdata := this.ReadUserGameExpInfoData(data.OpenID)
-	_ = expdata
-
+	gamelev := util.Sort_LollipopGo(conf.DSQGameExp, expdata+data.GameExp)
 	//先查询数据,是否存在
 	if this.ReadUserGameInfoData(data.OpenID) {
-		this.Modefy_PlayerUserGameInfoDataGM(data)
+		this.Modefy_PlayerUserGameInfoDataGM(data, gamelev)
 		return false
 	}
 	//--------------------------------------------------------------------------

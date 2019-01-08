@@ -69,18 +69,19 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 	playerdataA := this.GateWayGetPalyerData(StrOpenIDA)
 	playerdataB := this.GateWayGetPalyerData(StrOpenIDB)
 
-	gamelevA := util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev)
+	//gamelevA := util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev)
 	//gameexpA := playerdataA.GameData["10001"].GameExp
 
-	gamelevB := util.Int2str_LollipopGo(playerdataB.GameData[10001].GameLev)
-	//gameexpB := playerdataB.GameData["10001"].GameExp
+	//gamelevB := util.Int2str_LollipopGo(playerdataB.GameData[10001].GameLev)
+	gameexpB := playerdataB.GameData[10001].GameExp
+	gamelevB := util.Sort_LollipopGo(conf.DSQGameExp, 10+gameexpB)
 
 	if BIsDraw { // 平局，都不加分
-		data.FailGameLev_Exp = gamelevA + ",0"
-		data.SuccGameLev_Exp = gamelevB + ",0"
+		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev) + ",0"
+		data.SuccGameLev_Exp = util.Int2str_LollipopGo(playerdataB.GameData[10001].GameLev) + ",0"
 	} else {
-		data.FailGameLev_Exp = gamelevA + ",0"
-		data.SuccGameLev_Exp = gamelevB + ",0"
+		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev) + ",0"
+		data.SuccGameLev_Exp = util.Int2str_LollipopGo(gamelevB) + ",10"
 	}
 	this.SendClientDataFunc(StrOpenIDA, "connect", data)
 	this.SendClientDataFunc(StrOpenIDB, "connect", data)

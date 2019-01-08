@@ -4,8 +4,9 @@ import (
 	"LollipopGo/LollipopGo/conf"
 )
 
+//------------------------------------------------------------------------------
 // 例子已经写在简书：https://www.jianshu.com/p/e30a9db07da0
-
+// 详见《彬哥Go语言笔记》
 func Sort_LollipopGo(data map[string]*conf.DSQ_Exp, iExp int) int {
 	var length = len(data)
 	var ssort []int
