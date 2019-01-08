@@ -63,11 +63,13 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 func (this *NetDataConn) RelinkGameFunc(ProtocolData map[string]interface{}) {
 
 	StrOpenIDA := ProtocolData["OpenIDA"].(string)
+	iLeftTime := int(ProtocolData["LeftTime"].(float64))
 	StrChessData := ProtocolData["ChessData"].([]interface{})
 
 	data := &Proto2.S2GWS_PlayerRelinkGame{
 		Protocol:   Proto.G_GateWay_Proto,
 		Protocol2:  Proto2.S2GWS_PlayerRelinkGameProto2,
+		LeftTime:   iLeftTime,
 		ChessBoard: StrChessData,
 	}
 
