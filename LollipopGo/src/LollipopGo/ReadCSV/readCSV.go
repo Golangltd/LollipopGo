@@ -8,6 +8,29 @@ import (
 	"strings"
 )
 
+// 斗兽棋游戏经验列表
+func ReadCsv_ConfigFile_DSQGameInfoST_Fun() bool {
+	fileName := "Animal_exp.csv"
+	fileName = "./csv/" + fileName
+	cntb, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		panic("读取配置文件出错!")
+		return false
+	}
+	// 读取文件数据
+	r2 := csv.NewReader(strings.NewReader(string(cntb)))
+	ss, _ := r2.ReadAll()
+	sz := len(ss)
+	for i := 1; i < sz; i++ {
+		Infotmp := new(conf.DSQ_Exp)
+		Infotmp.Level = ss[i][0]
+		Infotmp.Exp = ss[i][1]
+		conf.DSQGameExp[Infotmp.Level] = Infotmp
+	}
+
+	return true
+}
+
 // 游戏列表
 func ReadCsv_ConfigFile_GameInfoST_Fun() bool {
 	// 获取数据，按照文件

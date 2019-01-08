@@ -248,13 +248,35 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 	PlayerSendToServer(conn, data)
 	// 删除房间数据
 	cacheDSQ.Delete(iRoomID)
-	// 数据保存到db
-
+	//--------------------------------------------------------------------------
+	// 失败者*数据保存到db
+	dbdata := &Proto2.DB_GameOver{
+		OpenID:    data.OpenIDA,
+		GameID:    Proto2.DSQ_GameID,
+		GameLev:   0,
+		GameExp:   0,
+		GameScore: 0,
+		GameItem:  "",
+	}
+	ModefyGamePlayerDataGameInfo(dbdata)
+	// 胜利者*数据保存到db
+	if true {
+		dbdata := &Proto2.DB_GameOver{
+			OpenID:    data.OpenIDB,
+			GameID:    Proto2.DSQ_GameID,
+			GameLev:   0,                  // 查询
+			GameExp:   Proto2.DSQ_GameExp, // 增加的经验，等级DB/GW自己计算
+			GameScore: 0,
+			GameItem:  "",
+		}
+		ModefyGamePlayerDataGameInfo(dbdata)
+	}
+	//--------------------------------------------------------------------------
 	return
 }
 
 // 修改数据
-func ModefyGamePlayerDataGameInfo(data Proto2.DB_GameOver) interface{} {
+func ModefyGamePlayerDataGameInfo(data *Proto2.DB_GameOver) interface{} {
 
 	args := data
 	// 返回的数据

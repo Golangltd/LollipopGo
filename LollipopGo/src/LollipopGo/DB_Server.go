@@ -56,7 +56,7 @@ func MainListener(strport string) {
 
 //------------------------------------------------------------------------------
 // 保存结算数据
-func (t *Arith) SavePlayerDataST2DB(args *player.PlayerSt, reply *player.PlayerSt) error {
+func (t *Arith) SavePlayerDataST2DB(args *Proto2.DB_GameOver, reply *bool) error {
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
@@ -71,7 +71,7 @@ func (t *Arith) SavePlayerDataST2DB(args *player.PlayerSt, reply *player.PlayerS
 		}
 	}()
 	if Mysyl_DB.DB != nil {
-		_, data := Mysyl_DB.DB.InsertPlayerGameInfoST2DB(args)
+		data := Mysyl_DB.DB.InsertPlayerGameInfoST2DB(args)
 		*reply = data
 	} else {
 	}
