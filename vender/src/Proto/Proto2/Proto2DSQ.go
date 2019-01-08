@@ -16,7 +16,8 @@ const (
 	GW2DSQ_PlayerMoveChessProto2           // GW2DSQ_PlayerMoveChessProto2 == 7   玩家移动棋子
 	DSQ2GW_PlayerMoveChessProto2           // DSQ2GW_PlayerMoveChessProto2 == 8
 	GW2DSQ_PlayerGiveUpProto2              // GW2DSQ_PlayerGiveUpProto2 == 9玩家放弃
-	DSQ2GW_BroadCast_GameOverProto2        // DSQ2GW_BroadCast_GameOverProto2 == 结算
+	DSQ2GW_BroadCast_GameOverProto2        // DSQ2GW_BroadCast_GameOverProto2 ==10 结算
+	DB_GameOverProto2                      // DB_GameOverProto2 ==11 DB结算
 
 )
 
@@ -55,6 +56,18 @@ const (
 	DATAERROR           // DATAERROR == 8    数据错误    玩家的棋子已经被吃掉不存在了
 	DATANOEXIT          // DATANOEXIT == 9   数据不存在  棋子的数据大于 16或者小于0
 )
+
+//------------------------------------------------------------------------------
+// 修改DB的协议
+type DB_GameOver struct {
+	OpenID    string
+	GameID    int
+	GameLev   int
+	GameExp   int
+	GameScore int
+	GameItem  string // 游戏道具
+	GameTime  int    // 游戏的时间
+}
 
 //------------------------------------------------------------------------------
 // GW2DSQ_PlayerGiveUpProto2

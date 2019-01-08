@@ -1,12 +1,32 @@
 package Mysyl_DB
 
 import (
-	_ "Proto"
+	"LollipopGo/LollipopGo/util"
 	"Proto/Proto2"
 	"database/sql"
 	"fmt"
 )
 
+/*
+   更新数据，DSQ的修改
+
+*/
+func (this *mysql_db) Modefy_PlayerUserGameInfoDataGM(data *Proto2.DB_GameOver) bool {
+
+	strSql := "update t_usergameinfo set gameid=?,gamelev=?,gameexp=?,gameitem=?,gamescore=?,creattime=? where openid=?"
+	// 修改数据
+	stmt, err := this.STdb.Prepare(strSql)
+	CheckErr(err)
+	tmptime := util.GetNowUnix_LollipopGo()
+	res, err := stmt.Exec(data.GameID, data.GameLev, data.GameExp, data.GameScore, data.GameItem, data.GameScore, tmptime, data.OpenID)
+	affect, err := res.RowsAffected()
+	fmt.Println("更新数据：", affect)
+	CheckErr(err)
+
+	return true
+}
+
+//------------------------------------------------------------------------------
 /*
    更新数据库数据操作
 1 Gm 数据操作 修改数据

@@ -248,7 +248,31 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 	PlayerSendToServer(conn, data)
 	// 删除房间数据
 	cacheDSQ.Delete(iRoomID)
+	// 数据保存到db
+
 	return
+}
+
+// 修改数据
+func ModefyGamePlayerDataGameInfo(data Proto2.DB_GameOver) interface{} {
+
+	args := data
+	// 返回的数据
+	var reply bool
+	//--------------------------------------------------------------------------
+	// 同步调用
+	// err = ConnRPC_GM.Call("Arith.SavePlayerDataST2DB", args, &reply)
+	// if err != nil {
+	// 	fmt.Println("Arith.SavePlayerDataST2DB call error:", err)
+	// }
+	// 异步调用
+	divCall := ConnRPC_GM.Go("Arith.SavePlayerDataST2DB", args, &reply, nil)
+	replyCall := <-divCall.Done // will be equal to divCall
+	fmt.Println(replyCall.Reply)
+	//--------------------------------------------------------------------------
+	// 返回的数据
+	fmt.Println("the arith.mutiply is :", reply)
+	return reply
 }
 
 func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
