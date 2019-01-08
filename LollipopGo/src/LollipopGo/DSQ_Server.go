@@ -229,10 +229,6 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
 	iRoomID := int(ProtocolData["RoomUID"].(float64))
-	// 1 结算数据，玩家等级的结算
-	// 2 销毁数据
-	// 3 玩家数据的组合
-
 	// 发送数据
 	data := &Proto2.DSQ2GW_BroadCast_GameOver{
 		Protocol:  Proto.G_GameDSQ_Proto,
@@ -450,36 +446,29 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		return false
 	}
 
-	// 1 对比 A\B方 剩余的棋子数来判断 ，如果一方都为零 就输了
-	// 2 走的数据操作，10个回合没有吃掉棋子
+	// 结束
+	data := &Proto2.DSQ2GW_BroadCast_GameOver{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.DSQ2GW_BroadCast_GameOverProto2,
+		IsDraw:    false,
+	}
+
 	if res.Data().(*RoomPlayerDSQ).OpenIDA == strpopenid {
-		data := res.Data().(*RoomPlayerDSQ).BChessNum
-		if data == 0 {
-			// 结束
-			data := &Proto2.DSQ2GW_BroadCast_GameOver{
-				Protocol:        Proto.G_GameDSQ_Proto,
-				Protocol2:       Proto2.DSQ2GW_BroadCast_GameOverProto2,
-				OpenIDA:         "",
-				OpenIDB:         "",
-				IsDraw:          false,
-				FailGameLev_Exp: "" + ",0",
-				SuccGameLev_Exp: "" + ",10",
-			}
-			// 如果是平局
-			if data.IsDraw {
-				data.FailGameLev_Exp = "" + ",0"
-				data.SuccGameLev_Exp = "" + ",0"
-			}
-			// 发送给客户端数据
+		idata := res.Data().(*RoomPlayerDSQ).BChessNum
+		if idata == 0 {
+			data.OpenIDA = strpopenid
+			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
 	}
 
 	if res.Data().(*RoomPlayerDSQ).OpenIDB == strpopenid {
-		data := res.Data().(*RoomPlayerDSQ).AChessNum
-		if data == 0 {
-			// 结束
+		idata := res.Data().(*RoomPlayerDSQ).AChessNum
+		if idata == 0 {
+			data.OpenIDA = strpopenid
+			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDA
+			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
 	}
@@ -667,6 +656,21 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 	return
 }
 
+// 检查是否是七个回合没有吃棋子
+func CheckIs7GoAround(iGoAround int, OpenIDA string, OpenIDB string) {
+
+	if iGoAround == 7 {
+		data := &Proto2.DSQ_GameHint{
+			Protocol:  Proto.G_GameDSQ_Proto,
+			Protocol2: Proto2.DSQ_GameHintProto2,
+			OpenIDA:   OpenIDA,
+			OpenIDB:   OpenIDB,
+		}
+		PlayerSendToServer(ConnDSQ, data)
+	}
+	return
+}
+
 // 移动期盼是否可以移动
 func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, stropenid string) (string, string, string) {
 	res, err1 := cacheDSQ.Value(iRoomID)
@@ -717,12 +721,13 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 	if ihoulai == 0 {
 		res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
 		res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+		res.Data().(*RoomPlayerDSQ).GoAround++
+		CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid)
 		return sendopenid, otheropenid, strnewpos
 	}
 	// 移动的位置
 	bret, _ := CacheGetChessDefaultData(iRoomID, strnewpos, 1, 0)
 	if !bret {
-
 		res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = ihoulai
 		res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = iyuanlai
 		return sendopenid, otheropenid, ""
@@ -745,11 +750,12 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			// 大象吃不了老鼠
 			return sendopenid, otheropenid, ""
 		}
-
+		res.Data().(*RoomPlayerDSQ).GoAround = 0
 		if iyuanlai == 8 && ihoulai-Proto2.Mouse == 1 {
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).BChessNum++
+			CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid)
 			return sendopenid, otheropenid, strnewpos
 		}
 		if iyuanlai < ihoulai-Proto2.Mouse { // 可以吃
@@ -788,7 +794,7 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 		// 	sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDB
 		// 	otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDA
 		// }
-
+		res.Data().(*RoomPlayerDSQ).GoAround = 0
 		if iyuanlai-Proto2.Mouse == 8 && ihoulai == 1 {
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0

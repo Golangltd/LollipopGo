@@ -43,6 +43,12 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 			// 结算的协议
 			this.BroadCastGameOverFunc(ProtocolData)
 		}
+
+	case float64(Proto2.DSQ_GameHintProto2):
+		{
+			// DSQ提示
+			this.BroadCastGameHintFunc(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
@@ -50,12 +56,24 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 	return
 }
 
-//	FailGameLev_Exp string                      // 格式: 1,0
-//	SuccGameLev_Exp string                      // 格式: 1,10
-//	FailPlayer      map[string]*player.PlayerSt // 失败者
-//	SuccPlayer      map[string]*player.PlayerSt // 胜利者
+func (this *NetDataConn) BroadCastGameHintFunc(ProtocolData map[string]interface{}) {
+
+	StrOpenIDA := ProtocolData["OpenIDA"].(string)
+	StrOpenIDB := ProtocolData["OpenIDB"].(string)
+
+	data := &Proto2.BroadCast_GameHint{
+		Protocol:  Proto.G_GateWay_Proto,
+		Protocol2: Proto2.BroadCast_GameHintProto2,
+	}
+
+	this.SendClientDataFunc(StrOpenIDA, "connect", data)
+	this.SendClientDataFunc(StrOpenIDB, "connect", data)
+
+	return
+}
 
 func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface{}) {
+
 	StrOpenIDA := ProtocolData["OpenIDA"].(string) // 失败者
 	StrOpenIDB := ProtocolData["OpenIDB"].(string) // 成功者
 	BIsDraw := ProtocolData["IsDraw"].(bool)
@@ -83,6 +101,7 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev) + ",0"
 		data.SuccGameLev_Exp = util.Int2str_LollipopGo(gamelevB) + ",10"
 	}
+	fmt.Println("广播玩家认输数据", data)
 	this.SendClientDataFunc(StrOpenIDA, "connect", data)
 	this.SendClientDataFunc(StrOpenIDB, "connect", data)
 	return

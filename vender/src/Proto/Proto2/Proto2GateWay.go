@@ -31,7 +31,17 @@ const (
 	S2GWS_PlayerMoveChessProto2 // S2GWS_PlayerMoveChessProto2 == 17   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
 	C2GWS_PlayerGiveUpProto2    // C2GWS_PlayerGiveUpProto2 == 18  玩家放弃、认输
 	BroadCast_GameOverProto2    // BroadCast_GameOverProto2 == 19  广播玩家游戏结束
+	BroadCast_GameHintProto2    // BroadCast_GameHintProto2 == 20  广播玩家第七个回合没有吃
 )
+
+//------------------------------------------------------------------------------
+// BroadCast_GameHintProto2
+type BroadCast_GameHint struct {
+	Protocol  int
+	Protocol2 int
+	Itype     int
+	ResultID  int
+}
 
 //------------------------------------------------------------------------------
 // GateWay_RelinkProto2
