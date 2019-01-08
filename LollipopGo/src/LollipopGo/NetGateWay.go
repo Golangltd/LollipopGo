@@ -43,17 +43,37 @@ func (this *NetDataConn) HandleCltProtocol2DSQ(protocol2 interface{}, ProtocolDa
 			// 结算的协议
 			this.BroadCastGameOverFunc(ProtocolData)
 		}
-
 	case float64(Proto2.DSQ_GameHintProto2):
 		{
 			// DSQ提示
 			this.BroadCastGameHintFunc(ProtocolData)
+		}
+	case float64(Proto2.DSQ2GW_PlayerRelinkGameProto2):
+		{
+			// DSQ 断线重新链接
+			this.RelinkGameFunc(ProtocolData)
 		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
 	return
+}
+
+func (this *NetDataConn) RelinkGameFunc(ProtocolData map[string]interface{}) {
+
+	StrOpenIDA := ProtocolData["OpenIDA"].(string)
+	StrChessData := ProtocolData["ChessData"].([]interface{})
+
+	data := &Proto2.S2GWS_PlayerRelinkGame{
+		Protocol:   Proto.G_GateWay_Proto,
+		Protocol2:  Proto2.S2GWS_PlayerRelinkGameProto2,
+		ChessBoard: StrChessData,
+	}
+
+	this.SendClientDataFunc(StrOpenIDA, "connect", data)
+	return
+
 }
 
 func (this *NetDataConn) BroadCastGameHintFunc(ProtocolData map[string]interface{}) {
@@ -68,7 +88,6 @@ func (this *NetDataConn) BroadCastGameHintFunc(ProtocolData map[string]interface
 
 	this.SendClientDataFunc(StrOpenIDA, "connect", data)
 	this.SendClientDataFunc(StrOpenIDB, "connect", data)
-
 	return
 }
 
@@ -465,10 +484,35 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 玩家认输--放弃
 			this.PlayerGiveUpDSQGame(ProtocolData)
 		}
+	case float64(Proto2.C2GWS_PlayerRelinkGameProto2):
+		{
+			// 玩家 断线重新链接
+			this.PlayerRelinkGameGame(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+// 玩家断线重新链接
+func (this *NetDataConn) PlayerRelinkGameGame(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("断线重新链接 openid 错误！")
+		return
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iRoomID := ProtocolData["RoomUID"].(float64)
+
+	data := &Proto2.GW2DSQ_PlayerRelinkGame{
+		Protocol:  Proto.G_GameDSQ_Proto,
+		Protocol2: Proto2.GW2DSQ_PlayerRelinkGameProto2,
+		OpenID:    StrOpenID,
+		RoomUID:   int(iRoomID),
+	}
+
+	this.SendServerDataFunc(strDSQServer, "DSQ_Server", data)
 	return
 }
 

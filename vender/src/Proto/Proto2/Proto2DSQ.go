@@ -14,14 +14,16 @@ const (
 	GW2DSQ_ConnServerProto2                //  GW2DSQ_ConnServerProto2 == 2 选择链接
 	GW2DSQ_InitGameProto2                  //  GW2DSQ_InitGameProto2   == 3  初始化协议-- 相当于注册
 	DSQ2GW_InitGameProto2                  //  GW2DSQ_InitGameProto2   == 4
-	GW2DSQ_PlayerStirChessProto2           // GW2DSQ_PlayerStirChessProto2 == 5   玩家翻棋子
-	DSQ2GW_PlayerStirChessProto2           // DSQ2GW_PlayerStirChessProto2 == 6   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
-	GW2DSQ_PlayerMoveChessProto2           // GW2DSQ_PlayerMoveChessProto2 == 7   玩家移动棋子
-	DSQ2GW_PlayerMoveChessProto2           // DSQ2GW_PlayerMoveChessProto2 == 8
-	GW2DSQ_PlayerGiveUpProto2              // GW2DSQ_PlayerGiveUpProto2 == 9玩家放弃
-	DSQ2GW_BroadCast_GameOverProto2        // DSQ2GW_BroadCast_GameOverProto2 ==10 结算
-	DB_GameOverProto2                      // DB_GameOverProto2 ==11 DB结算
-	DSQ_GameHintProto2                     // DSQ_GameHintProto2 ==12 斗兽棋通知
+	GW2DSQ_PlayerStirChessProto2           //  GW2DSQ_PlayerStirChessProto2 == 5   玩家翻棋子
+	DSQ2GW_PlayerStirChessProto2           //  DSQ2GW_PlayerStirChessProto2 == 6   广播同一个桌子上的,且接受到此协议后，已经移动的再无法移动棋子，对手获取操作权限
+	GW2DSQ_PlayerMoveChessProto2           //  GW2DSQ_PlayerMoveChessProto2 == 7   玩家移动棋子
+	DSQ2GW_PlayerMoveChessProto2           //  DSQ2GW_PlayerMoveChessProto2 == 8
+	GW2DSQ_PlayerGiveUpProto2              //  GW2DSQ_PlayerGiveUpProto2 == 9玩家放弃
+	DSQ2GW_BroadCast_GameOverProto2        //  DSQ2GW_BroadCast_GameOverProto2 ==10 结算
+	DB_GameOverProto2                      //  DB_GameOverProto2 ==11 DB结算
+	DSQ_GameHintProto2                     //  DSQ_GameHintProto2 ==12 斗兽棋通知
+	GW2DSQ_PlayerRelinkGameProto2          //  GW2DSQ_PlayerRelinkGameProto2 == 13  玩家重新链接游戏
+	DSQ2GW_PlayerRelinkGameProto2          //  DSQ2GW_PlayerRelinkGameProto2 == 14
 
 )
 
@@ -60,6 +62,24 @@ const (
 	DATAERROR           // DATAERROR == 8    数据错误    玩家的棋子已经被吃掉不存在了
 	DATANOEXIT          // DATANOEXIT == 9   数据不存在  棋子的数据大于 16或者小于0
 )
+
+//------------------------------------------------------------------------------
+// GW2DSQ_PlayerRelinkGameProto2
+type GW2DSQ_PlayerRelinkGame struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	RoomUID   int
+}
+
+// DSQ2GW_PlayerRelinkGameProto2
+type DSQ2GW_PlayerRelinkGame struct {
+	Protocol  int
+	Protocol2 int
+	OpenIDA   string
+	OpenIDB   string
+	ChessData [4][4]int
+}
 
 //------------------------------------------------------------------------------
 // DSQ_GameHintProto2
