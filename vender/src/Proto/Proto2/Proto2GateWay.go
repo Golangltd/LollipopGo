@@ -72,7 +72,7 @@ type C2GWS_GetPlayerEmailList struct {
 type S2GWS_GetPlayerEmailList struct {
 	Protocol  int
 	Protocol2 int
-	EmailData map[int]*player.EmailST
+	EmailData map[int]interface{}
 }
 
 //------------------------------------------------------------------------------

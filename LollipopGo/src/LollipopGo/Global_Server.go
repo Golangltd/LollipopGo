@@ -167,10 +167,11 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 //------------------------------------------------------------------------------
 
 var EmailDatatmp map[int]*player.EmailST
-var ItemListtmp map[int]*ItemST
+var ItemListtmp map[int]*player.ItemST
 
 func init() {
 	EmailDatatmp = make(map[int]*player.EmailST)
+	ItemListtmp = make(map[int]*player.ItemST)
 
 	if true {
 		data := new(player.EmailST)
@@ -204,7 +205,7 @@ func init() {
 		data.IsOpen = false
 
 		if true {
-			dataitem := new(ItemST)
+			dataitem := new(player.ItemST)
 			dataitem.ID = 1
 			dataitem.Icon = ""
 			dataitem.Name = "M卡"
