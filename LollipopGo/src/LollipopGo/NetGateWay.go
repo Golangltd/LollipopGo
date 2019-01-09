@@ -256,10 +256,32 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 			// Global server 玩家退出匹配的协议
 			this.GWPlayerQuitMatchGameGL(ProtocolData)
 		}
+	case float64(Proto2.G2GW_GetPlayerEmailListProto2):
+		{
+			// Global server 玩家获取邮件列表
+			this.GWPlayerGetPlayerEmailListGL(ProtocolData)
+		}
+
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+// 玩家获取邮件列表
+func (this *NetDataConn) GWPlayerGetPlayerEmailListGL(ProtocolData map[string]interface{}) {
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	EmailDataST := ProtocolData["EmailData"].(map[int]*player.EmailST)
+
+	data := &Proto2.G2GW_GetPlayerEmailList{
+		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
+		Protocol2: Proto2.G2GW_GetPlayerEmailListProto2,
+		OpenID:    StrOpenID,
+		EmailData: EmailDataST,
+	}
+	this.SendClientDataFunc(data.OpenID, "connect", data)
 	return
 }
 
