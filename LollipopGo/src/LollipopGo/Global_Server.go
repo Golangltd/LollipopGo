@@ -202,10 +202,12 @@ func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolDat
 
 var EmailDatatmp map[int]*player.EmailST
 var ItemListtmp map[int]*player.ItemST
+var PaoMaDeng map[string]*player.MsgST
 
 func init() {
 	EmailDatatmp = make(map[int]*player.EmailST)
 	ItemListtmp = make(map[int]*player.ItemST)
+	PaoMaDeng = make(map[string]*player.MsgST)
 
 	if true {
 		data := new(player.EmailST)
@@ -251,7 +253,29 @@ func init() {
 		data.ItemList = ItemListtmp
 		EmailDatatmp[data.ID] = data
 	}
-
+	//--------------------------------------------------------------------------
+	// DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
+	if true {
+		data := new(player.MsgST)
+		data.MsgID = 1
+		data.MsgType = player.MsgType1
+		data.MsgDesc = "系统消息：充值998，送B站24K纯金哥斯拉"
+		PaoMaDeng[data.MsgID] = data
+	}
+	if true {
+		data := new(player.MsgST)
+		data.MsgID = 2
+		data.MsgType = player.MsgType2
+		data.MsgDesc = "恭喜【XXX玩家】在XX比赛中获得xxx奖励"
+		PaoMaDeng[data.MsgID] = data
+	}
+	if true {
+		data := new(player.MsgST)
+		data.MsgID = 3
+		data.MsgType = player.MsgType3
+		data.MsgDesc = "恭喜【XXX玩家】在兑换中心成功兑换SSS"
+		PaoMaDeng[data.MsgID] = data
+	}
 	return
 }
 
@@ -437,7 +461,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		GamePlayerNum: ddd,
 		RacePlayerNum: nil,
 		Personal:      personalmap,
-		DefaultMsg:    nil,
+		DefaultMsg:    PaoMaDeng,
 		DefaultAward:  nil,
 		IsNewEmail:    true,
 	}
