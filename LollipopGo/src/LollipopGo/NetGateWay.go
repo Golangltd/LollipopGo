@@ -354,6 +354,8 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 	// StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
 	// StDefaultAward := ProtocolData["DefaultAward"].(map[string]interface{})
 
+	bIsNewEmail := ProtocolData["IsNewEmail"].(bool)
+
 	// 发给客户端模拟
 	data := &Proto2.S2GWS_PlayerLogin{
 		Protocol:      6,
@@ -368,7 +370,8 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 		Personal:      StPersonal,
 		// DefaultMsg:    StDefaultMsg,
 		// DefaultAward:  StDefaultAward,
-		AllPlayer: StAllPlayer, // 玩家的所有的结构数据
+		AllPlayer:  StAllPlayer, // 玩家的所有的结构数据
+		IsNewEmail: bIsNewEmail, // 是否有新邮件
 	}
 	// 发送数据  --
 	this.SendClientDataFunc(data.OpenID, "connect", data)

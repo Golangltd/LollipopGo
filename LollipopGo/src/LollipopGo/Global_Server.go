@@ -324,6 +324,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		Personal:      personalmap,
 		DefaultMsg:    nil,
 		DefaultAward:  nil,
+		IsNewEmail:    true,
 	}
 	fmt.Println(data)
 	PlayerSendToServer(conn, data)

@@ -22,6 +22,7 @@ type PlayerSt struct {
 	MedalList       string                 // 勋章列表，策划配表
 	OpenID          string                 // MD5数据
 	GameData        map[int]*PlayerGameLev // 游戏数据
+	IsNewEmail      bool                   // 是否有新邮件
 }
 
 /*
