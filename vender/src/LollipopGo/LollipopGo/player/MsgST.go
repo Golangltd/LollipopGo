@@ -10,7 +10,7 @@ const (
 
 // 系统消息结构
 type MsgST struct {
-	MsgID   string // 消息ID
+	MsgID   int    // 消息ID
 	MsgType int    // 前端和消息类型去显示到对应的模块
 	MsgDesc string // 消息内容
 }

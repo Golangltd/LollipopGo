@@ -304,7 +304,7 @@ type S2GWS_PlayerLogin struct {
 	GamePlayerNum map[string]interface{} // 每个游戏的玩家的人数,global server获取
 	RacePlayerNum map[string]interface{} // 大奖赛列表
 	Personal      map[string]interface{} // 个人信息
-	DefaultMsg    map[string]interface{} // 默认跑马灯消息
+	DefaultMsg    map[int]interface{}    // 默认跑马灯消息
 	DefaultAward  map[string]interface{} // 默认兑换列表
 	AllPlayer     map[string]interface{} // 玩家的信息
 	IsNewEmail    bool                   // 是否有新邮件
