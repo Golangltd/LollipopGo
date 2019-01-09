@@ -261,7 +261,11 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 			// Global server 玩家获取邮件列表
 			this.GWPlayerGetPlayerEmailListGL(ProtocolData)
 		}
-
+	case float64(Proto2.G2GW_ReadOrDelPlayerEmailProto2):
+		{
+			// Global server 邮件列表读取、删除
+			this.GWPlayerReadOrDelPlayerEmailGL(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
@@ -269,19 +273,33 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 	return
 }
 
+// 玩家获取邮件读取
+func (this *NetDataConn) GWPlayerReadOrDelPlayerEmailGL(ProtocolData map[string]interface{}) {
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iItype := int(ProtocolData["Itype"].(float64))
+
+	data := &Proto2.S2GWS_ReadOrDelPlayerEmail{
+		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
+		Protocol2: Proto2.S2GWS_ReadOrDelPlayerEmailProto2,
+		Itype:     iItype,
+	}
+	this.SendClientDataFunc(StrOpenID, "connect", data)
+	return
+}
+
 // 玩家获取邮件列表
 func (this *NetDataConn) GWPlayerGetPlayerEmailListGL(ProtocolData map[string]interface{}) {
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	EmailDataST := ProtocolData["EmailData"].(map[int]*player.EmailST)
+	EmailDataST := ProtocolData["EmailData"].(map[int]interface{})
 
-	data := &Proto2.G2GW_GetPlayerEmailList{
+	data := &Proto2.S2GWS_GetPlayerEmailList{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
-		Protocol2: Proto2.G2GW_GetPlayerEmailListProto2,
-		OpenID:    StrOpenID,
+		Protocol2: Proto2.S2GWS_GetPlayerEmailListProto2,
 		EmailData: EmailDataST,
 	}
-	this.SendClientDataFunc(data.OpenID, "connect", data)
+	this.SendClientDataFunc(StrOpenID, "connect", data)
 	return
 }
 
@@ -525,11 +543,36 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 玩家 获取邮件列表
 			this.PlayerEmailListFunc(ProtocolData)
 		}
-
+	case float64(Proto2.C2GWS_ReadOrDelPlayerEmailProto2):
+		{
+			// 玩家 邮件列表add、del
+			this.PlayerReadOrDelPlayerEmailFunc(ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+func (this *NetDataConn) PlayerReadOrDelPlayerEmailFunc(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("邮件列表 openid 错误！")
+	}
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iItype := int(ProtocolData["Itype"].(float64)) // 1:读取打开，2：删除，3：领取附件
+	iEmailID := int(ProtocolData["EmailID"].(float64))
+
+	data := &Proto2.GW2G_ReadOrDelPlayerEmail{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.GW2G_ReadOrDelPlayerEmailProto2,
+		OpenID:    StrOpenID,
+		Itype:     iItype,
+		EmailID:   iEmailID,
+	}
+
+	this.SendServerDataFunc(strDSQServer, "Global_Server", data)
 	return
 }
 
