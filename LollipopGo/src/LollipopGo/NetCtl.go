@@ -35,15 +35,6 @@ func (r *Requestbody) Json2map() (s map[string]interface{}, err error) {
 	return result, nil
 }
 
-// func (r *Requestbody) Json2map() (s map[interface{}]interface{}, err error) {
-// 	var result map[interface{}]interface{}
-// 	if err := json.Unmarshal([]byte(r.req), &result); err != nil {
-// 		glog.Error("Json2map:", err.Error())
-// 		return nil, err
-// 	}
-// 	return result, nil
-// }
-
 func (this *NetDataConn) PullFromClient() {
 	for {
 
@@ -236,25 +227,19 @@ func (this *NetDataConn) PlayerLogin(ProtocolData map[string]interface{}) {
 	return
 }
 
-// 广播函数处理
 func Broadcast(data interface{}) {
 
-	// 并发安全map优化：
 	for itr := M.Iterator(); itr.HasNext(); {
 		k, v, _ := itr.Next()
-		// 取分隔符
 		strsplit := Strings_Split(k.(string), "|")
 		for i := 0; i < len(strsplit); i++ {
 			if len(strsplit) < 2 {
 				continue
 			}
-			// 进行数据的查询类型
 			switch v.(interface{}).(type) {
 			case *NetDataConn:
 				{
-					// 判断 链接是不是 connect
 					if "" == "connect" {
-						// 发送数据
 						v.(interface{}).(*NetDataConn).PlayerSendMessage(data)
 					}
 				}
