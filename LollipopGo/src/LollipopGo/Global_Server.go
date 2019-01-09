@@ -202,12 +202,12 @@ func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolDat
 
 var EmailDatatmp map[int]*player.EmailST
 var ItemListtmp map[int]*player.ItemST
-var PaoMaDeng map[string]*player.MsgST
+var PaoMaDeng map[int]*player.MsgST
 
 func init() {
 	EmailDatatmp = make(map[int]*player.EmailST)
 	ItemListtmp = make(map[int]*player.ItemST)
-	PaoMaDeng = make(map[string]*player.MsgST)
+	PaoMaDeng = make(map[int]*player.MsgST)
 
 	if true {
 		data := new(player.EmailST)
