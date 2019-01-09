@@ -154,13 +154,44 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 		}
 	case float64(Proto2.GW2G_GetPlayerEmailListProto2):
 		{
-			fmt.Println("获取玩家游戏列表！")
+			fmt.Println("获取玩家邮件列表！")
 			G2GW_PlayerGetPlayerEmailListProto2Fucn(Conn, ProtocolData)
 		}
-
+	case float64(Proto2.GW2G_ReadOrDelPlayerEmailProto2):
+		{
+			fmt.Println("玩家邮件列表读取！")
+			G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(Conn, ProtocolData)
+		}
 	default:
 		panic("子协议：不存在！！！")
 	}
+	return
+}
+
+func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("读取邮件错误!")
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+	iItype := int(ProtocolData["Itype"].(float64))
+	iEmailID := int(ProtocolData["EmailID"].(float64))
+
+	// 1:读取打开，2：删除，3：领取附件
+	if iItype == 1 {
+		EmailDatatmp[iEmailID].IsOpen = true
+	} else if iItype == 2 {
+		delete(EmailDatatmp, iEmailID)
+	} else if iItype == 3 {
+		EmailDatatmp[iEmailID].IsAdd_ons = true
+	}
+
+	data_send := &Proto2.G2GW_ReadOrDelPlayerEmail{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.G2GW_ReadOrDelPlayerEmailProto2,
+		OpenID:    StrOpenID,
+		Itype:     iItype,
+	}
+	PlayerSendToServer(conn, data_send)
 	return
 }
 
@@ -225,7 +256,7 @@ func init() {
 
 func G2GW_PlayerGetPlayerEmailListProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 	if ProtocolData["OpenID"] == nil {
-		panic("玩家主动退出匹配!")
+		panic("获取玩家列表!")
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
 
