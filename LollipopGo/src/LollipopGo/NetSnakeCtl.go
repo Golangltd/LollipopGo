@@ -76,6 +76,5 @@ func (this *NetDataConn) LoginGameSnake(ProtocolData map[string]interface{}) {
 	// 数据保存操作
 	// --> 操作的
 	this.MapSafe.Put(StrLogin_Name+"|"+util.MD5_LollipopGO(strRoom)+"|connect", "")
-
 	return
 }
