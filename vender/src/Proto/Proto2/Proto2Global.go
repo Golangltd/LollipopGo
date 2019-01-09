@@ -43,7 +43,7 @@ type G2GW_ReadOrDelPlayerEmail struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
-	Itype     int // 1:读取打开，2：删除，3：领取附件
+	Itype     int // 0:失败，1:读取打开，2：删除，3：领取附件
 }
 
 //------------------------------------------------------------------------------
