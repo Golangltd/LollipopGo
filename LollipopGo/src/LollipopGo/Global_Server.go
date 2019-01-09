@@ -152,9 +152,89 @@ func HandleCltProtocol2Glogbal(protocol2 interface{}, ProtocolData map[string]in
 			fmt.Println("玩家主动退出匹配！")
 			G2GW_PlayerQuitMatchGameProto2Fucn(Conn, ProtocolData)
 		}
+	case float64(Proto2.GW2G_GetPlayerEmailListProto2):
+		{
+			fmt.Println("获取玩家游戏列表！")
+			G2GW_PlayerGetPlayerEmailListProto2Fucn(Conn, ProtocolData)
+		}
+
 	default:
 		panic("子协议：不存在！！！")
 	}
+	return
+}
+
+//------------------------------------------------------------------------------
+
+var EmailDatatmp map[int]*player.EmailST
+var ItemListtmp map[int]*ItemST
+
+func init() {
+	EmailDatatmp = make(map[int]*player.EmailST)
+
+	if true {
+		data := new(player.EmailST)
+		data.ID = 1
+		data.Name = "测试邮件1"
+		data.Time = int(util.GetNowUnix_LollipopGo())
+		data.Content = "测试邮件内容1"
+		data.IsAdd_ons = false
+		data.IsOpen = false
+		EmailDatatmp[data.ID] = data
+	}
+
+	if true {
+		data := new(player.EmailST)
+		data.ID = 2
+		data.Name = "测试邮件2"
+		data.Time = int(util.GetNowUnix_LollipopGo())
+		data.Content = "测试邮件内容2"
+		data.IsAdd_ons = false
+		data.IsOpen = false
+		EmailDatatmp[data.ID] = data
+	}
+
+	if true {
+		data := new(player.EmailST)
+		data.ID = 3
+		data.Name = "测试邮件3"
+		data.Time = int(util.GetNowUnix_LollipopGo())
+		data.Content = "测试邮件内容3"
+		data.IsAdd_ons = true
+		data.IsOpen = false
+
+		if true {
+			dataitem := new(ItemST)
+			dataitem.ID = 1
+			dataitem.Icon = ""
+			dataitem.Name = "M卡"
+			dataitem.Itype = 1
+			dataitem.Num = 10
+			ItemListtmp[dataitem.ID] = dataitem
+		}
+
+		data.ItemList = ItemListtmp
+		EmailDatatmp[data.ID] = data
+	}
+
+	return
+}
+
+//------------------------------------------------------------------------------
+
+func G2GW_PlayerGetPlayerEmailListProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("玩家主动退出匹配!")
+	}
+	StrOpenID := ProtocolData["OpenID"].(string)
+
+	data_send := &Proto2.G2GW_GetPlayerEmailList{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.G2GW_GetPlayerEmailListProto2,
+		OpenID:    StrOpenID,
+		EmailData: EmailDatatmp,
+	}
+	PlayerSendToServer(conn, data_send)
 	return
 }
 

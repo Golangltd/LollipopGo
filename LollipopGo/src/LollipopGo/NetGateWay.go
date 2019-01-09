@@ -493,10 +493,37 @@ func (this *NetDataConn) HandleCltProtocol2GW(protocol2 interface{}, ProtocolDat
 			// 玩家 断线重新链接
 			this.PlayerRelinkGameGame(ProtocolData)
 		}
+		/*
+			--------------------------------------------------------------------
+			      邮件系统
+			--------------------------------------------------------------------
+		*/
+	case float64(Proto2.C2GWS_GetPlayerEmailListProto2):
+		{
+			// 玩家 获取邮件列表
+			this.PlayerEmailListFunc(ProtocolData)
+		}
+
 	default:
 		panic("子协议：不存在！！！")
 	}
 
+	return
+}
+
+func (this *NetDataConn) PlayerEmailListFunc(ProtocolData map[string]interface{}) {
+	if ProtocolData["OpenID"] == nil {
+		panic("获取邮件列表 openid 错误！")
+	}
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	data := &Proto2.GW2G_GetPlayerEmailList{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.GW2G_GetPlayerEmailListProto2,
+		OpenID:    StrOpenID,
+	}
+
+	this.SendServerDataFunc(strDSQServer, "Global_Server", data)
 	return
 }
 
