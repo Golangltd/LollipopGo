@@ -21,7 +21,45 @@ const (
 	GW2G_PlayerQuitMatchGameProto2        // GW2G_PlayerQuitMatchGameProto2 == 10 玩家退出匹配
 	G2GW_PlayerQuitMatchGameProto2        // G2GW_PlayerQuitMatchGameProto2 == 11 玩家退出匹配
 
+	GW2G_GetPlayerEmailListProto2   // GW2G_GetPlayerEmailListProto2 == 12   获取邮件列表
+	G2GW_GetPlayerEmailListProto2   // G2GW_GetPlayerEmailListProto2 == 13
+	GW2G_ReadOrDelPlayerEmailProto2 // GW2G_ReadOrDelPlayerEmailProto2 == 14   读取或者删除
+	G2GW_ReadOrDelPlayerEmailProto2 // G2GW_ReadOrDelPlayerEmailProto2 == 15
+
 )
+
+//------------------------------------------------------------------------------
+// GW2G_ReadOrDelPlayerEmailProto2
+type GW2G_ReadOrDelPlayerEmail struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	Itype     int // 1:读取打开，2：删除，3：领取附件
+}
+
+// G2GW_ReadOrDelPlayerEmailProto2
+type G2GW_ReadOrDelPlayerEmail struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	Itype     int // 1:读取打开，2：删除，3：领取附件
+}
+
+//------------------------------------------------------------------------------
+// GW2G_GetPlayerEmailListProto2
+type GW2G_GetPlayerEmailList struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+}
+
+// G2GW_GetPlayerEmailListProto2
+type G2GW_GetPlayerEmailList struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	EmailData map[int]*player.EmailST
+}
 
 //------------------------------------------------------------------------------
 // GW2G_PlayerQuitMatchGameProto2
@@ -92,6 +130,7 @@ type GW2G_PlayerEntryHall struct {
 	DefaultMsg    map[string]*player.MsgST    // 默认跑马灯消息
 	DefaultAward  map[string]interface{}      // 默认兑换列表
 	AllPlayer     map[string]interface{}      // 玩家的信息
+	IsNewEmail    bool                        // 是否有新邮件
 }
 
 //------------------------------------------------------------------------------

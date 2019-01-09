@@ -34,7 +34,46 @@ const (
 	BroadCast_GameHintProto2     // BroadCast_GameHintProto2 == 20  广播玩家第七个回合没有吃
 	C2GWS_PlayerRelinkGameProto2 // C2GWS_PlayerRelinkGameProto2 == 21  玩家重新链接游戏
 	S2GWS_PlayerRelinkGameProto2 // S2GWS_PlayerRelinkGameProto2 == 22
+	/*
+		邮件系统
+	*/
+	C2GWS_GetPlayerEmailListProto2 // C2GWS_GetPlayerEmailListProto2 == 23   获取邮件列表
+	S2GWS_GetPlayerEmailListProto2 // S2GWS_GetPlayerEmailListProto2 == 24
+
+	C2GWS_ReadOrDelPlayerEmailProto2 // C2GWS_ReadOrDelPlayerEmailProto2 == 25   读取或者删除
+	S2GWS_ReadOrDelPlayerEmailProto2 // S2GWS_ReadOrDelPlayerEmailProto2 == 26
 )
+
+//------------------------------------------------------------------------------
+// C2GWS_ReadOrDelPlayerEmailProto2
+type C2GWS_ReadOrDelPlayerEmail struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	Itype     int // 1:读取打开，2：删除，3：领取附件
+}
+
+// S2GWS_ReadOrDelPlayerEmailProto2
+type S2GWS_ReadOrDelPlayerEmail struct {
+	Protocol  int
+	Protocol2 int
+	Itype     int // 1:读取打开，2：删除，3：领取附件
+}
+
+//------------------------------------------------------------------------------
+// C2GWS_GetPlayerEmailListProto2
+type C2GWS_GetPlayerEmailList struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+}
+
+// S2GWS_GetPlayerEmailListProto2
+type S2GWS_GetPlayerEmailList struct {
+	Protocol  int
+	Protocol2 int
+	EmailData map[int]*player.EmailST
+}
 
 //------------------------------------------------------------------------------
 // C2GWS_PlayerRelinkGameProto2
@@ -267,6 +306,7 @@ type S2GWS_PlayerLogin struct {
 	DefaultMsg    map[string]*player.MsgST // 默认跑马灯消息
 	DefaultAward  map[string]interface{}   // 默认兑换列表
 	AllPlayer     map[string]interface{}   // 玩家的信息
+	IsNewEmail    bool                     // 是否有新邮件
 }
 
 //------------------------------------------------------------------------------
