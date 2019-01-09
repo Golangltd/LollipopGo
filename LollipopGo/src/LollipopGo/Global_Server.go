@@ -176,21 +176,24 @@ func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolDat
 	iItype := int(ProtocolData["Itype"].(float64))
 	iEmailID := int(ProtocolData["EmailID"].(float64))
 
-	// 1:读取打开，2：删除，3：领取附件
-	if iItype == 1 {
-		EmailDatatmp[iEmailID].IsOpen = true
-	} else if iItype == 2 {
-		delete(EmailDatatmp, iEmailID)
-	} else if iItype == 3 {
-		EmailDatatmp[iEmailID].IsAdd_ons = true
-	}
-
 	data_send := &Proto2.G2GW_ReadOrDelPlayerEmail{
 		Protocol:  Proto.G_GameGlobal_Proto,
 		Protocol2: Proto2.G2GW_ReadOrDelPlayerEmailProto2,
 		OpenID:    StrOpenID,
 		Itype:     iItype,
 	}
+	// 1:读取打开，2：删除，3：领取附件
+	if iItype == 1 {
+		if EmailDatatmp[iEmailID] == nil {
+			EmailDatatmp[iEmailID].IsOpen = true
+			data_send.Itype = 0
+		}
+	} else if iItype == 2 {
+		delete(EmailDatatmp, iEmailID)
+	} else if iItype == 3 {
+		EmailDatatmp[iEmailID].IsAdd_ons = true
+	}
+
 	PlayerSendToServer(conn, data_send)
 	return
 }
@@ -437,6 +440,9 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		DefaultMsg:    nil,
 		DefaultAward:  nil,
 		IsNewEmail:    true,
+	}
+	if len(EmailDatatmp) == 0 {
+		data.IsNewEmail = false
 	}
 	fmt.Println(data)
 	PlayerSendToServer(conn, data)
