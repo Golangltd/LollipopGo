@@ -230,7 +230,7 @@ func init() {
 		data.ID = 2
 		data.Name = "测试邮件2"
 		data.Sender = "test2"
-		data.Type = 2
+		data.Type = 4
 		data.Time = int(util.GetNowUnix_LollipopGo())
 		data.Content = "测试邮件内容2"
 		data.IsAdd_ons = false
@@ -250,6 +250,60 @@ func init() {
 		data.IsAdd_ons = true
 		data.IsOpen = false
 		data.IsGet = false
+
+		if true {
+			dataitem := new(player.ItemST)
+			dataitem.ID = 1
+			dataitem.Icon = ""
+			dataitem.Name = "M卡"
+			dataitem.Itype = 1
+			dataitem.Num = 10
+			ItemListtmp[dataitem.ID] = dataitem
+		}
+
+		data.ItemList = ItemListtmp
+		EmailDatatmp[data.ID] = data
+	}
+
+	if true {
+		data := new(player.EmailST)
+		data.ID = 4
+		data.Name = "测试邮件4"
+		data.Sender = "test4"
+		data.Type = 4
+		data.Time = int(util.GetNowUnix_LollipopGo())
+		data.Content = "测试邮件内容1"
+		data.IsAdd_ons = false
+		data.IsOpen = false
+		data.IsGet = true
+		EmailDatatmp[data.ID] = data
+	}
+
+	if true {
+		data := new(player.EmailST)
+		data.ID = 5
+		data.Name = "测试邮件5"
+		data.Sender = "test5"
+		data.Type = 1
+		data.Time = int(util.GetNowUnix_LollipopGo())
+		data.Content = "测试邮件内容1"
+		data.IsAdd_ons = false
+		data.IsOpen = true
+		data.IsGet = true
+		EmailDatatmp[data.ID] = data
+	}
+
+	if true {
+		data := new(player.EmailST)
+		data.ID = 6
+		data.Name = "测试邮件6"
+		data.Sender = "test6"
+		data.Type = 4
+		data.Time = int(util.GetNowUnix_LollipopGo())
+		data.Content = "测试邮件内容3"
+		data.IsAdd_ons = true
+		data.IsOpen = true
+		data.IsGet = true
 
 		if true {
 			dataitem := new(player.ItemST)
