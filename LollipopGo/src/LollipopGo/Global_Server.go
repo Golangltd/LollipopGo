@@ -62,6 +62,7 @@ func initGateWayNet() bool {
 	}
 	Conn = conn
 	go GameServerReceiveG(Conn)
+	go TimeMsgNotice(Conn)
 	initConn(Conn)
 	return true
 }
@@ -205,6 +206,8 @@ func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolDat
 var EmailDatatmp map[int]*player.EmailST
 var ItemListtmp map[int]*player.ItemST
 var PaoMaDeng map[int]*player.MsgST
+var iicounmsg int = 3
+var iicounemail int = 6
 
 func init() {
 	EmailDatatmp = make(map[int]*player.EmailST)
@@ -341,6 +344,80 @@ func init() {
 		data.MsgDesc = "恭喜【XXX玩家】在兑换中心成功兑换SSS"
 		PaoMaDeng[data.MsgID] = data
 	}
+	return
+}
+
+func TimeMsgNotice(conn *websocket.Conn) {
+
+	if GL_type != "8894" {
+		return
+	}
+
+	for {
+		select {
+		case <-time.After(time.Second * 1):
+			{
+				iicounmsg++
+				iicounemail++
+				MsgNoticeFuncbak(conn)
+				EmailNoticeFunc(conn)
+			}
+		default:
+			fmt.Println("TimeMsgNotice")
+		}
+	}
+}
+
+func EmailNoticeFunc(conn *websocket.Conn) {
+	EmailDatatmpbak := make(map[int]*player.EmailST)
+
+	if true {
+		data := new(player.EmailST)
+		data.ID = iicounemail
+		data.Name = "测试邮件5"
+		data.Sender = "test5"
+		data.Type = 1
+		data.Time = int(util.GetNowUnix_LollipopGo())
+		data.Content = "测试邮件内容1"
+		data.IsAdd_ons = false
+		data.IsOpen = true
+		data.IsGet = true
+		EmailDatatmpbak[data.ID] = data
+	}
+
+	data_send := &Proto2.G_Broadcast_NoticePlayerEmail{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.G_Broadcast_NoticePlayerEmailProto2,
+		OpenID:    "6412121cbb2dc2cb9e460cfee7046be2",
+		EmailData: EmailDatatmpbak,
+	}
+
+	fmt.Println("邮件通知:", data_send)
+	PlayerSendToServer(conn, data_send)
+	return
+}
+
+// 全服通知
+func MsgNoticeFuncbak(conn *websocket.Conn) {
+	PaoMaDengbak := make(map[int]*player.MsgST)
+	if true {
+		data := new(player.MsgST)
+		data.MsgID = iicounmsg
+		data.MsgType = player.MsgType1
+		data.MsgDesc = "系统消息：充值998，送B站24K纯金哥斯拉"
+		PaoMaDengbak[data.MsgID] = data
+	}
+
+	data_send := &Proto2.G_Broadcast_MsgNoticePlayer{
+		Protocol:  Proto.G_GameGlobal_Proto,
+		Protocol2: Proto2.G_Broadcast_MsgNoticePlayerProto2,
+		OpenID:    "6412121cbb2dc2cb9e460cfee7046be2",
+		MsgData:   PaoMaDengbak,
+	}
+
+	fmt.Println("消息通知:", data_send)
+	PlayerSendToServer(conn, data_send)
+
 	return
 }
 
@@ -532,7 +609,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	}
 
 	icount := 0
-	for key, value := range EmailDatatmp {
+	for _, value := range EmailDatatmp {
 		idata := value.IsOpen
 		if idata {
 			icount++

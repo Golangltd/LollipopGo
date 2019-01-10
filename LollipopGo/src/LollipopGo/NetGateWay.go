@@ -288,11 +288,11 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[string]interface{}) {
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	EmailDataSt := ProtocolData["EmailData"].(map[string]interface{})
+	EmailDataSt := ProtocolData["EmailData"].(map[int]interface{})
 
-	data := &Proto2.Broadcast_NoticePlayer{
+	data := &Proto2.Broadcast_NoticePlayerEmail{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
-		Protocol2: Proto2.Broadcast_NoticePlayerEmail,
+		Protocol2: Proto2.Broadcast_NoticePlayerEmailProto2,
 		EmailData: EmailDataSt,
 	}
 
@@ -304,16 +304,18 @@ func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[
 // 消息通知
 func (this *NetDataConn) GWPlayerBroadcast_MsgNoticeGL(ProtocolData map[string]interface{}) {
 
-	StrOpenID := ProtocolData["OpenID"].(string)
-	MsgDataSt := ProtocolData["MsgData"].(map[string]interface{})
+	//StrOpenID := ProtocolData["OpenID"].(string)
+	MsgDataSt := ProtocolData["MsgData"].(map[int]interface{})
 
 	data := &Proto2.Broadcast_MsgNoticePlayer{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
 		Protocol2: Proto2.Broadcast_MsgNoticePlayerProto2,
 		MsgData:   MsgDataSt,
 	}
-
-	this.SendClientDataFunc(StrOpenID, "connect", data)
+	fmt.Println("全服通知", data)
+	// 全服通知
+	this.XC_Data_Send_AllPlayer_State("", data)
+	// this.SendClientDataFunc(StrOpenID, "connect", data)
 
 	return
 }

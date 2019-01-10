@@ -181,7 +181,7 @@ func (this *NetDataConn) XC_Data_Send_AllPlayer_State(StrMD5 string, Data interf
 				if i == len(strsplit)-1 {
 					keyName = strsplit[i]
 				}
-				if key == StrMD5 && keyName == "connect" {
+				if keyName == "connect" {
 					// 发消息
 					v.(interface{}).(*NetDataConn).PlayerSendMessage(Data)
 				}
