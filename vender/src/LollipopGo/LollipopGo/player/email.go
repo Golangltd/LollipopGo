@@ -4,6 +4,15 @@ package player
   邮件系统
 */
 
+// 邮件类型
+const (
+	MSGINIT  = iota // MSGINIT ==0
+	MsgType1        // MsgType1 == 1 正常
+	MsgType2        // MsgType2 == 2 活动
+	MsgType3        // MsgType3 == 3 系统
+	MsgType4        // MsgType4 == 4 置顶
+)
+
 type EmailST struct {
 	ID        int
 	Sender    string
