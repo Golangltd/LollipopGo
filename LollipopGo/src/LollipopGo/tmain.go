@@ -99,7 +99,6 @@ func main() {
 		}
 	} else if strServerType == strServerType_GL {
 		strport = "8894"
-		GL_type = "8894"
 		http.Handle("/GolangLtdGL", websocket.Handler(wwwGolangLtd))
 		if err := http.ListenAndServe(":"+strport, nil); err != nil {
 			glog.Error("网络错误", err)

@@ -288,7 +288,7 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[string]interface{}) {
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	EmailDataSt := ProtocolData["EmailData"].(map[int]interface{})
+	EmailDataSt := ProtocolData["EmailData"].(map[string]interface{})
 
 	data := &Proto2.Broadcast_NoticePlayerEmail{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
@@ -305,7 +305,7 @@ func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[
 func (this *NetDataConn) GWPlayerBroadcast_MsgNoticeGL(ProtocolData map[string]interface{}) {
 
 	//StrOpenID := ProtocolData["OpenID"].(string)
-	MsgDataSt := ProtocolData["MsgData"].(map[int]interface{})
+	MsgDataSt := ProtocolData["MsgData"].(map[string]interface{})
 
 	data := &Proto2.Broadcast_MsgNoticePlayer{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
