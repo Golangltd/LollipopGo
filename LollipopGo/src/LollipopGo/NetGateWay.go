@@ -292,7 +292,7 @@ func (this *NetDataConn) GWPlayerReadOrDelPlayerEmailGL(ProtocolData map[string]
 func (this *NetDataConn) GWPlayerGetPlayerEmailListGL(ProtocolData map[string]interface{}) {
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	EmailDataST := ProtocolData["EmailData"].(map[int]interface{})
+	EmailDataST := ProtocolData["EmailData"].(map[string]interface{})
 
 	data := &Proto2.S2GWS_GetPlayerEmailList{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
@@ -391,11 +391,11 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 		StAllPlayer = ProtocolData["AllPlayer"].(map[string]interface{})
 	}
 
-	// StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]*player.MsgST)
+	StDefaultMsg := ProtocolData["DefaultMsg"].(map[string]interface{})
 	// StDefaultAward := ProtocolData["DefaultAward"].(map[string]interface{})
 
 	bIsNewEmail := ProtocolData["IsNewEmail"].(bool)
-	DefaultMsgST := ProtocolData["DefaultMsg"].(map[int]interface{})
+	//DefaultMsgST := ProtocolData["DefaultMsg"].(map[string]interface{})
 
 	// 发给客户端模拟
 	data := &Proto2.S2GWS_PlayerLogin{
@@ -409,7 +409,7 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 		GamePlayerNum: StGamePlayerNum,
 		RacePlayerNum: StRacePlayerNum,
 		Personal:      StPersonal,
-		DefaultMsg:    DefaultMsgST,
+		DefaultMsg:    StDefaultMsg,
 		// DefaultAward:  StDefaultAward,
 		AllPlayer:  StAllPlayer, // 玩家的所有的结构数据
 		IsNewEmail: bIsNewEmail, // 是否有新邮件
@@ -583,13 +583,17 @@ func (this *NetDataConn) PlayerEmailListFunc(ProtocolData map[string]interface{}
 	}
 
 	StrOpenID := ProtocolData["OpenID"].(string)
+	fmt.Println(StrOpenID)
+
 	data := &Proto2.GW2G_GetPlayerEmailList{
 		Protocol:  Proto.G_GameGlobal_Proto,
 		Protocol2: Proto2.GW2G_GetPlayerEmailListProto2,
 		OpenID:    StrOpenID,
 	}
 
-	this.SendServerDataFunc(strDSQServer, "Global_Server", data)
+	fmt.Println(data)
+
+	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	return
 }
 

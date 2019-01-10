@@ -92,7 +92,8 @@ func (this *NetDataConn) HandleCltProtocol(protocol interface{}, protocol2 inter
 	//类型
 	glog.Info(typeof(protocol))
 	glog.Info(typeof(protocol2))
-	//glog.Info(typeof(Proto.GameData_Proto))
+	glog.Info(reflect.ValueOf(protocol))
+	glog.Info(reflect.ValueOf(protocol2))
 
 	switch protocol {
 	case float64(Proto.G_GateWay_Proto):
