@@ -47,13 +47,13 @@ const (
 	/*
 	   消息系统
 	*/
-	Broadcast_MsgNoticePlayerEmailProto2 // Broadcast_MsgNoticePlayerEmailProto2 == 28   消息通知
+	Broadcast_MsgNoticePlayerProto2 // Broadcast_MsgNoticePlayerProto2 == 28   消息通知
 
 )
 
 //------------------------------------------------------------------------------
 // Broadcast_MsgNoticePlayerEmailProto2
-type Broadcast_MsgNoticePlayerEmail struct {
+type Broadcast_MsgNoticePlayer struct {
 	Protocol  int
 	Protocol2 int
 	MsgData   map[string]interface{}
