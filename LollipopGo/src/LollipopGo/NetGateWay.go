@@ -278,11 +278,13 @@ func (this *NetDataConn) GWPlayerReadOrDelPlayerEmailGL(ProtocolData map[string]
 
 	StrOpenID := ProtocolData["OpenID"].(string)
 	iItype := int(ProtocolData["Itype"].(float64))
+	iEmailID := int(ProtocolData["Itype"].(float64))
 
 	data := &Proto2.S2GWS_ReadOrDelPlayerEmail{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
 		Protocol2: Proto2.S2GWS_ReadOrDelPlayerEmailProto2,
 		Itype:     iItype,
+		EmailID:   iEmailID,
 	}
 	this.SendClientDataFunc(StrOpenID, "connect", data)
 	return

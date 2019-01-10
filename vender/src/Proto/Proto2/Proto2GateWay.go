@@ -71,7 +71,8 @@ type C2GWS_ReadOrDelPlayerEmail struct {
 type S2GWS_ReadOrDelPlayerEmail struct {
 	Protocol  int
 	Protocol2 int
-	Itype     int // 1:读取打开，2：删除，3：领取附件
+	Itype     int // 0:失败，1:读取打开，2：删除，3：领取附件
+	EmailID   int // 邮件ID
 }
 
 //------------------------------------------------------------------------------

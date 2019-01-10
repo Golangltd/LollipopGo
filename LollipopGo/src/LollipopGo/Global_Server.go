@@ -181,6 +181,7 @@ func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolDat
 		Protocol2: Proto2.G2GW_ReadOrDelPlayerEmailProto2,
 		OpenID:    StrOpenID,
 		Itype:     iItype,
+		EmailID:   iEmailID,
 	}
 	// 1:读取打开，2：删除，3：领取附件
 	if iItype == 1 {
