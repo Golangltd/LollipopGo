@@ -992,7 +992,7 @@ func InitDSQ(data1 []int) [4][4]int {
 
 	for i := 0; i < Proto2.Mouse*2; i++ {
 		icount := util.RandInterval_LollipopGo(0, int32(len(data))-1)
-		fmt.Println("随机数：", icount)
+		//fmt.Println("随机数：", icount)
 		if len(data) == 1 {
 			erdata[3][3] = data[0]
 		} else {
@@ -1016,7 +1016,7 @@ func InitDSQ(data1 []int) [4][4]int {
 			}
 			//------------------------------------------------------------------
 		}
-		fmt.Println("生成的数据", erdata)
+		//fmt.Println("生成的数据", erdata)
 	}
 
 	return erdata
