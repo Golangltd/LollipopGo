@@ -297,6 +297,7 @@ func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[
 	}
 	fmt.Println("全服通知", data)
 	this.SendClientDataFunc(StrOpenID, "connect", data)
+	//this.XC_Data_Send_AllPlayer_State("", data)
 
 	return
 }
