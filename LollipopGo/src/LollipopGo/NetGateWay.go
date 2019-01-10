@@ -93,15 +93,28 @@ func (this *NetDataConn) BroadCastGameHintFunc(ProtocolData map[string]interface
 }
 
 func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface{}) {
+	fmt.Println("玩家数据为空--BroadCastGameOverFunc")
+	if ProtocolData["OpenIDB"] == nil {
+		fmt.Println("玩家数据为空")
+	}
 
 	StrOpenIDA := ProtocolData["OpenIDA"].(string) // 失败者
-	StrOpenIDB := ProtocolData["OpenIDB"].(string) // 成功者
+	StrOpenIDB := ""
+	if ProtocolData["OpenIDB"] != nil {
+		StrOpenIDB = ProtocolData["OpenIDB"].(string) // 成功者
+	}
+
 	BIsDraw := ProtocolData["IsDraw"].(bool)
 
 	data := &Proto2.BroadCast_GameOver{
 		Protocol:  Proto.G_GateWay_Proto,
 		Protocol2: Proto2.BroadCast_GameOverProto2,
 		IsDraw:    BIsDraw,
+	}
+
+	if len(StrOpenIDB) == 0 {
+		this.SendClientDataFunc(StrOpenIDA, "connect", data)
+		return
 	}
 
 	playerdataA := this.GateWayGetPalyerData(StrOpenIDA) //.(player.PlayerSt)
@@ -680,7 +693,7 @@ func (this *NetDataConn) GateWaySavePalyerData(stropenid string, data map[string
 func (this *NetDataConn) GateWayGetPalyerData(stropenid string) map[string]interface{} {
 	res, err1 := cacheGW.Value(stropenid)
 	if err1 != nil {
-		panic("没有对应数据")
+		// panic("没有对应数据")
 		return nil
 	}
 	// return res.Data().(*player.PlayerSt)
