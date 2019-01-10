@@ -530,12 +530,21 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		DefaultAward:  nil,
 		IsNewEmail:    true,
 	}
-	if len(EmailDatatmp) == 0 {
-		data.IsNewEmail = false
+
+	icount := 0
+	for key, value := range EmailDatatmp {
+		idata := value[key].IsOpen
+		if idata {
+			icount++
+		}
+		if icount == len(EmailDatatmp) {
+			data.IsNewEmail = false
+			break
+		}
 	}
+
 	fmt.Println(data)
 	PlayerSendToServer(conn, data)
-	// 保存玩家的数据  -- 主要是为了
 	return
 
 }

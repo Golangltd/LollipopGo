@@ -8,25 +8,43 @@ import (
 // G_GameGlobal_Proto == 9  负责全局的游戏逻辑 的子协议
 // 注：server类型为单点
 const (
-	ININGlobal                     = iota // 0
-	G2GW_ConnServerProto2                 // G2GW_ConnServerProto2 == 1 Global主动链接 gateway
-	GW2G_ConnServerProto2                 // GW2G_ConnServerProto2 == 2 选择链接
-	GW2G_HeartBeatProto2                  // GW2G_HeartBeatProto2 ==  3  心跳协议  保活的操作
-	G2GW_PlayerMatchProto2                // G2GW_PlayerMatchProto2 == 4 玩家发送匹配的协议
-	GW2G_PlayerMatchProto2                // GW2G_PlayerMatchProto2 == 5 服务器返回数据对应匹配机制
-	G2GW_PlayerEntryHallProto2            // G2GW_PlayerEntryHallProto2 == 6 玩家进入大厅，显示的数据
-	GW2G_PlayerEntryHallProto2            // GW2G_PlayerEntryHallProto2 == 7
-	G2GW_PlayerMatchGameProto2            // G2GW_PlayerMatchGameProto2 == 8 玩家选择游戏匹配
-	GW2G_PlayerMatchGameProto2            // GW2G_PlayerMatchGameProto2 == 9
-	GW2G_PlayerQuitMatchGameProto2        // GW2G_PlayerQuitMatchGameProto2 == 10 玩家退出匹配
-	G2GW_PlayerQuitMatchGameProto2        // G2GW_PlayerQuitMatchGameProto2 == 11 玩家退出匹配
-
-	GW2G_GetPlayerEmailListProto2   // GW2G_GetPlayerEmailListProto2 == 12   获取邮件列表
-	G2GW_GetPlayerEmailListProto2   // G2GW_GetPlayerEmailListProto2 == 13
-	GW2G_ReadOrDelPlayerEmailProto2 // GW2G_ReadOrDelPlayerEmailProto2 == 14   读取或者删除
-	G2GW_ReadOrDelPlayerEmailProto2 // G2GW_ReadOrDelPlayerEmailProto2 == 15
-
+	ININGlobal                             = iota // 0
+	G2GW_ConnServerProto2                         // G2GW_ConnServerProto2 == 1 Global主动链接 gateway
+	GW2G_ConnServerProto2                         // GW2G_ConnServerProto2 == 2 选择链接
+	GW2G_HeartBeatProto2                          // GW2G_HeartBeatProto2 ==  3  心跳协议  保活的操作
+	G2GW_PlayerMatchProto2                        // G2GW_PlayerMatchProto2 == 4 玩家发送匹配的协议
+	GW2G_PlayerMatchProto2                        // GW2G_PlayerMatchProto2 == 5 服务器返回数据对应匹配机制
+	G2GW_PlayerEntryHallProto2                    // G2GW_PlayerEntryHallProto2 == 6 玩家进入大厅，显示的数据
+	GW2G_PlayerEntryHallProto2                    // GW2G_PlayerEntryHallProto2 == 7
+	G2GW_PlayerMatchGameProto2                    // G2GW_PlayerMatchGameProto2 == 8 玩家选择游戏匹配
+	GW2G_PlayerMatchGameProto2                    // GW2G_PlayerMatchGameProto2 == 9
+	GW2G_PlayerQuitMatchGameProto2                // GW2G_PlayerQuitMatchGameProto2 == 10 玩家退出匹配
+	G2GW_PlayerQuitMatchGameProto2                // G2GW_PlayerQuitMatchGameProto2 == 11 玩家退出匹配
+	GW2G_GetPlayerEmailListProto2                 // GW2G_GetPlayerEmailListProto2 == 12   获取邮件列表
+	G2GW_GetPlayerEmailListProto2                 // G2GW_GetPlayerEmailListProto2 == 13
+	GW2G_ReadOrDelPlayerEmailProto2               // GW2G_ReadOrDelPlayerEmailProto2 == 14   读取或者删除
+	G2GW_ReadOrDelPlayerEmailProto2               // G2GW_ReadOrDelPlayerEmailProto2 == 15
+	G_Broadcast_NoticePlayerEmailProto2           // G_Broadcast_NoticePlayerEmailProto2 ==16   邮件通知
+	G_Broadcast_MsgNoticePlayerEmailProto2        // Broadcast_MsgNoticePlayerEmailProto2 == 17 消息通知
 )
+
+//------------------------------------------------------------------------------
+// G_Broadcast_MsgNoticePlayerEmailProto2
+type G_Broadcast_MsgNoticePlayerEmail struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	MsgData   map[string]*player.MsgST // 消息系统
+}
+
+//------------------------------------------------------------------------------
+// G_Broadcast_NoticePlayerEmailProto2
+type G_Broadcast_NoticePlayerEmail struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string
+	EmailData map[string]*player.EmailST
+}
 
 //------------------------------------------------------------------------------
 // GW2G_ReadOrDelPlayerEmailProto2
