@@ -42,6 +42,9 @@ const (
 
 	C2GWS_ReadOrDelPlayerEmailProto2 // C2GWS_ReadOrDelPlayerEmailProto2 == 25   读取或者删除
 	S2GWS_ReadOrDelPlayerEmailProto2 // S2GWS_ReadOrDelPlayerEmailProto2 == 26
+	/*
+
+	 */
 )
 
 //------------------------------------------------------------------------------
@@ -73,7 +76,7 @@ type C2GWS_GetPlayerEmailList struct {
 type S2GWS_GetPlayerEmailList struct {
 	Protocol  int
 	Protocol2 int
-	EmailData map[int]interface{}
+	EmailData map[string]interface{}
 }
 
 //------------------------------------------------------------------------------
@@ -304,10 +307,10 @@ type S2GWS_PlayerLogin struct {
 	GamePlayerNum map[string]interface{} // 每个游戏的玩家的人数,global server获取
 	RacePlayerNum map[string]interface{} // 大奖赛列表
 	Personal      map[string]interface{} // 个人信息
-	DefaultMsg    map[int]interface{}    // 默认跑马灯消息
-	DefaultAward  map[string]interface{} // 默认兑换列表
-	AllPlayer     map[string]interface{} // 玩家的信息
-	IsNewEmail    bool                   // 是否有新邮件
+	DefaultMsg    map[string]interface{} // 默认跑马灯消息
+	// DefaultAward  map[string]interface{} // 默认兑换列表
+	AllPlayer  map[string]interface{} // 玩家的信息
+	IsNewEmail bool                   // 是否有新邮件
 }
 
 //------------------------------------------------------------------------------

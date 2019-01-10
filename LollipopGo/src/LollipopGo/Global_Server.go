@@ -191,7 +191,7 @@ func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolDat
 	} else if iItype == 2 {
 		delete(EmailDatatmp, iEmailID)
 	} else if iItype == 3 {
-		EmailDatatmp[iEmailID].IsAdd_ons = true
+		EmailDatatmp[iEmailID].IsGet = true
 	}
 
 	PlayerSendToServer(conn, data_send)
@@ -213,10 +213,13 @@ func init() {
 		data := new(player.EmailST)
 		data.ID = 1
 		data.Name = "测试邮件1"
+		data.Sender = "test1"
+		data.Type = 1
 		data.Time = int(util.GetNowUnix_LollipopGo())
 		data.Content = "测试邮件内容1"
 		data.IsAdd_ons = false
 		data.IsOpen = false
+		data.IsGet = false
 		EmailDatatmp[data.ID] = data
 	}
 
@@ -224,10 +227,13 @@ func init() {
 		data := new(player.EmailST)
 		data.ID = 2
 		data.Name = "测试邮件2"
+		data.Sender = "test2"
+		data.Type = 2
 		data.Time = int(util.GetNowUnix_LollipopGo())
 		data.Content = "测试邮件内容2"
 		data.IsAdd_ons = false
 		data.IsOpen = false
+		data.IsGet = false
 		EmailDatatmp[data.ID] = data
 	}
 
@@ -235,10 +241,13 @@ func init() {
 		data := new(player.EmailST)
 		data.ID = 3
 		data.Name = "测试邮件3"
+		data.Sender = "test3"
+		data.Type = 1
 		data.Time = int(util.GetNowUnix_LollipopGo())
 		data.Content = "测试邮件内容3"
 		data.IsAdd_ons = true
 		data.IsOpen = false
+		data.IsGet = false
 
 		if true {
 			dataitem := new(player.ItemST)
