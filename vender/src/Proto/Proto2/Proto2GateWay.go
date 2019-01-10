@@ -56,7 +56,7 @@ const (
 type Broadcast_MsgNoticePlayer struct {
 	Protocol  int
 	Protocol2 int
-	MsgData   map[int]interface{}
+	MsgData   map[string]interface{}
 }
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ type Broadcast_MsgNoticePlayer struct {
 type Broadcast_NoticePlayerEmail struct {
 	Protocol  int
 	Protocol2 int
-	EmailData map[int]interface{}
+	EmailData map[string]interface{}
 }
 
 //------------------------------------------------------------------------------
