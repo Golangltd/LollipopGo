@@ -15,6 +15,7 @@ import (
 /*
   登录服务器:
   http://127.0.0.1:8891/GolangLtdDT?Protocol=8&Protocol2=1
+  47.107.125.75 == run.babaliuliu.com
 */
 
 func IndexHandler(w http.ResponseWriter, req *http.Request) {
