@@ -295,7 +295,7 @@ func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[
 		Protocol2: Proto2.Broadcast_NoticePlayerEmailProto2,
 		EmailData: EmailDataSt,
 	}
-
+	fmt.Println("全服通知", data)
 	this.SendClientDataFunc(StrOpenID, "connect", data)
 
 	return
