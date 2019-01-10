@@ -184,9 +184,10 @@ func G2GW_PlayerReadOrDelPlayerEmailProto2Fucn(conn *websocket.Conn, ProtocolDat
 	}
 	// 1:读取打开，2：删除，3：领取附件
 	if iItype == 1 {
-		if EmailDatatmp[iEmailID] == nil {
+		data_send.Itype = 0
+		if EmailDatatmp[iEmailID] != nil {
 			EmailDatatmp[iEmailID].IsOpen = true
-			data_send.Itype = 0
+			data_send.Itype = 1
 		}
 	} else if iItype == 2 {
 		delete(EmailDatatmp, iEmailID)

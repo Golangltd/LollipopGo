@@ -573,7 +573,7 @@ func (this *NetDataConn) PlayerReadOrDelPlayerEmailFunc(ProtocolData map[string]
 		EmailID:   iEmailID,
 	}
 
-	this.SendServerDataFunc(strDSQServer, "Global_Server", data)
+	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
 	return
 }
 

@@ -42,10 +42,20 @@ const (
 
 	C2GWS_ReadOrDelPlayerEmailProto2 // C2GWS_ReadOrDelPlayerEmailProto2 == 25   读取或者删除
 	S2GWS_ReadOrDelPlayerEmailProto2 // S2GWS_ReadOrDelPlayerEmailProto2 == 26
+
+	Broadcast_NoticePlayerEmailProto2 // Broadcast_NoticePlayerEmailProto2 == 27   邮件通知
 	/*
 
 	 */
 )
+
+//------------------------------------------------------------------------------
+// Broadcast_NoticePlayerEmailProto2
+type Broadcast_NoticePlayerEmail struct {
+	Protocol  int
+	Protocol2 int
+	EmailData map[string]interface{}
+}
 
 //------------------------------------------------------------------------------
 // C2GWS_ReadOrDelPlayerEmailProto2
