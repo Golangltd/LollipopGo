@@ -254,6 +254,9 @@ func GW2DSQ_PlayerRelinkGameProto2Fucn(conn *websocket.Conn, ProtocolData map[st
 }
 
 func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
+
+	fmt.Println("玩家数据为空--GW2DSQ_PlayerGiveUpProto2Fucn")
+
 	if ProtocolData["OpenID"] == nil ||
 		ProtocolData["RoomUID"] == nil {
 		panic(ProtocolData)
@@ -276,6 +279,8 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 	PlayerSendToServer(conn, data)
 	// 删除房间数据
 	cacheDSQ.Delete(iRoomID)
+
+	return
 	//--------------------------------------------------------------------------
 	// 失败者*数据保存到db
 	dbdata := &Proto2.DB_GameOver{
@@ -322,7 +327,7 @@ func ModefyGamePlayerDataGameInfo(data *Proto2.DB_GameOver) interface{} {
 	fmt.Println(replyCall.Reply)
 	//--------------------------------------------------------------------------
 	// 返回的数据
-	fmt.Println("the arith.mutiply is :", reply)
+	fmt.Println("ModefyGamePlayerDataGameInfo :", reply)
 	return reply
 }
 
