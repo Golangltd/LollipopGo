@@ -7,6 +7,7 @@ var G_RoomList map[string]interface{}    // 房间列表
 var RoomListData map[string]*RoomList    // 房间列表
 var RoomListDatabak map[string]*RoomList // 房间列表
 var DSQGameExp map[string]*DSQ_Exp       // 斗兽棋经验列表
+var G_ServerList map[string]*ServerList  // 服务器列表
 
 func init() {
 	G_GameList = make(map[string]*GameList)
@@ -15,7 +16,15 @@ func init() {
 	RoomListData = make(map[string]*RoomList)
 	RoomListDatabak = make(map[string]*RoomList)
 	DSQGameExp = make(map[string]*DSQ_Exp)
+	G_ServerList = make(map[string]*ServerList)
 	return
+}
+
+//------------------------------------------------------------------------------
+type ServerList struct {
+	ID      string
+	Name    string
+	IP_Port string
 }
 
 //------------------------------------------------------------------------------
