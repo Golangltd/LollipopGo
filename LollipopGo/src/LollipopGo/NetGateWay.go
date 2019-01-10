@@ -104,21 +104,23 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 		IsDraw:    BIsDraw,
 	}
 
-	playerdataA := this.GateWayGetPalyerData(StrOpenIDA)
+	playerdataA := this.GateWayGetPalyerData(StrOpenIDA) //.(player.PlayerSt)
 	playerdataB := this.GateWayGetPalyerData(StrOpenIDB)
+
+	// sss := playerdataA["1"].(player.PlayerSt)
 
 	//gamelevA := util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev)
 	//gameexpA := playerdataA.GameData["10001"].GameExp
 
 	//gamelevB := util.Int2str_LollipopGo(playerdataB.GameData[10001].GameLev)
-	gameexpB := playerdataB.GameData[DSQGameID].GameExp
+	gameexpB := playerdataA["1"].(player.PlayerSt).GameData[DSQGameID].GameExp
 	gamelevB := util.Sort_LollipopGo(conf.DSQGameExp, 10+gameexpB)
 
 	if BIsDraw { // 平局，都不加分
-		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA.GameData[DSQGameID].GameLev) + ",0"
-		data.SuccGameLev_Exp = util.Int2str_LollipopGo(playerdataB.GameData[DSQGameID].GameLev) + ",0"
+		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA["1"].(player.PlayerSt).GameData[DSQGameID].GameLev) + ",0"
+		data.SuccGameLev_Exp = util.Int2str_LollipopGo(playerdataB["1"].(player.PlayerSt).GameData[DSQGameID].GameLev) + ",0"
 	} else {
-		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA.GameData[DSQGameID].GameLev) + ",0"
+		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA["1"].(player.PlayerSt).GameData[DSQGameID].GameLev) + ",0"
 		data.SuccGameLev_Exp = util.Int2str_LollipopGo(gamelevB) + ",10"
 	}
 	fmt.Println("广播玩家认输数据", data)
@@ -674,13 +676,15 @@ func (this *NetDataConn) GateWaySavePalyerData(stropenid string, data map[string
 	return
 }
 
-func (this *NetDataConn) GateWayGetPalyerData(stropenid string) *player.PlayerSt {
+// func (this *NetDataConn) GateWayGetPalyerData(stropenid string) *player.PlayerSt {
+func (this *NetDataConn) GateWayGetPalyerData(stropenid string) map[string]interface{} {
 	res, err1 := cacheGW.Value(stropenid)
 	if err1 != nil {
 		panic("没有对应数据")
 		return nil
 	}
-	return res.Data().(*player.PlayerSt)
+	// return res.Data().(*player.PlayerSt)
+	return res.Data().(map[string]interface{})
 }
 
 //------------------------------------------------------------------------------

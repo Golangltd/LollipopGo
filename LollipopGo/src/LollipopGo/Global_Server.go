@@ -102,20 +102,20 @@ func SyncMeassgeFunG(content string) {
 
 //  主协议处理
 func HandleCltProtocolG(protocol interface{}, protocol2 interface{}, ProtocolData map[string]interface{}) {
-	// defer func() { // 必须要先声明defer，否则不能捕获到panic异常
-	// 	if err := recover(); err != nil {
-	// 		strerr := fmt.Sprintf("%s", err)
-	// 		//发消息给客户端
-	// 		ErrorST := Proto2.G_Error_All{
-	// 			Protocol:  Proto.G_Error_Proto,      // 主协议
-	// 			Protocol2: Proto2.G_Error_All_Proto, // 子协议
-	// 			ErrCode:   "80006",
-	// 			ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
-	// 		}
-	// 		// 发送给玩家数据
-	// 		fmt.Println("Global server的主协议!!!", ErrorST)
-	// 	}
-	// }()
+	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+		if err := recover(); err != nil {
+			strerr := fmt.Sprintf("%s", err)
+			//发消息给客户端
+			ErrorST := Proto2.G_Error_All{
+				Protocol:  Proto.G_Error_Proto,      // 主协议
+				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				ErrCode:   "80006",
+				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
+			}
+			// 发送给玩家数据
+			fmt.Println("Global server的主协议!!!", ErrorST)
+		}
+	}()
 
 	// 协议处理
 	switch protocol {

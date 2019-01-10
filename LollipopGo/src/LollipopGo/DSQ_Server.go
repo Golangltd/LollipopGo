@@ -465,7 +465,7 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		InitData:  DSQ_Pai,
 	}
 	PlayerSendToServer(conn, data)
-	go CheckGameOfPlayerLeftTime(iRoomID, conn)
+	// cserli go CheckGameOfPlayerLeftTime(iRoomID, conn)
 	return
 }
 
@@ -504,7 +504,7 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("没有对应数据")
+		// panic("没有对应数据")
 		return false
 	}
 
@@ -579,7 +579,7 @@ func CacheSaveRoomData(iRoomID int, data *RoomPlayerDSQ, openid string) {
 func CacheGetOtherPlayerByPlayerUID(iRoomID int, player string) string {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("没有对应数据")
+		//panic("没有对应数据")
 		return ""
 	}
 	if res.Data().(*RoomPlayerDSQ).OpenIDA == player {
@@ -593,7 +593,7 @@ func CacheGetOtherPlayerByPlayerUID(iRoomID int, player string) string {
 func CacheGetPlayerUID(iRoomID int, player string) string {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("没有对应数据")
+		//panic("没有对应数据")
 		return ""
 	}
 	fmt.Println("save data:", player)
@@ -613,7 +613,7 @@ func CacheGetPlayerUID(iRoomID int, player string) string {
 func CacheSavePlayerUID(iRoomID int, player string) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("没有对应数据")
+		//panic("没有对应数据")
 		return
 	}
 	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDA)
@@ -692,7 +692,7 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("棋盘数据更新失败！")
+		//panic("棋盘数据更新失败！")
 		return
 	}
 
@@ -747,7 +747,7 @@ func CacheGetReChessData(iRoomID int) ([4][4]int, int) {
 func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, stropenid string) (string, string, string) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("棋盘数据获取数据失败！")
+		//panic("棋盘数据获取数据失败！")
 		return "", "", ""
 	}
 	ipos_x := 0
@@ -942,7 +942,7 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 func CacheGetChessDefaultData(iRoomID int, Update_pos string, itype int, valve int) (bool, int) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("棋盘数据获取数据失败！")
+		//panic("棋盘数据获取数据失败！")
 		return false, -1
 	}
 	ipos_x := 0
