@@ -266,9 +266,54 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 			// Global server 邮件列表读取、删除
 			this.GWPlayerReadOrDelPlayerEmailGL(ProtocolData)
 		}
+	case float64(Proto2.G_Broadcast_MsgNoticePlayerProto2):
+		{
+			// Global server 消息通知
+			this.GWPlayerBroadcast_MsgNoticeGL(ProtocolData)
+		}
+	case float64(Proto2.G_Broadcast_NoticePlayerEmailProto2):
+		{
+			// Global server 邮件通知
+			this.GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData)
+		}
+
 	default:
 		panic("子协议：不存在！！！")
 	}
+
+	return
+}
+
+// 邮件通知
+func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[string]interface{}) {
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	EmailDataSt := ProtocolData["EmailData"].(map[string]interface{})
+
+	data := &Proto2.Broadcast_NoticePlayer{
+		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
+		Protocol2: Proto2.Broadcast_NoticePlayerEmail,
+		EmailData: EmailDataSt,
+	}
+
+	this.SendClientDataFunc(StrOpenID, "connect", data)
+
+	return
+}
+
+// 消息通知
+func (this *NetDataConn) GWPlayerBroadcast_MsgNoticeGL(ProtocolData map[string]interface{}) {
+
+	StrOpenID := ProtocolData["OpenID"].(string)
+	MsgDataSt := ProtocolData["MsgData"].(map[string]interface{})
+
+	data := &Proto2.Broadcast_MsgNoticePlayer{
+		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
+		Protocol2: Proto2.Broadcast_MsgNoticePlayerProto2,
+		MsgData:   MsgDataSt,
+	}
+
+	this.SendClientDataFunc(StrOpenID, "connect", data)
 
 	return
 }

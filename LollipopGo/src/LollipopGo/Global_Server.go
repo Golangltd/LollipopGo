@@ -533,7 +533,7 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 
 	icount := 0
 	for key, value := range EmailDatatmp {
-		idata := value[key].IsOpen
+		idata := value.IsOpen
 		if idata {
 			icount++
 		}
