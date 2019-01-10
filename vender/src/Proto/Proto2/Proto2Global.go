@@ -29,12 +29,12 @@ const (
 )
 
 //------------------------------------------------------------------------------
-// G_Broadcast_MsgNoticePlayerEmailProto2
+// G_Broadcast_MsgNoticePlayerProto2
 type G_Broadcast_MsgNoticePlayer struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
-	MsgData   map[string]*player.MsgST // 消息系统
+	MsgData   map[int]*player.MsgST // 消息系统
 }
 
 //------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ type G_Broadcast_NoticePlayerEmail struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string
-	EmailData map[string]*player.EmailST
+	EmailData map[int]*player.EmailST
 }
 
 //------------------------------------------------------------------------------
