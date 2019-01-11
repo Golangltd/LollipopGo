@@ -2,7 +2,7 @@ package Proto2
 
 import (
 	"LollipopGo/LollipopGo/match"
-	"LollipopGo/LollipopGo/player"
+	_ "LollipopGo/LollipopGo/player"
 )
 
 // G_GateWay_Proto
@@ -171,11 +171,11 @@ type GateWay_Logout struct {
 type BroadCast_GameOver struct {
 	Protocol        int
 	Protocol2       int
-	IsDraw          bool                        // 是否是平局  true表示平局，false表示不是平局
-	FailGameLev_Exp string                      // 格式: 1,10
-	SuccGameLev_Exp string                      // 格式: 1,10
-	FailPlayer      map[string]*player.PlayerSt // 失败者
-	SuccPlayer      map[string]*player.PlayerSt // 胜利者
+	IsDraw          bool                   // 是否是平局  true表示平局，false表示不是平局
+	FailGameLev_Exp string                 // 格式: 1,10
+	SuccGameLev_Exp string                 // 格式: 1,10
+	FailPlayer      map[string]interface{} // 失败者
+	SuccPlayer      map[string]interface{} //*player.PlayerSt // 胜利者
 }
 
 //------------------------------------------------------------------------------
