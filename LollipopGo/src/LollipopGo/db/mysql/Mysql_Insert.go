@@ -86,6 +86,44 @@ func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) (bool, player.Pla
 		fmt.Println("插入数据成功：", id)
 	}
 
+	/*
+		&PlayerSt.UID, &uid,
+		&PlayerSt.OpenID,
+		&PlayerSt.VIP_Lev,
+		&PlayerSt.Name,
+		&PlayerSt.HeadURL,
+		&PlayerSt.PlayerSchool,
+		&PlayerSt.Sex,
+		&PlayerSt.HallExp,
+		&PlayerSt.CoinNum,
+		&PlayerSt.MasonryNum,
+		&PlayerSt.MCard,
+		&PlayerSt.Constellation,
+		&PlayerSt.MedalList,
+		&times
+
+	*/
+
+	var PlayerSt player.PlayerSt
+	//--------------------------------------------------------------------------
+
+	PlayerSt.UID = int(id)
+	PlayerSt.OpenID = data.OpenID
+	PlayerSt.VIP_Lev = data.VIP_Lev
+	PlayerSt.Name = data.Name
+	PlayerSt.HeadURL = data.HeadURL
+	PlayerSt.PlayerSchool = data.PlayerSchool
+	PlayerSt.Sex = data.Sex
+	PlayerSt.HallExp = data.HallExp
+	PlayerSt.CoinNum = data.CoinNum
+	PlayerSt.MasonryNum = data.MasonryNum
+	PlayerSt.MCard = data.MCard
+	PlayerSt.Constellation = data.Constellation
+	PlayerSt.MedalList = data.MedalList
+
+	//--------------------------------------------------------------------------
+	bdata = PlayerSt
+	fmt.Println("++++++++++++++++++++", bdata)
 	return true, bdata //int(id)
 }
 

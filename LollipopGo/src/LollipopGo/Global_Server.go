@@ -348,14 +348,14 @@ func init() {
 }
 
 func TimeMsgNotice(conn *websocket.Conn) {
-
+	// return
 	// if GL_type != "8894" {
 	// 	return
 	// }
 	fmt.Println("TimeMsgNotice")
 	for {
 		select {
-		case <-time.After(time.Second * 10):
+		case <-time.After(time.Second * 30):
 			{
 				iicounmsg++
 				iicounemail++

@@ -123,6 +123,9 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 	playerdataA := this.GateWayGetPalyerData(StrOpenIDA) //.(player.PlayerSt)
 	playerdataB := this.GateWayGetPalyerData(StrOpenIDB)
 
+	data.FailPlayer = playerdataA
+	data.SuccPlayer = playerdataB
+
 	if playerdataA == nil ||
 		playerdataB == nil {
 		fmt.Println("玩家数据为空")
@@ -705,7 +708,11 @@ func (this *NetDataConn) PlayerRelinkGameGame(ProtocolData map[string]interface{
 //------------------------------------------------------------------------------
 // 缓存玩家数据
 func (this *NetDataConn) GateWaySavePalyerData(stropenid string, data map[string]interface{}) {
+
+	fmt.Println("缓存数据stropenid:", stropenid)
+	fmt.Println("缓存数据前:", data)
 	cacheGW.Add(stropenid, 0, data)
+	fmt.Println("缓存数据后:", this.GateWayGetPalyerData(stropenid))
 	return
 }
 
