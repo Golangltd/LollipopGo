@@ -348,7 +348,7 @@ func init() {
 }
 
 func TimeMsgNotice(conn *websocket.Conn) {
-	// return
+	return
 	// if GL_type != "8894" {
 	// 	return
 	// }
