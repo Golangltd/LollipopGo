@@ -115,10 +115,10 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 	fmt.Println("函数--BroadCastGameOverFunc StrOpenIDA", StrOpenIDA)
 	fmt.Println("函数--BroadCastGameOverFunc StrOpenIDB", StrOpenIDB)
 
-	if len(StrOpenIDB) == 0 {
-		this.SendClientDataFunc(StrOpenIDA, "connect", data)
-		return
-	}
+	// if len(StrOpenIDB) == 0 {
+	// 	this.SendClientDataFunc(StrOpenIDA, "connect", data)
+	// 	return
+	// }
 
 	playerdataA := this.GateWayGetPalyerData(StrOpenIDA) //.(player.PlayerSt)
 	playerdataB := this.GateWayGetPalyerData(StrOpenIDB)
@@ -334,7 +334,7 @@ func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[
 	}
 	fmt.Println("全服通知", data)
 	this.SendClientDataFunc(StrOpenID, "connect", data)
-	//this.XC_Data_Send_AllPlayer_State("", data)
+	// this.XC_Data_Send_AllPlayer_State("", data)
 
 	return
 }
