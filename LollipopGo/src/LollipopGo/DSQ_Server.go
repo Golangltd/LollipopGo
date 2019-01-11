@@ -525,22 +525,39 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 	}
 
 	if res.Data().(*RoomPlayerDSQ).OpenIDA == strpopenid {
-		idata := res.Data().(*RoomPlayerDSQ).BChessNum
-		fmt.Println("已经吃掉几个B", idata)
-		if idata == 8 {
+		idataB := res.Data().(*RoomPlayerDSQ).BChessNum
+		fmt.Println("已经吃掉几个B", idataB)
+		if idataB == 8 {
 			data.OpenIDA = strpopenid
 			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
+			PlayerSendToServer(ConnDSQ, data)
+			return true
+		}
+		idataA := res.Data().(*RoomPlayerDSQ).AChessNum
+		fmt.Println("已经吃掉几个A", idataA)
+		if idataA == 8 {
+			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDB
+			data.OpenIDB = strpopenid
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
 	}
 
 	if res.Data().(*RoomPlayerDSQ).OpenIDB == strpopenid {
-		idata := res.Data().(*RoomPlayerDSQ).AChessNum
-		fmt.Println("已经吃掉几个A", idata)
-		if idata == 8 {
+		idataA := res.Data().(*RoomPlayerDSQ).AChessNum
+		fmt.Println("已经吃掉几个A", idataA)
+		if idataA == 8 {
 			data.OpenIDA = strpopenid
 			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDA
+			PlayerSendToServer(ConnDSQ, data)
+			return true
+		}
+
+		idataB := res.Data().(*RoomPlayerDSQ).BChessNum
+		fmt.Println("已经吃掉几个B", idataB)
+		if idataB == 8 {
+			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDA
+			data.OpenIDB = strpopenid
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
