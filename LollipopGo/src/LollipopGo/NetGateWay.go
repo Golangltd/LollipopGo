@@ -93,7 +93,7 @@ func (this *NetDataConn) BroadCastGameHintFunc(ProtocolData map[string]interface
 }
 
 func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface{}) {
-	fmt.Println("玩家数据为空--BroadCastGameOverFunc")
+	fmt.Println("函数--BroadCastGameOverFunc")
 	if ProtocolData["OpenIDB"] == nil {
 		fmt.Println("玩家数据为空")
 	}
@@ -112,6 +112,9 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 		IsDraw:    BIsDraw,
 	}
 
+	fmt.Println("函数--BroadCastGameOverFunc StrOpenIDA", StrOpenIDA)
+	fmt.Println("函数--BroadCastGameOverFunc StrOpenIDB", StrOpenIDB)
+
 	if len(StrOpenIDB) == 0 {
 		this.SendClientDataFunc(StrOpenIDA, "connect", data)
 		return
@@ -120,22 +123,38 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 	playerdataA := this.GateWayGetPalyerData(StrOpenIDA) //.(player.PlayerSt)
 	playerdataB := this.GateWayGetPalyerData(StrOpenIDB)
 
-	// sss := playerdataA["1"].(player.PlayerSt)
+	if playerdataA == nil ||
+		playerdataB == nil {
+		fmt.Println("玩家数据为空")
+		this.SendClientDataFunc(StrOpenIDA, "connect", data)
+		return
+	}
 
-	//gamelevA := util.Int2str_LollipopGo(playerdataA.GameData[10001].GameLev)
-	//gameexpA := playerdataA.GameData["10001"].GameExp
+	gameexpB := 0
+	if (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+		gameexpB = (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameExp // .GameData[DSQGameID].GameExp
+	}
 
-	//gamelevB := util.Int2str_LollipopGo(playerdataB.GameData[10001].GameLev)
-	gameexpB := playerdataA["1"].(player.PlayerSt).GameData[DSQGameID].GameExp
 	gamelevB := util.Sort_LollipopGo(conf.DSQGameExp, 10+gameexpB)
+	fmt.Println("-----------------------------------", gamelevB)
 
 	if BIsDraw { // 平局，都不加分
-		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA["1"].(player.PlayerSt).GameData[DSQGameID].GameLev) + ",0"
-		data.SuccGameLev_Exp = util.Int2str_LollipopGo(playerdataB["1"].(player.PlayerSt).GameData[DSQGameID].GameLev) + ",0"
+		data.FailGameLev_Exp = "0,0"
+		if (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+			data.FailGameLev_Exp = util.Int2str_LollipopGo((playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameLev) + ",0"
+		}
+		data.SuccGameLev_Exp = "0,0"
+		if (playerdataB["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+			data.SuccGameLev_Exp = util.Int2str_LollipopGo((playerdataB["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameLev) + ",0"
+		}
 	} else {
-		data.FailGameLev_Exp = util.Int2str_LollipopGo(playerdataA["1"].(player.PlayerSt).GameData[DSQGameID].GameLev) + ",0"
+		data.FailGameLev_Exp = "0,0"
+		if (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+			data.FailGameLev_Exp = util.Int2str_LollipopGo((playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameLev) + ",0"
+		}
 		data.SuccGameLev_Exp = util.Int2str_LollipopGo(gamelevB) + ",10"
 	}
+
 	fmt.Println("广播玩家认输数据", data)
 	this.SendClientDataFunc(StrOpenIDA, "connect", data)
 	this.SendClientDataFunc(StrOpenIDB, "connect", data)
@@ -492,7 +511,8 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 	//		OpenID:        data.OpenID,
 	//	}
 	//	_ = playerdata
-	this.GateWaySavePalyerData(data.OpenID, data.AllPlayer)
+	// this.GateWaySavePalyerData(data.OpenID, data.AllPlayer)
+	this.GateWaySavePalyerData(data.OpenID, data.Personal)
 	//--------------------------------------------------------------------------
 	return
 }
