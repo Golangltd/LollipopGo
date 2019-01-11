@@ -526,7 +526,8 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 
 	if res.Data().(*RoomPlayerDSQ).OpenIDA == strpopenid {
 		idata := res.Data().(*RoomPlayerDSQ).BChessNum
-		if idata == 0 {
+		fmt.Println("已经吃掉几个B", idata)
+		if idata == 8 {
 			data.OpenIDA = strpopenid
 			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
 			PlayerSendToServer(ConnDSQ, data)
@@ -536,7 +537,8 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 
 	if res.Data().(*RoomPlayerDSQ).OpenIDB == strpopenid {
 		idata := res.Data().(*RoomPlayerDSQ).AChessNum
-		if idata == 0 {
+		fmt.Println("已经吃掉几个A", idata)
+		if idata == 8 {
 			data.OpenIDA = strpopenid
 			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDA
 			PlayerSendToServer(ConnDSQ, data)
@@ -872,8 +874,14 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
-			res.Data().(*RoomPlayerDSQ).BChessNum++
-			CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid, iRoomID)
+
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
+
+			// CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid, iRoomID)
 
 			return sendopenid, otheropenid, strnewpos
 		}
@@ -883,7 +891,11 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
-			res.Data().(*RoomPlayerDSQ).BChessNum++
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
 			return sendopenid, otheropenid, strnewpos
 
 		} else if iyuanlai == ihoulai-Proto2.Mouse { // 同归于尽
@@ -900,7 +912,12 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
-			res.Data().(*RoomPlayerDSQ).AChessNum++
+
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
 			return sendopenid, otheropenid, strnewpos
 		}
 
@@ -929,7 +946,11 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
-			res.Data().(*RoomPlayerDSQ).BChessNum++
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
 			return sendopenid, otheropenid, strnewpos
 		}
 
@@ -939,7 +960,11 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
-			res.Data().(*RoomPlayerDSQ).BChessNum++
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
 			return sendopenid, otheropenid, strnewpos
 
 		} else if iyuanlai-Proto2.Mouse == ihoulai { // 同归于尽
@@ -956,7 +981,12 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
-			res.Data().(*RoomPlayerDSQ).AChessNum++
+
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
 			return sendopenid, otheropenid, strnewpos
 		}
 
