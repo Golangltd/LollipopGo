@@ -131,7 +131,7 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 	}
 
 	gameexpB := 0
-	if (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+	if playerdataA["1"].(map[string]interface{})["GameData"] != nil {
 		gameexpB = (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameExp // .GameData[DSQGameID].GameExp
 	}
 
@@ -140,16 +140,16 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 
 	if BIsDraw { // 平局，都不加分
 		data.FailGameLev_Exp = "0,0"
-		if (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+		if playerdataA["1"].(map[string]interface{})["GameData"] != nil {
 			data.FailGameLev_Exp = util.Int2str_LollipopGo((playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameLev) + ",0"
 		}
 		data.SuccGameLev_Exp = "0,0"
-		if (playerdataB["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+		if playerdataB["1"].(map[string]interface{})["GameData"] != nil {
 			data.SuccGameLev_Exp = util.Int2str_LollipopGo((playerdataB["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameLev) + ",0"
 		}
 	} else {
 		data.FailGameLev_Exp = "0,0"
-		if (playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev)) != nil {
+		if playerdataA["1"].(map[string]interface{})["GameData"] != nil {
 			data.FailGameLev_Exp = util.Int2str_LollipopGo((playerdataA["1"].(map[string]interface{})["GameData"].(map[int]*player.PlayerGameLev))[DSQGameID].GameLev) + ",0"
 		}
 		data.SuccGameLev_Exp = util.Int2str_LollipopGo(gamelevB) + ",10"
