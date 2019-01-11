@@ -372,6 +372,8 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	if StrOpenID != stropenida {
 		data.OpenIDB = stropenida
 	}
+	// 检测棋子
+	CheckGameIsOver(iRoomID, StrOpenID)
 	// fmt.Println("++++++++++++++++++++", data)
 	PlayerSendToServer(conn, data)
 	return
@@ -507,6 +509,8 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 //------------------------------------------------------------------------------
 // 吃掉棋子去检测
 func CheckGameIsOver(iRoomID int, strpopenid string) bool {
+
+	fmt.Println("吃掉棋子去检测")
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
 		// panic("没有对应数据")
@@ -724,9 +728,10 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 }
 
 // 检查是否是七个回合没有吃棋子
-func CheckIs7GoAround(iGoAround int, OpenIDA string, OpenIDB string) {
+func CheckIs7GoAround(iGoAround int, OpenIDA string, OpenIDB string, iRoomID int) {
 
 	if iGoAround == 7 {
+		fmt.Println("吃掉棋子去检测 --》7")
 		data := &Proto2.DSQ_GameHint{
 			Protocol:  Proto.G_GameDSQ_Proto,
 			Protocol2: Proto2.DSQ_GameHintProto2,
@@ -734,6 +739,27 @@ func CheckIs7GoAround(iGoAround int, OpenIDA string, OpenIDB string) {
 			OpenIDB:   OpenIDB,
 		}
 		PlayerSendToServer(ConnDSQ, data)
+	} else if iGoAround == 10 {
+
+		fmt.Println("吃掉棋子去检测 --》10")
+		res, err1 := cacheDSQ.Value(iRoomID)
+		if err1 != nil {
+			return
+		}
+
+		// 结束
+		data := &Proto2.DSQ2GW_BroadCast_GameOver{
+			Protocol:  Proto.G_GameDSQ_Proto,
+			Protocol2: Proto2.DSQ2GW_BroadCast_GameOverProto2,
+			IsDraw:    true,
+			OpenIDA:   OpenIDA,
+			OpenIDB:   OpenIDB,
+		}
+		PlayerSendToServer(ConnDSQ, data)
+		res.Data().(*RoomPlayerDSQ).GoAround = 0
+
+		// 清除棋盘数据
+		cacheDSQ.Delete(iRoomID)
 	}
 	return
 }
@@ -803,7 +829,7 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 		res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 
 		res.Data().(*RoomPlayerDSQ).GoAround++
-		CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid)
+		CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid, iRoomID)
 
 		res.Data().(*RoomPlayerDSQ).LeftTime = int(util.GetNowUnix_LollipopGo())
 		return sendopenid, otheropenid, strnewpos
@@ -847,7 +873,7 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).BChessNum++
-			CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid)
+			CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid, iRoomID)
 
 			return sendopenid, otheropenid, strnewpos
 		}
