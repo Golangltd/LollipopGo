@@ -7,6 +7,26 @@ import (
 	"fmt"
 )
 
+//------------------------------------------------------------------------------
+/*
+   更新邮件，重置系统邮件
+*/
+
+func (this *mysql_db) Modefy_AdminGameEmailInfoDataGM() bool {
+
+	strSql := "update t_adminemail set state=? where id > 0"
+	// 修改数据
+	stmt, err := this.STdb.Prepare(strSql)
+	CheckErr(err)
+	res, err := stmt.Exec(0)
+	affect, err := res.RowsAffected()
+	fmt.Println("更新数据：", affect)
+	CheckErr(err)
+
+	return true
+}
+
+//------------------------------------------------------------------------------
 /*
    更新数据，DSQ的修改
 
