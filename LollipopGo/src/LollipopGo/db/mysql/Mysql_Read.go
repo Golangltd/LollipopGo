@@ -92,6 +92,9 @@ func (this *mysql_db) ReadAdminEmailInfoData() map[int]*player.EmailST {
 	fmt.Println("++++++++++++====", dataEmail)
 	// 更新 标志位 state = 0
 	this.Modefy_AdminGameEmailInfoDataGM()
+	if len(dataEmail) > 0 {
+		// 更新所有的玩家的数据字段 ---> 玩家openid的列表维护一个，先更新内存，再更新数据库
+	}
 	return dataEmail
 }
 
