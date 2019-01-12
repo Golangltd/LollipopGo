@@ -455,6 +455,9 @@ func G2GW_PlayerGetPlayerEmailListProto2Fucn(conn *websocket.Conn, ProtocolData 
 	// 获取DB的数据
 	data_send.EmailData = DB_Get_EmailList(StrOpenID)
 	fmt.Println("-==-==-GetPlayerEmailList", data_send)
+	if len(data_send.EmailData) == 0 {
+		data_send.EmailData = nil
+	}
 	PlayerSendToServer(conn, data_send)
 	return
 }

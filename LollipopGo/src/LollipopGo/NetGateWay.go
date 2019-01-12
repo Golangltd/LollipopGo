@@ -378,7 +378,11 @@ func (this *NetDataConn) GWPlayerReadOrDelPlayerEmailGL(ProtocolData map[string]
 func (this *NetDataConn) GWPlayerGetPlayerEmailListGL(ProtocolData map[string]interface{}) {
 
 	StrOpenID := ProtocolData["OpenID"].(string)
-	EmailDataST := ProtocolData["EmailData"].(map[string]interface{})
+	EmailDataST := make(map[string]interface{})
+
+	if ProtocolData["EmailData"] != nil {
+		EmailDataST = ProtocolData["EmailData"].(map[string]interface{})
+	}
 
 	data := &Proto2.S2GWS_GetPlayerEmailList{
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
