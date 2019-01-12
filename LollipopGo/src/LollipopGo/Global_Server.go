@@ -38,18 +38,18 @@ func init() {
 	}
 	fmt.Println("链接 gateway server 成功!")
 	initNetRPC()
-
 	return
 }
 
 func initNetRPC() {
 	client, err := jsonrpc.Dial("tcp", service)
 	if err != nil {
-		log.Debug("dial error:", err)
+		fmt.Println("链接 RPC server 失败!", err)
 		//panic("dial RPC Servre error")
 		return
 	}
 	ConnRPC = client
+	go TimeMsgNotice(Conn, ConnRPC)
 }
 
 func initGateWayNet() bool {
@@ -62,7 +62,6 @@ func initGateWayNet() bool {
 	}
 	Conn = conn
 	go GameServerReceiveG(Conn)
-	go TimeMsgNotice(Conn)
 	initConn(Conn)
 	return true
 }
@@ -347,23 +346,42 @@ func init() {
 	return
 }
 
-func TimeMsgNotice(conn *websocket.Conn) {
-	return
+func TimeMsgNotice(conn *websocket.Conn, Conndata *rpc.Client) {
+	//return
 	// if GL_type != "8894" {
 	// 	return
 	// }
-	fmt.Println("TimeMsgNotice")
+	// fmt.Println("TimeMsgNotice")
 	for {
 		select {
 		case <-time.After(time.Second * 30):
 			{
-				iicounmsg++
-				iicounemail++
-				MsgNoticeFuncbak(conn)
-				EmailNoticeFunc(conn)
+				data := GetEmailDataFromDB(Conndata)
+				fmt.Println("GetEmailDataFromDB------:", data)
+				//iicounmsg++
+				//iicounemail++
+				//MsgNoticeFuncbak(conn)
+				//EmailNoticeFunc(conn)
 			}
 		}
 	}
+}
+
+//------------------------------------------------------------------------------
+// 获取数据的数据 from DB
+func GetEmailDataFromDB(Conndata *rpc.Client) *map[int]*player.EmailST {
+	args := 1
+	var reply *map[int]*player.EmailST
+	// 异步调用【结构的方法】
+	if Conndata != nil {
+		// ConnRPC.Call("Arith.GetPlayerEmailDataGM", args, &reply)
+		divCall := Conndata.Go("Arith.GetPlayerEmailDataGM", args, &reply, nil)
+		replyCall := <-divCall.Done
+		_ = replyCall.Reply
+	} else {
+		fmt.Println("ConnRPC == nil")
+	}
+	return reply
 }
 
 func EmailNoticeFunc(conn *websocket.Conn) {

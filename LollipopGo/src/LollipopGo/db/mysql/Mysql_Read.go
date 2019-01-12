@@ -37,6 +37,34 @@ func QueryFromDB(db *sql.DB) {
 }
 
 //------------------------------------------------------------------------------
+func (this *mysql_db) ReadAdminEmailInfoData() map[int]*player.EmailST {
+	rows, err := this.STdb.Query("SELECT * FROM t_adminemail")
+	defer rows.Close()
+	CheckErr(err)
+	if err != nil {
+		fmt.Println("error:", err)
+	} else {
+		fmt.Println("没有错误!")
+	}
+
+	dataEmail := make(map[int]*player.EmailST)
+	for rows.Next() {
+		PlayerSt := new(player.EmailST)
+		var uid, times string = "", ""
+		rows.Scan(&PlayerSt.ID, &PlayerSt.Name, &PlayerSt.Sender, &PlayerSt.Type,
+			&PlayerSt.Time, &PlayerSt.Content, &PlayerSt.IsAdd_ons,
+			&PlayerSt.ItemList, &uid,
+			&times)
+
+		dataEmail[PlayerSt.ID] = PlayerSt
+	}
+
+	fmt.Println("++++++++++++====", dataEmail)
+
+	return dataEmail
+}
+
+//------------------------------------------------------------------------------
 func (this *mysql_db) ReadUserGameExpInfoData(openid string) int {
 	rows, err := this.STdb.Query("SELECT gameexp FROM t_usergameinfo  where openid = " + openid)
 	defer rows.Close()

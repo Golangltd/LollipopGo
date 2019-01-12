@@ -15,8 +15,8 @@ const (
 
 type EmailST struct {
 	ID        int
-	Sender    string
 	Name      string
+	Sender    string
 	Type      int
 	Time      int
 	Content   string
