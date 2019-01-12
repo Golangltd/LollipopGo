@@ -386,7 +386,7 @@ func GetEmailDataFromDB(Conndata *rpc.Client) map[int]*player.EmailST {
 	return reply
 }
 
-func EmailNoticeFunc(conn *websocket.Conn, datadb *player.EmailST) {
+func EmailNoticeFunc(conn *websocket.Conn) {
 
 	EmailDatatmpbak := make(map[int]*player.EmailST)
 	if true {
@@ -453,18 +453,19 @@ func G2GW_PlayerGetPlayerEmailListProto2Fucn(conn *websocket.Conn, ProtocolData 
 		EmailData: EmailDatatmp,
 	}
 	// 获取DB的数据
-
+	data_send.EmailData = DB_Get_EmailList(StrOpenID)
+	fmt.Println("-==-==-GetPlayerEmailList", data_send)
 	PlayerSendToServer(conn, data_send)
 	return
 }
 
 // 保存数据都DB 人物信息
 func DB_Get_EmailList(openid string) map[int]*player.EmailST {
-	args := 1
+	args := openid
 	var reply map[int]*player.EmailST
 	// 异步调用【结构的方法】
 	if ConnRPC != nil {
-		divCall := ConnRPC.Go("Arith.GetPlayerST2DB", args, &reply, nil)
+		divCall := ConnRPC.Go("Arith.ReadPlayerEmailInfoData", args, &reply, nil)
 		replyCall := <-divCall.Done
 		_ = replyCall.Reply
 	} else {

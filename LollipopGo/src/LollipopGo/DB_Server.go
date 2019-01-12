@@ -116,7 +116,7 @@ func (t *Arith) GetPlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) er
 
 //------------------------------------------------------------------------------
 // Gloabl server 获取email 数据;个人通知
-func (t *Arith) GetPlayerbakEmailDataGM(data *int, reply *map[int]*player.EmailST) error {
+func (t *Arith) GetPlayerbakEmailDataGM(args *string, reply *map[int]*player.EmailST) error {
 
 	defer func() {
 		if err := recover(); err != nil {
@@ -131,7 +131,7 @@ func (t *Arith) GetPlayerbakEmailDataGM(data *int, reply *map[int]*player.EmailS
 			fmt.Println("GM server 异常错误：", ErrorST)
 		}
 	}()
-	bret := Mysyl_DB.DB.ReadPlayerEmailInfoData()
+	bret := Mysyl_DB.DB.ReadPlayerEmailInfoData(*args)
 	*reply = bret
 	return nil
 }
