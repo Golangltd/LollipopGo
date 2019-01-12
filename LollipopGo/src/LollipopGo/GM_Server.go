@@ -2,6 +2,7 @@ package main
 
 import (
 	"LollipopGo/LollipopGo/log"
+	"LollipopGo/LollipopGo/player"
 	"Proto"
 	"Proto/Proto2"
 	"encoding/base64"
@@ -68,7 +69,32 @@ func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 						//------------------------------------------------------
 						return
 					}
+				case strconv.Itoa(Proto2.W2GMS_Modify_PlayerEmailDataProto2):
+					{ // 跑马灯+邮件的协议
+						IMsgtype, bIMsgtype := req.Form["IMsgtype"]
+						if bIMsgtype {
+
+							if IMsgtype[0] == "1" {
+								// 邮件相关
+								EmailData, bEmailData := req.Form["EmailData"]
+								if bEmailData {
+									fmt.Println("EmailData", EmailData[0])
+									stb := &player.EmailST{}
+									json.Unmarshal([]byte(EmailData[0]), &stb)
+									ModefyGameEmailData(stb)
+									fmt.Fprint(w, base64.StdEncoding.EncodeToString([]byte("true")))
+									return
+								}
+							} else if IMsgtype[0] == "2" {
+								// 跑马灯
+								// MsgData, bMsgData := req.Form["MsgData"]
+								// if bMsgData {
+								// }
+							}
+						}
+					}
 				default:
+					fmt.Println(Protocol2[0])
 					fmt.Fprintln(w, "88902")
 					return
 				}
@@ -84,6 +110,23 @@ func IndexHandlerGM(w http.ResponseWriter, req *http.Request) {
 	return
 }
 
+//------------------------------------------------------------------------------
+// 邮件通知
+func ModefyGameEmailData(data *player.EmailST) interface{} {
+
+	// 返回的数据
+	var reply Proto2.GMS2W_Modify_PlayerEmailData
+
+	fmt.Println("data:", data)
+	// 异步调用
+	divCall := ConnRPC_GM.Go("Arith.ModefyPlayerEmailDataGM", data, &reply, nil)
+	replyCall := <-divCall.Done
+	fmt.Println(replyCall.Reply)
+	fmt.Println("the ModefyGameEmailData is :", reply)
+	return reply
+}
+
+//------------------------------------------------------------------------------
 // GM 修改数据
 func ModefyGamePlayerData(uid, itype, modifynum string) interface{} {
 	// 发送的数据

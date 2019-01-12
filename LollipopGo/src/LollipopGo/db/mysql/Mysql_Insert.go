@@ -6,6 +6,7 @@ import (
 	"LollipopGo/LollipopGo/util"
 	"Proto/Proto2"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 )
 
@@ -28,6 +29,41 @@ func insertToDB(db *sql.DB) {
 	} else {
 		fmt.Println("插入数据成功：", id)
 	}
+}
+
+// ID        int
+// Sender    string
+// Name      string
+// Type      int
+// Time      int
+// Content   string
+// IsAdd_ons bool // 是否有附件
+// IsOpen    bool // 是否打开过
+// IsGet     bool // 是否打开过
+// ItemList  map[int]*ItemST
+
+//------------------------------------------------------------------------------
+// 插入玩家数据
+func (this *mysql_db) InsertPlayerGameEmailST2DB(data *player.EmailST) bool {
+
+	//--------------------------------------------------------------------------
+	tmptime := util.GetNowUnix_LollipopGo()
+	stmt, err := this.STdb.Prepare("insert t_adminemail set sender=?,name=?,itype=?,sendtime=?,content=?,isadd_ons=?,itemlist=?,state = ?,itime=?")
+	CheckErr(err)
+	str, _ := json.Marshal(&data.ItemList)
+	res, err := stmt.Exec(data.Sender, data.Name, data.Type, tmptime, data.Content, data.IsAdd_ons, str, 1, tmptime)
+	CheckErr(err)
+	id, err := res.LastInsertId()
+	CheckErr(err)
+	if err != nil {
+		fmt.Println("插入数据失败")
+		return false
+	} else {
+		fmt.Println("插入数据成功：", id)
+	}
+	//--------------------------------------------------------------------------
+
+	return true
 }
 
 //------------------------------------------------------------------------------
