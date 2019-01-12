@@ -37,8 +37,10 @@ func QueryFromDB(db *sql.DB) {
 }
 
 //------------------------------------------------------------------------------
-func (this *mysql_db) ReadPlayerEmailInfoData() map[int]*player.EmailST {
-	rows, err := this.STdb.Query("SELECT * FROM t_adminemail where state = 1")
+// 设计到30封邮件
+// select  * from `t_playeremail` WHERE state = 1 order by itime desc LIMIT 30
+func (this *mysql_db) ReadPlayerEmailInfoData(stropenid string) map[int]*player.EmailST {
+	rows, err := this.STdb.Query("SELECT * FROM t_playeremail WHERE state = 1 and openid = " + stropenid + " order by itime desc LIMIT 30")
 	defer rows.Close()
 	CheckErr(err)
 	if err != nil {

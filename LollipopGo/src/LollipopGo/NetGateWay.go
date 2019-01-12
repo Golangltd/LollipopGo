@@ -324,7 +324,7 @@ func (this *NetDataConn) HandleCltProtocol2GL(protocol2 interface{}, ProtocolDat
 // 邮件通知
 func (this *NetDataConn) GWPlayerBroadcast_NoticePlayerEmailGL(ProtocolData map[string]interface{}) {
 
-	StrOpenID := ProtocolData["OpenID"].(string)
+	//	StrOpenID := ProtocolData["OpenID"].(string)
 	EmailDataSt := ProtocolData["EmailData"].(map[string]interface{})
 
 	data := &Proto2.Broadcast_NoticePlayerEmail{
