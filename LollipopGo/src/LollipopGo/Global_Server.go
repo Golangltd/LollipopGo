@@ -351,17 +351,20 @@ func TimeMsgNotice(conn *websocket.Conn, Conndata *rpc.Client) {
 	// if GL_type != "8894" {
 	// 	return
 	// }
-	// fmt.Println("TimeMsgNotice")
+	good_conn := conn
 	for {
 		select {
 		case <-time.After(time.Second * 30):
 			{
 				data := GetEmailDataFromDB(Conndata)
 				fmt.Println("GetEmailDataFromDB------:", data)
-				//iicounmsg++
-				//iicounemail++
-				//MsgNoticeFuncbak(conn)
-				//EmailNoticeFunc(conn)
+				if len(data) > 0 {
+					iicounemail++
+					EmailNoticeFunc(good_conn)
+				}
+				// iicounmsg++
+				// MsgNoticeFuncbak(conn)
+				// EmailNoticeFunc(conn)
 			}
 		}
 	}
@@ -369,12 +372,11 @@ func TimeMsgNotice(conn *websocket.Conn, Conndata *rpc.Client) {
 
 //------------------------------------------------------------------------------
 // 获取数据的数据 from DB
-func GetEmailDataFromDB(Conndata *rpc.Client) *map[int]*player.EmailST {
+func GetEmailDataFromDB(Conndata *rpc.Client) map[int]*player.EmailST {
 	args := 1
-	var reply *map[int]*player.EmailST
+	var reply map[int]*player.EmailST
 	// 异步调用【结构的方法】
 	if Conndata != nil {
-		// ConnRPC.Call("Arith.GetPlayerEmailDataGM", args, &reply)
 		divCall := Conndata.Go("Arith.GetPlayerEmailDataGM", args, &reply, nil)
 		replyCall := <-divCall.Done
 		_ = replyCall.Reply
@@ -384,17 +386,17 @@ func GetEmailDataFromDB(Conndata *rpc.Client) *map[int]*player.EmailST {
 	return reply
 }
 
-func EmailNoticeFunc(conn *websocket.Conn) {
-	EmailDatatmpbak := make(map[int]*player.EmailST)
+func EmailNoticeFunc(conn *websocket.Conn, datadb *player.EmailST) {
 
+	EmailDatatmpbak := make(map[int]*player.EmailST)
 	if true {
 		data := new(player.EmailST)
 		data.ID = iicounemail
-		data.Name = "测试邮件5"
-		data.Sender = "test5"
+		data.Name = "邮件通知"
+		data.Sender = "admin"
 		data.Type = 1
 		data.Time = int(util.GetNowUnix_LollipopGo())
-		data.Content = "测试邮件内容1"
+		data.Content = "通知内容"
 		data.IsAdd_ons = false
 		data.IsOpen = true
 		data.IsGet = true
@@ -404,7 +406,6 @@ func EmailNoticeFunc(conn *websocket.Conn) {
 	data_send := &Proto2.G_Broadcast_NoticePlayerEmail{
 		Protocol:  Proto.G_GameGlobal_Proto,
 		Protocol2: Proto2.G_Broadcast_NoticePlayerEmailProto2,
-		OpenID:    "6412121cbb2dc2cb9e460cfee7046be2",
 		EmailData: EmailDatatmpbak,
 	}
 
@@ -451,10 +452,28 @@ func G2GW_PlayerGetPlayerEmailListProto2Fucn(conn *websocket.Conn, ProtocolData 
 		OpenID:    StrOpenID,
 		EmailData: EmailDatatmp,
 	}
+	// 获取DB的数据
+
 	PlayerSendToServer(conn, data_send)
 	return
 }
 
+// 保存数据都DB 人物信息
+func DB_Get_EmailList(openid string) map[int]*player.EmailST {
+	args := 1
+	var reply map[int]*player.EmailST
+	// 异步调用【结构的方法】
+	if ConnRPC != nil {
+		divCall := ConnRPC.Go("Arith.GetPlayerST2DB", args, &reply, nil)
+		replyCall := <-divCall.Done
+		_ = replyCall.Reply
+	} else {
+		fmt.Println("ConnRPC == nil")
+	}
+	return reply
+}
+
+//------------------------------------------------------------------------------
 // 玩家主动退出匹配
 func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[string]interface{}) {
 	if ProtocolData["OpenID"] == nil {
