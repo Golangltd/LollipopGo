@@ -1,11 +1,43 @@
 package Proto2
 
+import (
+	"LollipopGo/LollipopGo/player"
+)
+
 // G_GameGM_Proto  == 11 子协议
 const (
 	GAMEINIT                      = iota // GAMEINIT == 0
 	W2GMS_Modify_PlayerDataProto2        // W2GMS_Modify_PlayerDataProto2 == 1 修改玩家的数据 :web请求 GM 系统
-	GMS2W_Modify_PlayerDataProto2        // GMS2W_Modify_PlayerDataProto2 == 2 修改玩家的数据
+	GMS2W_Modify_PlayerDataProto2        // GMS2W_Modify_PlayerDataProto2 == 2
+
+	/*
+	   邮件 and 跑马灯
+	*/
+	W2GMS_Modify_PlayerEmailDataProto2 // W2GMS_Modify_PlayerEmailDataProto2  == 3 修改邮件数据
+	GMS2W_Modify_PlayerEmailDataProto2 // GMS2W_Modify_PlayerEmailDataProto2  == 4
 )
+
+//------------------------------------------------------------------------------
+/*
+   邮件*跑马灯
+*/
+// W2GMS_Modify_PlayerEmailDataProto2
+type W2GMS_Modify_PlayerEmailData struct {
+	Protocol  int
+	Protocol2 int
+	IMsgtype  int             // 1:表示邮件，2：跑马灯消息，3:针对个人
+	OpenID    string          // 玩家唯一ID
+	EmailData *player.EmailST // 邮件的消息
+	MsgData   *player.MsgST   // 跑马灯的消息
+}
+
+// GMS2W_Modify_PlayerEmailDataProto2
+type GMS2W_Modify_PlayerEmailData struct {
+	Protocol  int
+	Protocol2 int
+	IMsgtype  int // 1:表示邮件，2：跑马灯消息
+	ResultID  int // 结果ID，0：表示成功
+}
 
 //------------------------------------------------------------------------------
 // 修改玩家的枚举
