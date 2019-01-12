@@ -90,7 +90,8 @@ func (this *mysql_db) ReadAdminEmailInfoData() map[int]*player.EmailST {
 	}
 
 	fmt.Println("++++++++++++====", dataEmail)
-
+	// 更新 标志位 state = 0
+	this.Modefy_AdminGameEmailInfoDataGM()
 	return dataEmail
 }
 
