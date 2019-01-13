@@ -12,15 +12,16 @@ import (
 
 var (
 	Match_Chan       chan *player.PlayerSt
-	MatchData_Chan   chan map[string]*RoomMatch
+	MatchData_Chan   chan map[string]interface{}
 	Imax             int = 0
 	ChanMax          int = 1000
 	MatchSpeed           = time.Millisecond * 500
 	PlaterMatchSpeed     = time.Second * 1
-	MatchData        map[string]*RoomMatch
-	QuitMatchData    map[string]string
-	cache            *cache2go.CacheTable
-	MatchRoomUID     int = 1000
+	// MatchData        map[string]*RoomMatch
+	MatchData     map[string]interface{}
+	QuitMatchData map[string]string
+	cache         *cache2go.CacheTable
+	MatchRoomUID  int = 1000
 )
 
 //------------------------------------------------------------------------------
@@ -37,7 +38,8 @@ type RoomMatch struct {
 
 func init() {
 	Match_Chan = make(chan *player.PlayerSt, ChanMax)
-	MatchData_Chan = make(chan map[string]*RoomMatch, ChanMax)
+	//	MatchData_Chan = make(chan map[string]*RoomMatch, ChanMax)
+	MatchData_Chan = make(chan map[string]interface{}, ChanMax)
 	QuitMatchData = make(map[string]string)
 	cache = cache2go.Cache("myCache")
 	go Sort_timer()
@@ -71,25 +73,30 @@ func DoingMatch() {
 			//				fmt.Println(data.OpenID, "玩家已经退出！")
 			//				continue
 			//			}
-			Data[util.Int2str_LollipopGo(i+1)] = data
-			MatchData = make(map[string]*RoomMatch)
-			MatchData[roomid].RoomLimTime = 10
+			Data[util.Int2str_LollipopGo(i)] = data
+			MatchData = make(map[string]interface{})
+			datamatch := new(RoomMatch)
+			datamatch.RoomLimTime = 10
 			roomid = util.Int2str_LollipopGo(MatchRoomUID)
-			MatchData[roomid].RoomUID = roomid
+			datamatch.RoomUID = roomid
+			datamatch.RoomPlayerMap = make(map[string]*player.PlayerSt)
+
 			if i%2 == 1 {
 				// roomid = util.Int2str_LollipopGo(int(util.GetNowUnix_LollipopGo()))
 
 				//				if MatchData[roomid] == nil {
 				//					continue
 				//				}
-				MatchData[roomid].RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
-				MatchData[roomid].PlayerAOpenID = data.OpenID
+				datamatch.RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
+				datamatch.PlayerAOpenID = data.OpenID
+				MatchData[roomid] = datamatch
 				MatchData_Chan <- MatchData
 				fmt.Println("1------------", MatchData_Chan)
 			}
 			if i%2 == 0 {
-				MatchData[roomid].RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
-				MatchData[roomid].PlayerBOpenID = data.OpenID
+				datamatch.RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
+				datamatch.PlayerBOpenID = data.OpenID
+				MatchData[roomid] = datamatch
 				MatchData_Chan <- MatchData
 				fmt.Println("0------------", MatchData_Chan)
 				MatchRoomUID++

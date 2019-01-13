@@ -1,7 +1,7 @@
 package Proto2
 
 import (
-	"LollipopGo/LollipopGo/match"
+	_ "LollipopGo/LollipopGo/match"
 	_ "LollipopGo/LollipopGo/player"
 )
 
@@ -265,13 +265,14 @@ type C2GWS_PlayerChooseGameMode struct {
 // S2GWS_PlayerChooseGameModeProto2
 // 服务器返回数据
 type S2GWS_PlayerChooseGameMode struct {
-	Protocol    int
-	Protocol2   int
-	OpenID      string                      // 玩家唯一标识
-	RoomUID     int                         // 房间ID；注意匹配失败或者超时，数据为空
-	MatchPlayer map[string]*match.RoomMatch // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
-	ChessBoard  []interface{}               // 棋盘的数据
-	ResultID    int                         // 结果ID
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一标识
+	RoomUID   int    // 房间ID；注意匹配失败或者超时，数据为空
+	//	MatchPlayer map[string]*match.RoomMatch // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
+	MatchPlayer map[string]interface{} // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
+	ChessBoard  []interface{}          // 棋盘的数据
+	ResultID    int                    // 结果ID
 }
 
 //------------------------------------------------------------------------------
