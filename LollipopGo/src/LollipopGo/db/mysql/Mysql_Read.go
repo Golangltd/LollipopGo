@@ -139,7 +139,7 @@ func (this *mysql_db) ReadUserGameInfoData(openid string) bool {
 
 //------------------------------------------------------------------------------
 func (this *mysql_db) ReadUserInfoDataByOpenID(data *player.PlayerSt) (bool, player.PlayerSt) {
-	rows, err := this.STdb.Query("SELECT * FROM t_userinfo  where openid = " + data.OpenID + " limit 1")
+	rows, err := this.STdb.Query("SELECT * FROM t_userinfo  where openid = '" + data.OpenID + "' limit 1")
 	defer rows.Close()
 	CheckErr(err)
 	if err != nil {

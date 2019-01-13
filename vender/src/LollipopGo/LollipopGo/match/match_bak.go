@@ -44,6 +44,7 @@ func init() {
 }
 
 func Putdata(data *player.PlayerSt) {
+	fmt.Println("加入匹配队列")
 	Match_Chan <- data
 	return
 }

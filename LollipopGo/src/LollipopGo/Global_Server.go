@@ -535,7 +535,9 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 
 	data := conf.RoomListDatabak[StrRoomID]
 	fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data.NeedLev, StrRoomID)
-	dataplayer := DB_Save_RoleSTBak(StrOpenID)
+	dataplayer := DB_Save_RoleSTBak("87b00940bb1c37364f93dcaabc2096d0")
+	fmt.Println("玩家数据：", dataplayer)
+	fmt.Println("StrOpenID玩家数据：", StrOpenID)
 	s := string([]byte(data.NeedLev)[2:])
 	if util.Str2int_LollipopGo(s) > dataplayer.Lev {
 		data_send.ResultID = Error.Lev_lack
@@ -592,7 +594,7 @@ func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G
 
 // 匹配机制
 func PlayerMatchTimeGo(conn *websocket.Conn) {
-
+	fmt.Println("匹配机制")
 	for {
 		select {
 		case <-time.After(match.PlaterMatchSpeed):
@@ -606,6 +608,7 @@ func PlayerMatchTimeGo(conn *websocket.Conn) {
 							ResultID:  0,
 						}
 						data_send.MatchPlayer = data
+						fmt.Println("匹配成功：", data_send)
 						PlayerSendToServer(conn, data_send)
 					}
 				}
