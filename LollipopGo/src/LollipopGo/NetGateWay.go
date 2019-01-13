@@ -461,21 +461,21 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 
 	iStrRoomUID := 0
 	stropenidA := ""
-	stropenidB := ""
+	//stropenidB := ""
 	for k, v := range data_send.MatchPlayer {
 		fmt.Println("-----------57575757", k)
 		fmt.Println(v)
-		fmt.Println("000000000000000000000000000000000000", v.(map[string]interface{})[k].(*match.RoomMatch).RoomUID)
-		iStrRoomUID = util.Str2int_LollipopGo(v.(*match.RoomMatch).RoomUID)
-		stropenidA = v.(*match.RoomMatch).PlayerAOpenID
-		stropenidB = v.(*match.RoomMatch).PlayerBOpenID
+		// fmt.Println("000000000000000000000000000000000000", v.(map[string]interface{})[k].(*match.RoomMatch).RoomUID)
+		// iStrRoomUID = util.Str2int_LollipopGo(v.(*match.RoomMatch).RoomUID)
+		stropenidA = v.(map[string]interface{})[k].(*match.RoomMatch).PlayerAOpenID
+		// stropenidB = v.(*match.RoomMatch).PlayerBOpenID
 		fmt.Println("stropenidA", stropenidA)
-		fmt.Println("stropenidB", stropenidB)
+		//fmt.Println("stropenidB", stropenidB)
 	}
 
 	data_send.RoomUID = iStrRoomUID
 	this.SendClientDataFunc(stropenidA, "connect", data_send)
-	this.SendClientDataFunc(stropenidB, "connect", data_send)
+	//this.SendClientDataFunc(stropenidB, "connect", data_send)
 	//} else {
 	//	this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	//}

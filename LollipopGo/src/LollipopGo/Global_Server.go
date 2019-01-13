@@ -536,7 +536,10 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	data := conf.RoomListDatabak[StrRoomID]
 	fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data.NeedLev, StrRoomID)
 	dataplayer := DB_Save_RoleSTBak("87b00940bb1c37364f93dcaabc2096d0")
+	//dataplayer := DB_Save_RoleSTBak(StrOpenID)
 	fmt.Println("玩家数据：", dataplayer)
+	dataplayer.OpenID = StrOpenID
+	fmt.Println("玩家数据bak：", dataplayer)
 	fmt.Println("StrOpenID玩家数据：", StrOpenID)
 	s := string([]byte(data.NeedLev)[2:])
 	fmt.Println("StrOpenID玩家NeedLev：", s)
@@ -601,13 +604,14 @@ func PlayerMatchTimeGo(conn *websocket.Conn) {
 		case <-time.After(match.PlaterMatchSpeed):
 			{
 				ilenchan := len(match.MatchData_Chan)
-				if ilenchan != 0 && ilenchan%2 == 0 {
+				if ilenchan != 0 {
 					if data, ok := <-match.MatchData_Chan; ok {
 						data_send := &Proto2.GW2G_PlayerMatchGame{
 							Protocol:  Proto.G_GameGlobal_Proto,
 							Protocol2: Proto2.GW2G_PlayerMatchGameProto2,
 							ResultID:  0,
 						}
+						fmt.Println("匹配成功-------：", data)
 						data_send.MatchPlayer = data
 						fmt.Println("匹配成功：", data_send)
 						PlayerSendToServer(conn, data_send)
