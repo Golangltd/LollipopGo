@@ -423,10 +423,10 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	}
 	// 获取数据
 	StrOpenID := ProtocolData["OpenID"].(string)
-	StrRoomUID := int(ProtocolData["RoomUID"].(float64))
-	MatchPlayerST := make(map[string]*match.RoomMatch)
+	//StrRoomUID := int(ProtocolData["RoomUID"].(float64))
+	MatchPlayerST := make(map[string]interface{})
 	if ProtocolData["MatchPlayer"] != nil {
-		MatchPlayerST = ProtocolData["MatchPlayer"].(map[string]*match.RoomMatch)
+		MatchPlayerST = ProtocolData["MatchPlayer"].(map[string]interface{})
 	}
 	var ChessBoard []interface{}
 	if ProtocolData["ChessBoard"] != nil {
@@ -436,24 +436,49 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 
 	// 数据
 	data_send := &Proto2.S2GWS_PlayerChooseGameMode{
-		Protocol:    Proto.G_GateWay_Proto, // 游戏主要协议
-		Protocol2:   Proto2.S2GWS_PlayerChooseGameModeProto2,
-		OpenID:      StrOpenID, // 玩家唯一标识
-		RoomUID:     StrRoomUID,
+		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
+		Protocol2: Proto2.S2GWS_PlayerChooseGameModeProto2,
+		OpenID:    StrOpenID, // 玩家唯一标识
+		//RoomUID:     StrRoomUID,
 		MatchPlayer: MatchPlayerST,
 		ChessBoard:  ChessBoard,
 		ResultID:    iResultID,
 	}
 
+	fmt.Println("data_senddata_senddata_senddata_send", data_send)
+
 	// 发送给匹配的人的
-	if data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)] != nil {
-		iStrRoomUID := data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].RoomUID
-		data_send.RoomUID = util.Str2int_LollipopGo(iStrRoomUID)
-		this.SendClientDataFunc(data_send.MatchPlayer[iStrRoomUID].PlayerAOpenID, "connect", data_send)
-		this.SendClientDataFunc(data_send.MatchPlayer[iStrRoomUID].PlayerBOpenID, "connect", data_send)
-	} else {
-		this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
+	//if data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)] != nil {
+
+	//	for k, v := range ddd {
+	//		fmt.Println(k)
+	//		fmt.Println(v)
+	//		fmt.Println(v.(*PlayerST).UID)
+	//	}
+
+	// map[RoomPlayerMap:map[1:<nil>] RoomUID:1000 PlayerAOpenID:87b00940bb1c37364f93dcaabc2096d0 PlayerBOpenID: RoomLimTime:10]
+	// data:{"Protocol":4,"Protocol2":1,"ErrCode":"80006","ErrMsg":"亲，您发的数据的格式不对！interface conversion: interface {} is nil, not *match.RoomMatch"}
+
+	iStrRoomUID := 0
+	stropenidA := ""
+	stropenidB := ""
+	for k, v := range data_send.MatchPlayer {
+		fmt.Println("-----------57575757", k)
+		fmt.Println(v)
+		fmt.Println("000000000000000000000000000000000000", v.(map[string]interface{})[k].(*match.RoomMatch).RoomUID)
+		iStrRoomUID = util.Str2int_LollipopGo(v.(*match.RoomMatch).RoomUID)
+		stropenidA = v.(*match.RoomMatch).PlayerAOpenID
+		stropenidB = v.(*match.RoomMatch).PlayerBOpenID
+		fmt.Println("stropenidA", stropenidA)
+		fmt.Println("stropenidB", stropenidB)
 	}
+
+	data_send.RoomUID = iStrRoomUID
+	this.SendClientDataFunc(stropenidA, "connect", data_send)
+	this.SendClientDataFunc(stropenidB, "connect", data_send)
+	//} else {
+	//	this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
+	//}
 	return
 }
 

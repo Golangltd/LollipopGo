@@ -1,7 +1,7 @@
 package Proto2
 
 import (
-	"LollipopGo/LollipopGo/match"
+	_ "LollipopGo/LollipopGo/match"
 	"LollipopGo/LollipopGo/player"
 )
 
@@ -111,13 +111,14 @@ type G2GW_PlayerMatchGame struct {
 
 // GW2G_PlayerMatchGameProto2
 type GW2G_PlayerMatchGame struct {
-	Protocol    int
-	Protocol2   int
-	OpenID      string                      // 玩家唯一标识
-	RoomUID     int                         // 房间ID；注意匹配失败或者超时，数据为空
-	MatchPlayer map[string]*match.RoomMatch // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
-	ChessBoard  []interface{}               // 棋盘的数据
-	ResultID    int                         // 结果ID
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一标识
+	RoomUID   int    // 房间ID；注意匹配失败或者超时，数据为空
+	//	MatchPlayer map[string]*match.RoomMatch // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
+	MatchPlayer map[string]interface{} // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
+	ChessBoard  []interface{}          // 棋盘的数据
+	ResultID    int                    // 结果ID
 }
 
 //------------------------------------------------------------------------------
