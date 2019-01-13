@@ -447,8 +447,10 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 
 	// 发送给匹配的人的
 	if data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)] != nil {
-		this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerAOpenID, "connect", data_send)
-		this.SendClientDataFunc(data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].PlayerBOpenID, "connect", data_send)
+		iStrRoomUID := data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)].RoomUID
+		data_send.RoomUID = util.Str2int_LollipopGo(iStrRoomUID)
+		this.SendClientDataFunc(data_send.MatchPlayer[iStrRoomUID].PlayerAOpenID, "connect", data_send)
+		this.SendClientDataFunc(data_send.MatchPlayer[iStrRoomUID].PlayerBOpenID, "connect", data_send)
 	} else {
 		this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
 	}
