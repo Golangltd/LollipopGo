@@ -62,24 +62,27 @@ func DoingMatch() {
 		fmt.Println(Match_Chan, "等待匹配")
 		return
 	}
-	Data := make(map[string]*player.PlayerSt)
+
 	roomid := ""
 	icround := Imax / 2
 	for i := 1; i < icround*2+1; i++ {
 
 		if data, ok := <-Match_Chan; ok {
-			fmt.Println(data)
+			fmt.Println("3333333333333333333333", data)
 			//			if GetMatchPlayer(data.OpenID) {
 			//				fmt.Println(data.OpenID, "玩家已经退出！")
 			//				continue
 			//			}
-			Data[util.Int2str_LollipopGo(i)] = data
+			// Data := make(map[string]*player.PlayerSt)
+			// Data[util.Int2str_LollipopGo(i)] = data
+
 			MatchData = make(map[string]interface{})
 			datamatch := new(RoomMatch)
 			datamatch.RoomLimTime = 10
 			roomid = util.Int2str_LollipopGo(MatchRoomUID)
 			datamatch.RoomUID = roomid
 			datamatch.RoomPlayerMap = make(map[string]*player.PlayerSt)
+			datamatch.RoomPlayerMap[data.OpenID] = data
 
 			if i%2 == 1 {
 				// roomid = util.Int2str_LollipopGo(int(util.GetNowUnix_LollipopGo()))
@@ -87,14 +90,14 @@ func DoingMatch() {
 				//				if MatchData[roomid] == nil {
 				//					continue
 				//				}
-				datamatch.RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
+
 				datamatch.PlayerAOpenID = data.OpenID
 				MatchData[roomid] = datamatch
 				MatchData_Chan <- MatchData
 				fmt.Println("1------------", MatchData_Chan)
 			}
 			if i%2 == 0 {
-				datamatch.RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
+				//datamatch.RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
 				datamatch.PlayerBOpenID = data.OpenID
 				MatchData[roomid] = datamatch
 				MatchData_Chan <- MatchData
@@ -106,9 +109,6 @@ func DoingMatch() {
 			fmt.Println("wrong")
 			break
 		}
-	}
-	if len(Data) > 0 {
-		fmt.Println("-------", Data)
 	}
 }
 
