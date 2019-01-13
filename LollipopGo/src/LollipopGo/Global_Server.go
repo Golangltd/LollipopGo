@@ -50,6 +50,7 @@ func initNetRPC() {
 	}
 	ConnRPC = client
 	go TimeMsgNotice(Conn, ConnRPC)
+	go PlayerMatchTimeGo(Conn)
 }
 
 func initGateWayNet() bool {
@@ -535,7 +536,6 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	data := conf.RoomListDatabak[StrRoomID]
 	fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data.NeedLev, StrRoomID)
 	dataplayer := DB_Save_RoleSTBak(StrOpenID)
-	match.Putdata(dataplayer)
 	s := string([]byte(data.NeedLev)[2:])
 	if util.Str2int_LollipopGo(s) > dataplayer.Lev {
 		data_send.ResultID = Error.Lev_lack
@@ -547,6 +547,10 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		return
 	}
 
+	// 加入匹配队列
+	match.Putdata(dataplayer)
+	return
+	//
 	if len(match.MatchData) > 1 {
 		dar := <-match.MatchData_Chan
 		data_send.MatchPlayer = dar
@@ -581,6 +585,30 @@ func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G
 					return
 				}
 				icount++
+			}
+		}
+	}
+}
+
+// 匹配机制
+func PlayerMatchTimeGo(conn *websocket.Conn) {
+
+	for {
+		select {
+		case <-time.After(match.PlaterMatchSpeed):
+			{
+				ilenchan := len(match.MatchData_Chan)
+				if ilenchan != 0 && ilenchan%2 == 0 {
+					if data, ok := <-match.MatchData_Chan; ok {
+						data_send := &Proto2.GW2G_PlayerMatchGame{
+							Protocol:  Proto.G_GameGlobal_Proto,
+							Protocol2: Proto2.GW2G_PlayerMatchGameProto2,
+							ResultID:  0,
+						}
+						data_send.MatchPlayer = data
+						PlayerSendToServer(conn, data_send)
+					}
+				}
 			}
 		}
 	}

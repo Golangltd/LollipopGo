@@ -20,6 +20,7 @@ var (
 	MatchData        map[string]*RoomMatch
 	QuitMatchData    map[string]string
 	cache            *cache2go.CacheTable
+	MatchRoomUID     int = 1000
 )
 
 //------------------------------------------------------------------------------
@@ -36,7 +37,6 @@ type RoomMatch struct {
 
 func init() {
 	Match_Chan = make(chan *player.PlayerSt, ChanMax)
-	MatchData = make(map[string]*RoomMatch)
 	MatchData_Chan = make(chan map[string]*RoomMatch, ChanMax)
 	QuitMatchData = make(map[string]string)
 	cache = cache2go.Cache("myCache")
@@ -55,44 +55,48 @@ func GetChanLength() int {
 
 func DoingMatch() {
 	Imax = len(Match_Chan)
-	icount := Imax
+	if Imax == 1 {
+		fmt.Println(Match_Chan, "等待匹配")
+		return
+	}
 	Data := make(map[string]*player.PlayerSt)
-	iicount := 1
 	roomid := ""
-	for i := 0; i < Imax; i++ {
-		if icount == 1 {
-			fmt.Println(Match_Chan, "等待匹配")
-			continue
-		}
+	icround := Imax / 2
+	for i := 1; i < icround*2+1; i++ {
+
 		if data, ok := <-Match_Chan; ok {
 			fmt.Println(data)
-			if GetMatchPlayer(data.OpenID) {
-				fmt.Println(data.OpenID, "玩家已经退出！")
-				continue
-			}
+			//			if GetMatchPlayer(data.OpenID) {
+			//				fmt.Println(data.OpenID, "玩家已经退出！")
+			//				continue
+			//			}
 			Data[util.Int2str_LollipopGo(i+1)] = data
-			if iicount%2 == 1 {
-				roomid = util.Int2str_LollipopGo(int(util.GetNowUnix_LollipopGo()))
-				if MatchData[roomid] == nil {
-					continue
-				}
-				MatchData[roomid].PlayerAOpenID = data.OpenID
-			}
-			MatchData[roomid].RoomUID = roomid
+			MatchData = make(map[string]*RoomMatch)
 			MatchData[roomid].RoomLimTime = 10
-			MatchData[roomid].RoomPlayerMap[util.Int2str_LollipopGo(i+1)] = Data[util.Int2str_LollipopGo(i+1)]
-			MatchData[roomid].PlayerBOpenID = data.OpenID
-			if iicount%2 == 0 {
-				iicount = 0
+			roomid = util.Int2str_LollipopGo(MatchRoomUID)
+			MatchData[roomid].RoomUID = roomid
+			if i%2 == 1 {
+				// roomid = util.Int2str_LollipopGo(int(util.GetNowUnix_LollipopGo()))
+
+				//				if MatchData[roomid] == nil {
+				//					continue
+				//				}
+				MatchData[roomid].RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
+				MatchData[roomid].PlayerAOpenID = data.OpenID
 				MatchData_Chan <- MatchData
+				fmt.Println("1------------", MatchData_Chan)
 			}
-			iicount++
+			if i%2 == 0 {
+				MatchData[roomid].RoomPlayerMap[util.Int2str_LollipopGo(i)] = Data[util.Int2str_LollipopGo(i)]
+				MatchData[roomid].PlayerBOpenID = data.OpenID
+				MatchData_Chan <- MatchData
+				fmt.Println("0------------", MatchData_Chan)
+				MatchRoomUID++
+			}
+
 		} else {
 			fmt.Println("wrong")
 			break
-		}
-		if icount >= 1 {
-			icount--
 		}
 	}
 	if len(Data) > 0 {
