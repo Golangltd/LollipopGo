@@ -539,15 +539,16 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	fmt.Println("玩家数据：", dataplayer)
 	fmt.Println("StrOpenID玩家数据：", StrOpenID)
 	s := string([]byte(data.NeedLev)[2:])
-	if util.Str2int_LollipopGo(s) > dataplayer.Lev {
-		data_send.ResultID = Error.Lev_lack
-		PlayerSendToServer(conn, data_send)
-		return
-	} else if util.Str2int_LollipopGo(data.NeedPiece) > dataplayer.CoinNum {
-		data_send.ResultID = Error.Coin_lack
-		PlayerSendToServer(conn, data_send)
-		return
-	}
+	fmt.Println("StrOpenID玩家NeedLev：", s)
+	//	if util.Str2int_LollipopGo(s) > dataplayer.Lev {
+	//		data_send.ResultID = Error.Lev_lack
+	//		PlayerSendToServer(conn, data_send)
+	//		return
+	//	} else if util.Str2int_LollipopGo(data.NeedPiece) > dataplayer.CoinNum {
+	//		data_send.ResultID = Error.Coin_lack
+	//		PlayerSendToServer(conn, data_send)
+	//		return
+	//	}
 
 	// 加入匹配队列
 	match.Putdata(dataplayer)
