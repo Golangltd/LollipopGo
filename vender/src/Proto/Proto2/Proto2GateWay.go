@@ -48,8 +48,21 @@ const (
 	   消息系统
 	*/
 	Broadcast_MsgNoticePlayerProto2 // Broadcast_MsgNoticePlayerProto2 == 28   消息通知
+	Broadcast_PlayerUpGradeProto2   // Broadcast_PlayerUpGradeProto2 == 29     玩家升级
 
 )
+
+//------------------------------------------------------------------------------
+// Broadcast_PlayerUpGradeProto2
+type Broadcast_PlayerUpGrade struct {
+	Protocol   int
+	Protocol2  int
+	OpenID     string // 玩家唯一的ID
+	BeforeLev  int
+	UpGradeLev int
+	NowExp     int
+	AllExp     int // 到达下一级的经验
+}
 
 //------------------------------------------------------------------------------
 // Broadcast_MsgNoticePlayerEmailProto2
@@ -265,11 +278,10 @@ type C2GWS_PlayerChooseGameMode struct {
 // S2GWS_PlayerChooseGameModeProto2
 // 服务器返回数据
 type S2GWS_PlayerChooseGameMode struct {
-	Protocol  int
-	Protocol2 int
-	OpenID    string // 玩家唯一标识
-	RoomUID   int    // 房间ID；注意匹配失败或者超时，数据为空
-	//	MatchPlayer map[string]*match.RoomMatch // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
+	Protocol    int
+	Protocol2   int
+	OpenID      string                 // 玩家唯一标识
+	RoomUID     int                    // 房间ID；注意匹配失败或者超时，数据为空
 	MatchPlayer map[string]interface{} // 匹配的玩家的信息；注意匹配失败或者超时，数据为空
 	ChessBoard  []interface{}          // 棋盘的数据
 	ResultID    int                    // 结果ID
