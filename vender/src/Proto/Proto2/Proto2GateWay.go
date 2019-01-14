@@ -51,6 +51,10 @@ const (
 	Broadcast_MsgNoticePlayerProto2 // Broadcast_MsgNoticePlayerProto2 == 28   消息通知
 	Broadcast_PlayerUpGradeProto2   // Broadcast_PlayerUpGradeProto2 == 29     玩家升级
 
+	/*
+	   比赛系统： 报名，报名成功，根据绝体日期进行比赛
+	*/
+
 )
 
 //------------------------------------------------------------------------------
