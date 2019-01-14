@@ -466,12 +466,6 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	for k, v := range data_send.MatchPlayer {
 		fmt.Println("-----------57575757", k)
 		fmt.Println(v)
-		//fmt.Println("----------", (data_send.MatchPlayer.(*player.PlayerSt)))
-
-		// fmt.Println("000000000000000000000000000000000000", v.(map[string]interface{})[k].(*match.RoomMatch).RoomUID)
-		// iStrRoomUID = util.Str2int_LollipopGo(v.(*match.RoomMatch).RoomUID)
-		// stropenidA = v.(*match.RoomMatch).RoomUID //.(*player.PlayerSt).OpenID
-		// stropenidB = v.(*match.RoomMatch).PlayerBOpenID
 		fmt.Println("stropenidA8888888888888888888--------", v.(map[string]interface{})["RoomUID"])
 		fmt.Println("stropenidA8888888888888888888--------", (v.(map[string]interface{})["RoomPlayerMap"]).(map[string]interface{})["OpenID"])
 		// fmt.Println("stropenidB", stropenidB)
@@ -484,7 +478,6 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 			} else {
 				stropenidB = kk
 			}
-
 		}
 	}
 
