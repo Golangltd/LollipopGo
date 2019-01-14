@@ -231,6 +231,8 @@ func (this *NetDataConn) DSQGameInitFunc(ProtocolData map[string]interface{}) {
 	}
 
 	this.SendClientDataFunc(data.OpenID, "connect", data)
+	// 保存玩家的状态
+	cacheGW.Add(data.OpenID, player.DSQServer)
 	return
 }
 
@@ -541,6 +543,8 @@ func (this *NetDataConn) GWPlayerLoginGL(ProtocolData map[string]interface{}) {
 	//	_ = playerdata
 	// this.GateWaySavePalyerData(data.OpenID, data.AllPlayer)
 	this.GateWaySavePalyerData(data.OpenID, data.Personal)
+	// 保存状态
+	cacheGW.Add(data.OpenID, player.GateWayState)
 	//--------------------------------------------------------------------------
 	return
 }

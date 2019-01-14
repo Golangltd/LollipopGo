@@ -149,6 +149,7 @@ type GateWay_Relink struct {
 	Protocol  int
 	Protocol2 int
 	OpenID    string // 玩家唯一ID
+	Istate    int    // 玩家所在的位置状态信息，例如 在游戏中、在其他的环节等；游戏中等待
 	ResultID  int    // 结果ID == 1表示成功； 0：表示失败
 }
 
