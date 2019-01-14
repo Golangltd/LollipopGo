@@ -448,17 +448,6 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	fmt.Println("data_senddata_senddata_senddata_send", data_send)
 
 	// 发送给匹配的人的
-	//if data_send.MatchPlayer[util.Int2str_LollipopGo(StrRoomUID)] != nil {
-
-	//	for k, v := range ddd {
-	//		fmt.Println(k)
-	//		fmt.Println(v)
-	//		fmt.Println(v.(*PlayerST).UID)
-	//	}
-
-	// map[RoomPlayerMap:map[1:<nil>] RoomUID:1000 PlayerAOpenID:87b00940bb1c37364f93dcaabc2096d0 PlayerBOpenID: RoomLimTime:10]
-	// data:{"Protocol":4,"Protocol2":1,"ErrCode":"80006","ErrMsg":"亲，您发的数据的格式不对！interface conversion: interface {} is nil, not *match.RoomMatch"}
-
 	iStrRoomUID := 0
 	stropenidA := ""
 	stropenidB := ""
@@ -469,6 +458,7 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 		fmt.Println("stropenidA8888888888888888888--------", v.(map[string]interface{})["RoomUID"])
 		fmt.Println("stropenidA8888888888888888888--------", (v.(map[string]interface{})["RoomPlayerMap"]).(map[string]interface{})["OpenID"])
 		icounts := 0
+		iStrRoomUID = util.Str2int_LollipopGo(k)
 		for kk, _ := range (v.(map[string]interface{})["RoomPlayerMap"]).(map[string]interface{}) {
 			fmt.Println("stropenidA", kk)
 			if icounts == 0 {
@@ -481,12 +471,9 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 	}
 
 	data_send.RoomUID = iStrRoomUID
-	fmt.Println("stropenidA", data_send)
+	// fmt.Println("stropenidA", data_send)
 	this.SendClientDataFunc(stropenidA, "connect", data_send)
 	this.SendClientDataFunc(stropenidB, "connect", data_send)
-	//} else {
-	//	this.SendClientDataFunc(data_send.OpenID, "connect", data_send)
-	//}
 	return
 }
 

@@ -44,6 +44,7 @@ const (
 	S2GWS_ReadOrDelPlayerEmailProto2 // S2GWS_ReadOrDelPlayerEmailProto2 == 26
 
 	Broadcast_NoticePlayerEmailProto2 // Broadcast_NoticePlayerEmailProto2 == 27   邮件通知
+
 	/*
 	   消息系统
 	*/

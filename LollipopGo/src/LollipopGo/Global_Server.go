@@ -629,31 +629,6 @@ func PlayerMatchTimeGo(conn *websocket.Conn) {
 	}
 }
 
-func PlayerMatchTimeGo1(conn *websocket.Conn) {
-	fmt.Println("匹配机制")
-	for {
-		select {
-		case <-time.After(match.PlaterMatchSpeed):
-			{
-				ilenchan := len(match.MatchData_Chan)
-				if ilenchan != 0 {
-					if data, ok := <-match.MatchData_Chan; ok {
-						data_send := &Proto2.GW2G_PlayerMatchGame{
-							Protocol:  Proto.G_GameGlobal_Proto,
-							Protocol2: Proto2.GW2G_PlayerMatchGameProto2,
-							ResultID:  0,
-						}
-						fmt.Println("匹配成功-------：", data)
-						data_send.MatchPlayer = data
-						fmt.Println("匹配成功：", data_send)
-						PlayerSendToServer(conn, data_send)
-					}
-				}
-			}
-		}
-	}
-}
-
 // 保存数据都DB 人物信息
 func DB_Save_RoleSTBak(openid string) *player.PlayerSt {
 
