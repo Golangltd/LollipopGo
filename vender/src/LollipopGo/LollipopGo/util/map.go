@@ -89,7 +89,7 @@ func (m *Map) UnsafeRange(f func(interface{}, interface{})) {
 }
 
 // 并发安全读取
-func (m *Map) LollipopGo_RLockRange1(data map[string]interface{}) map[string]interface{} {
+func (m *Map) LollipopGo_RLockRange(data map[string]interface{}) map[string]interface{} {
 	m.RLock()
 	defer m.RUnlock()
 	// 枚举处理
