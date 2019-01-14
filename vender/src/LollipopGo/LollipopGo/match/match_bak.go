@@ -22,6 +22,7 @@ var (
 	QuitMatchData map[string]string
 	cache         *cache2go.CacheTable
 	MatchRoomUID  int = 1000
+	TimeOutCount  int = 0
 )
 
 type RoomMatchbak struct {
@@ -62,9 +63,16 @@ func GetChanLength() int {
 }
 
 func DoingMatch() {
+	TimeOutCount++
 	Imax = len(Match_Chan)
 	if Imax == 1 {
 		fmt.Println(Match_Chan, "等待匹配")
+		if TimeOutCount == 1000 {
+			data, ok := <-Match_Chan
+			_, _ = data, ok
+			TimeOutCount = 0
+			fmt.Println(Match_Chan, "匹配超时")
+		}
 		return
 	}
 
@@ -98,21 +106,6 @@ func DoingMatch() {
 			MatchRoomUID++
 		}
 	}
-
-	//	if i%2 == 1 {
-	//		datamatch.PlayerAOpenID = data.OpenID
-	//		MatchData[roomid] = datamatch
-	//		MatchData_Chan <- MatchData
-	//		fmt.Println("1------------", MatchData_Chan)
-	//	}
-	//	if i%2 == 0 {
-	//		datamatch.PlayerBOpenID = data.OpenID
-	//		MatchData[roomid] = datamatch
-	//		MatchData_Chan <- MatchData
-	//		fmt.Println("0------------", MatchData_Chan)
-	//		MatchRoomUID++
-	//	}
-
 }
 
 func Sort_timer() {
