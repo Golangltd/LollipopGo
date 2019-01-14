@@ -17,18 +17,12 @@ var (
 	ChanMax          int = 1000
 	MatchSpeed           = time.Millisecond * 500
 	PlaterMatchSpeed     = time.Second * 1
-	// MatchData        map[string]*RoomMatch
-	MatchData     map[string]interface{}
-	QuitMatchData map[string]string
-	cache         *cache2go.CacheTable
-	MatchRoomUID  int = 1000
-	TimeOutCount  int = 0
+	MatchData        map[string]interface{}
+	QuitMatchData    map[string]string
+	cache            *cache2go.CacheTable
+	MatchRoomUID     int = 1000
+	TimeOutCount     int = 0
 )
-
-type RoomMatchbak struct {
-	RoomUID    string           // 房间号
-	DataPlayer *player.PlayerSt // 房间的时间限制
-}
 
 //------------------------------------------------------------------------------
 
