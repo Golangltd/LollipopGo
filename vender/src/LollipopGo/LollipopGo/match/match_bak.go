@@ -24,6 +24,11 @@ var (
 	MatchRoomUID  int = 1000
 )
 
+type RoomMatchbak struct {
+	RoomUID    string           // 房间号
+	DataPlayer *player.PlayerSt // 房间的时间限制
+}
+
 //------------------------------------------------------------------------------
 
 type RoomMatch struct {

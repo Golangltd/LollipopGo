@@ -30,8 +30,10 @@ import (
 var addrG = flag.String("addrG", "127.0.0.1:8888", "http service address")
 var Conn *websocket.Conn
 var ConnRPC *rpc.Client
+var MatchG map[string]*match.RoomMatchbak
 
 func init() {
+	MatchG = make(map[string]*match.RoomMatchbak)
 	if !initGateWayNet() {
 		fmt.Println("链接 gateway server 失败!")
 		return
@@ -555,6 +557,10 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 
 	// 加入匹配队列
 	match.Putdata(dataplayer)
+	//
+	ddd := new(match.RoomMatchbak)
+	ddd.DataPlayer = dataplayer
+	MatchG[dataplayer.OpenID] = ddd
 	return
 	//
 	if len(match.MatchData) > 1 {
@@ -598,6 +604,32 @@ func PlayerMatchTime(conn *websocket.Conn, OpenID string, data_send *Proto2.GW2G
 
 // 匹配机制
 func PlayerMatchTimeGo(conn *websocket.Conn) {
+	fmt.Println("匹配机制")
+	for {
+		select {
+		case <-time.After(match.PlaterMatchSpeed):
+			{
+
+				ilenchan := len(match.MatchData_Chan)
+				if ilenchan != 0 {
+					if data, ok := <-match.MatchData_Chan; ok {
+						data_send := &Proto2.GW2G_PlayerMatchGame{
+							Protocol:  Proto.G_GameGlobal_Proto,
+							Protocol2: Proto2.GW2G_PlayerMatchGameProto2,
+							ResultID:  0,
+						}
+						fmt.Println("匹配成功-------：", data)
+						data_send.MatchPlayer = data
+						fmt.Println("匹配成功：", data_send)
+						PlayerSendToServer(conn, data_send)
+					}
+				}
+			}
+		}
+	}
+}
+
+func PlayerMatchTimeGo1(conn *websocket.Conn) {
 	fmt.Println("匹配机制")
 	for {
 		select {
