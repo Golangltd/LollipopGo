@@ -93,7 +93,7 @@ func DoingMatch() {
 		}
 
 		if i%2 == 0 {
-			//datamatch.PlayerBOpenID = data.OpenID
+			// datamatch.PlayerBOpenID = data.OpenID
 			MatchData[roomid] = datamatch
 			MatchData_Chan <- MatchData
 			fmt.Println("0------------", MatchData_Chan)
