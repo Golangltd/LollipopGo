@@ -468,7 +468,6 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 		fmt.Println(v)
 		fmt.Println("stropenidA8888888888888888888--------", v.(map[string]interface{})["RoomUID"])
 		fmt.Println("stropenidA8888888888888888888--------", (v.(map[string]interface{})["RoomPlayerMap"]).(map[string]interface{})["OpenID"])
-		// fmt.Println("stropenidB", stropenidB)
 		icounts := 0
 		for kk, _ := range (v.(map[string]interface{})["RoomPlayerMap"]).(map[string]interface{}) {
 			fmt.Println("stropenidA", kk)
