@@ -36,3 +36,20 @@ type PlayerGameLev struct {
 	GameExp   int
 	GameScore int
 }
+
+/*
+   玩家的状态，需要网关经行保存；
+*/
+
+const (
+	StateInit    = iota // 初始化
+	GateWayState        // 网关
+	GlobalServer        // 公共服
+	DSQServer           // 斗兽棋服
+)
+
+// 玩家的网络状态
+type PlayerConnState struct {
+	OpenID string
+	Istate int // 对应上面的状态
+}
