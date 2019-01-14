@@ -30,10 +30,9 @@ import (
 var addrG = flag.String("addrG", "127.0.0.1:8888", "http service address")
 var Conn *websocket.Conn
 var ConnRPC *rpc.Client
-var MatchG map[string]*match.RoomMatchbak
 
 func init() {
-	MatchG = make(map[string]*match.RoomMatchbak)
+
 	if !initGateWayNet() {
 		fmt.Println("链接 gateway server 失败!")
 		return
@@ -530,20 +529,22 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	}
 	match.SetMatchQueue(StrOpenID)
 
-	if StrItype == "2" { //快速匹配
-		PlayerSendToServer(conn, data_send)
-		return
+	if StrItype == "2" {
+		// 快速匹配 选择最低场 入场
+		StrRoomID = "10001100"
 	}
 
 	data := conf.RoomListDatabak[StrRoomID]
 	fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data.NeedLev, StrRoomID)
 	dataplayer := DB_Save_RoleSTBak("87b00940bb1c37364f93dcaabc2096d0")
+
 	//dataplayer := DB_Save_RoleSTBak(StrOpenID)
 	fmt.Println("玩家数据：", dataplayer)
 	dataplayer.OpenID = StrOpenID
 	fmt.Println("玩家数据bak：", dataplayer)
 	fmt.Println("StrOpenID玩家数据：", StrOpenID)
 	s := string([]byte(data.NeedLev)[2:])
+
 	fmt.Println("StrOpenID玩家NeedLev：", s)
 	//	if util.Str2int_LollipopGo(s) > dataplayer.Lev {
 	//		data_send.ResultID = Error.Lev_lack
@@ -557,10 +558,6 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 
 	// 加入匹配队列
 	match.Putdata(dataplayer)
-	//
-	ddd := new(match.RoomMatchbak)
-	ddd.DataPlayer = dataplayer
-	MatchG[dataplayer.OpenID] = ddd
 	return
 	//
 	if len(match.MatchData) > 1 {
