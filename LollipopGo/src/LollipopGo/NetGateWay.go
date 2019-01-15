@@ -110,6 +110,7 @@ func (this *NetDataConn) BroadCastGameOverFunc(ProtocolData map[string]interface
 		Protocol:  Proto.G_GateWay_Proto,
 		Protocol2: Proto2.BroadCast_GameOverProto2,
 		IsDraw:    BIsDraw,
+		RoomID:    this.GateWayGetPlayerRoomID(StrOpenIDA),
 	}
 
 	fmt.Println("函数--BroadCastGameOverFunc StrOpenIDA", StrOpenIDA)
@@ -771,6 +772,16 @@ func (this *NetDataConn) GateWayGetPalyerData(stropenid string) map[string]inter
 	return res.Data().(map[string]interface{})
 }
 
+//保存玩家RoomID
+func (this *NetDataConn) GateWaySavePlayerRoomID(stropenid, data string) {
+	cacheGW.Add(stropenid+"RoomID", 0, data)
+}
+
+func (this *NetDataConn) GateWayGetPlayerRoomID(stropenid string) string {
+	res, _ := cacheGW.Value(stropenid + "RoomID")
+	return res.Data().(string)
+}
+
 //------------------------------------------------------------------------------
 
 // 玩家退出匹配
@@ -923,6 +934,8 @@ func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interf
 	// this.PlayerSendMessage(data)
 	// 发送给 global server
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
+	// 保存roomiD
+	this.GateWaySavePlayerRoomID(StrOpenID, iRoomID)
 	return
 }
 
