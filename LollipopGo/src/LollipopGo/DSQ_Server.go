@@ -360,11 +360,13 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	data := &Proto2.DSQ2GW_PlayerMoveChess{
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_PlayerMoveChessProto2,
-		OpenIDA:   StrOpenID,
-		OpenIDB:   stropenidb,
-		RoomUID:   iRoomID,
-		OldPos:    StrOldPos,
-		NewPos:    strnewpos,
+		// OpenIDA:   StrOpenID,
+		// OpenIDB:   stropenidb,
+		OpenIDA: stropenidb,
+		OpenIDB: StrOpenID,
+		RoomUID: iRoomID,
+		OldPos:  StrOldPos,
+		NewPos:  strnewpos,
 	}
 	// fmt.Println("++++++++++++++++++++", stropenidb)
 	// fmt.Println("++++++++++++++++++++", stropenida)
