@@ -191,6 +191,7 @@ type BroadCast_GameOver struct {
 	Protocol        int
 	Protocol2       int
 	IsDraw          bool                   // 是否是平局  true表示平局，false表示不是平局
+	RoomID          string                 // 房间列表
 	FailGameLev_Exp string                 // 格式: 1,10
 	SuccGameLev_Exp string                 // 格式: 1,10
 	FailPlayer      map[string]interface{} // 失败者
