@@ -1,5 +1,5 @@
 # LollipopGo 
-Golang语言社区  全球服游戏服务器框架,目前协议支持websocket及http，采用状态同步，通信方式JSON，适合与页游、微信小游戏，回合制手游等 
+Golang语言社区  全球服游戏服务器框架,目前协议支持websocket、http及RPC，采用状态同步，愿景：打造竞技实时【比赛】对战游戏平台框架！ 功能持续更新中... ...
 >微信订阅号：Golang语言社区<Br/>
 >微信服务号：Golang技术社区<Br/>
 >关注可了解更多的Go语言技术教程及课程活动。问题或建议，请公众号留言<Br/>
@@ -30,7 +30,7 @@ Golang语言社区
 <ol>
 <li>希望更多喜欢Go语言的同学及想从事Go语言开发游戏服务器的同学一个方向的指引</li>
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
-<li>LollipopGo架构 最新版本: v1.0.20181225</li>
+<li>LollipopGo架构 最新版本: v1.0.20190115</li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" title="Title">腾讯课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" title="Title">网易云课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" title="Title">B站(bilibili.com)</a></li>
