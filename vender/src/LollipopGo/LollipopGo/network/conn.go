@@ -1,11 +1,13 @@
 package network
 
-/*
-  网络模块
-	1. 接口函数
-	2. 处理问题的方法，谁去实现？实现接口的结构去实现。
-	3. 实现多态
-*/
+var ServerConf struct {
+	LoginServerAddr  string
+	GateWayAddr      string
+	DBServerAddr     string
+	GlobalServerAddr string
+	GMServerAddr     string
+	DSQServerAddr    string // 子游戏服务器配置
+}
 
 type Conner interface {
 	ConnGateWayServer(data interface{})
@@ -14,9 +16,4 @@ type Conner interface {
 	HandleCltProtocol2(protocol2 interface{}, ProtocolData map[string]interface{})
 	Close()
 	Destroy()
-}
-
-// 注册绑定接口
-func RegisterBind(conner Conner) {
-	return
 }

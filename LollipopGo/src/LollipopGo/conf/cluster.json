@@ -2,5 +2,7 @@
     "LoginServerAddr": "127.0.0.1:8891",
     "GateWayAddr": "127.0.0.1:8888",
     "DBServerAddr": "127.0.0.1:8890",
-    "GlobalServerAddr": "127.0.0.1:8891"
+    "GlobalServerAddr": "127.0.0.1:8894",
+	"DSQServerAddr": "127.0.0.1:8895",
+	"GMServerAddr": "127.0.0.1:8892"
 }

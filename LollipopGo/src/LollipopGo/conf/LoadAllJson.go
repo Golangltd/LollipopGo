@@ -6,11 +6,14 @@ import (
 )
 
 // 服务器集群配置
+// ----启动顺序配置
 var ServerConf struct {
 	LoginServerAddr  string
 	GateWayAddr      string
 	DBServerAddr     string
 	GlobalServerAddr string
+	GMServerAddr     string
+	DSQServerAddr    string
 }
 
 // 服务器结构
