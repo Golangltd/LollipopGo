@@ -26,7 +26,7 @@ var Server struct {
 	ProfilePath string
 }
 
-// 数据库配置
+// 数据库mysql配置
 var DBServer struct {
 	MasterLoginName     string
 	MasterLoginPassword string
@@ -38,6 +38,16 @@ var DBServer struct {
 	MasterMysql_Port    string
 	SlaveMysql_IP       string
 	SlaveMysql_Port     string
+}
+
+// 数据库redis配置
+var DBRedisServer struct {
+	LoginName        string
+	LoginPassword    string
+	MaxOpenConns     string
+	MaxIdleConns     string
+	MasterRedis_IP   string
+	MasterRedis_Port string
 }
 
 func init() {
@@ -55,10 +65,17 @@ func init() {
 
 	}
 
-	//  读取数据库配置
+	//  读取数据库mysql配置
 	if true {
 		data, _ := ioutil.ReadFile("conf/mysql.json")
 		json.Unmarshal(data, &DBServer)
+
+	}
+
+	//  读取redis配置
+	if true {
+		data, _ := ioutil.ReadFile("conf/redis.json")
+		json.Unmarshal(data, &DBRedisServer)
 
 	}
 
