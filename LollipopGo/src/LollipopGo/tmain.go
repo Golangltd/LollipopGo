@@ -5,13 +5,12 @@ import (
 	LollipopGoconf "LollipopGo/LollipopGo/conf"
 	_ "LollipopGo/LollipopGo/match"
 	"LollipopGo/conf"
+	"Proto"
+	"Proto/Proto2"
 	"glog-master"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
-
-	"Proto"
-	"Proto/Proto2"
 	"strings"
 	"time"
 
