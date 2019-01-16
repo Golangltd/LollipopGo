@@ -5,7 +5,6 @@ import (
 	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/player"
 	"LollipopGo/LollipopGo/util"
-	_ "LollipopGo/ReadCSV"
 	"LollipopGo/db/mysql"
 	"Proto"
 	"Proto/Proto2"
@@ -16,7 +15,6 @@ import (
 	"os"
 )
 
-// DB的数据的信息
 var (
 	service = "127.0.0.1:8890"
 )
@@ -33,11 +31,9 @@ func checkError(err error) {
 	}
 }
 
-// 监听操作
 func MainListener(strport string) {
 	arith := new(Arith)
 	rpc.Register(arith)
-	// 获取数据操作
 	tcpAddr, err := net.ResolveTCPAddr("tcp", ":"+strport)
 	checkError(err)
 
@@ -54,13 +50,10 @@ func MainListener(strport string) {
 	}
 }
 
-//------------------------------------------------------------------------------
-// 保存结算数据
 func (t *Arith) SavePlayerDataST2DB(args *Proto2.DB_GameOver, reply *bool) error {
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
-			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
 				Protocol:  Proto.G_Error_Proto,      // 主协议
 				Protocol2: Proto2.G_Error_All_Proto, // 子协议
@@ -78,22 +71,15 @@ func (t *Arith) SavePlayerDataST2DB(args *Proto2.DB_GameOver, reply *bool) error
 	return nil
 }
 
-// -----------------------------------------------------------------------------
 type Arith int
-
-// 登录结构 -- login server
 type Args struct {
 	A, B int
 }
 
-//------------------------------------------------------------------------------
-// 获取玩家的数据
-// 玩家用户保存
 func (t *Arith) GetPlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) error {
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
-			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
 				Protocol:  Proto.G_Error_Proto,      // 主协议
 				Protocol2: Proto2.G_Error_All_Proto, // 子协议
@@ -114,8 +100,6 @@ func (t *Arith) GetPlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) er
 	return nil
 }
 
-//------------------------------------------------------------------------------
-// Gloabl server 获取email 数据;个人通知
 func (t *Arith) GetPlayerbakEmailDataGM(args *string, reply *map[int]*player.EmailST) error {
 
 	defer func() {
@@ -136,8 +120,6 @@ func (t *Arith) GetPlayerbakEmailDataGM(args *string, reply *map[int]*player.Ema
 	return nil
 }
 
-//------------------------------------------------------------------------------
-// Gloabl server 获取email 数据;系统通知
 func (t *Arith) GetPlayerEmailDataGM(data *int, reply *map[int]*player.EmailST) error {
 
 	defer func() {
@@ -158,8 +140,6 @@ func (t *Arith) GetPlayerEmailDataGM(data *int, reply *map[int]*player.EmailST) 
 	return nil
 }
 
-//------------------------------------------------------------------------------
-// 修改GM系统
 func (t *Arith) ModefyPlayerEmailDataGM(data *player.EmailST, reply *Proto2.GMS2W_Modify_PlayerEmailData) error {
 	defer func() {
 		if err := recover(); err != nil {
@@ -184,8 +164,6 @@ func (t *Arith) ModefyPlayerEmailDataGM(data *player.EmailST, reply *Proto2.GMS2
 	return nil
 }
 
-//------------------------------------------------------------------------------
-// 修改GM系统
 func (t *Arith) ModefyPlayerDataGM(args *Proto2.W2GMS_Modify_PlayerData, reply *Proto2.GMS2W_Modify_PlayerData) error {
 	//--------------------------------------------------------------------------
 	defer func() {
@@ -222,9 +200,6 @@ func (t *Arith) ModefyPlayerDataGM(args *Proto2.W2GMS_Modify_PlayerData, reply *
 	return nil
 }
 
-//------------------------------------------------------------------------------
-
-// 玩家用户保存
 func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) error {
 	defer func() {
 		if err := recover(); err != nil {
@@ -239,9 +214,6 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 			fmt.Println("Global server 异常错误", ErrorST)
 		}
 	}()
-	// 1 解析数据 *reply = args.A * args.B
-	// roleUID := args.UID
-	// 2 保存或者更新数据
 	if Mysyl_DB.DB != nil {
 		_, data := Mysyl_DB.DB.InsertPlayerST2DB(args)
 		*reply = data
@@ -252,13 +224,11 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 
 // 登录的时候，返回的数据
 func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
-	// *reply = args.A * args.B
-	// 组装数据
 	data := &player.GateWayList{
 		ServerID:   1001,
 		ServerName: "大厅服务器",
 		// ServerIPAndPort: "gateway.a.babaliuliu.com:8888", // 测试环境
-		//ServerIPAndPort: "gateway.b.babaliuliu.com:8888", // 本机  test149.babaliuliu.com
+		// ServerIPAndPort: "gateway.b.babaliuliu.com:8888", // 本机  test149.babaliuliu.com
 		ServerIPAndPort: conf.G_ServerList["1"].IP_Port,
 		State:           "空闲",
 		OLPlayerNum:     1024,
