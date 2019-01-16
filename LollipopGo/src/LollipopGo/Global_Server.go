@@ -620,6 +620,24 @@ func PlayerMatchTimeGo(conn *websocket.Conn) {
 						data_send.MatchPlayer = data
 						fmt.Println("匹配成功：", data_send)
 						PlayerSendToServer(conn, data_send)
+						// 匹配成功 删除匹配队列中的数据
+						// match.DelMatchQueue(data["PlayerAOpenID"].(string))
+						// match.DelMatchQueue(data["PlayerBOpenID"].(string))
+						// icounts := 0
+						// for _, v := range data {
+						// 	for kk, _ := range (v.(map[string]interface{})["RoomPlayerMap"]).(map[string]interface{}) {
+						// 		fmt.Println("stropenidA", kk)
+						// 		if icounts == 0 {
+						// 			stropenidA := kk
+						// 			match.DelMatchQueue(stropenidA)
+						// 			icounts++
+						// 		} else {
+						// 			stropenidB := kk
+						// 			match.DelMatchQueue(stropenidB)
+						// 		}
+						// 	}
+						// }
+						//------------------------------------------------------
 					}
 				}
 			}
