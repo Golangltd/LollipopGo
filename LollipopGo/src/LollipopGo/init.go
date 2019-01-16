@@ -1,6 +1,8 @@
 package main
 
 import (
+	LollipopGonetwork "LollipopGo/LollipopGo/network"
+	"LollipopGo/conf"
 	"cache2go"
 	"encoding/base64"
 	"flag"
@@ -38,6 +40,15 @@ func init() {
 	MRoom = concurrent.NewConcurrentMap()
 	MServer = concurrent.NewConcurrentMap()
 	cacheGW = cache2go.Cache("LollipopGo_GateWay")
+	//--------------------------------------------------------------------------
+	// 网络启动配置加载
+	LollipopGonetwork.LoginServerAddr = conf.ServerConf.LoginServerAddr
+	LollipopGonetwork.GateWayAddr = conf.ServerConf.GateWayAddr
+	LollipopGonetwork.DBServerAddr = conf.ServerConf.DBServerAddr
+	LollipopGonetwork.GlobalServerAddr = conf.ServerConf.GlobalServerAddr
+	LollipopGonetwork.GMServerAddr = conf.ServerConf.GMServerAddr
+	LollipopGonetwork.DSQServerAddr = conf.ServerConf.DSQServerAddr
+	//--------------------------------------------------------------------------
 	return
 }
 
