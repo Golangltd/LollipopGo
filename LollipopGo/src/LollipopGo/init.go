@@ -40,6 +40,7 @@ func init() {
 	MRoom = concurrent.NewConcurrentMap()
 	MServer = concurrent.NewConcurrentMap()
 	cacheGW = cache2go.Cache("LollipopGo_GateWay")
+
 	//--------------------------------------------------------------------------
 	// 网络启动配置加载
 	LollipopGonetwork.LoginServerAddr = conf.ServerConf.LoginServerAddr
