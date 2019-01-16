@@ -1,6 +1,7 @@
 package Mysyl_DB
 
 import (
+	LollipopGoconf "LollipopGo/LollipopGo/conf"
 	"database/sql"
 
 	"fmt"
@@ -9,6 +10,15 @@ import (
 )
 
 func init() {
+	//--------------------------------------------------------------------------
+	// 加载配置
+	LollipopGoconf.MasterLoginName = conf.DBServer.MasterLoginName
+	LollipopGoconf.MasterLoginPassword = conf.DBServer.MasterLoginPassword
+	LollipopGoconf.MaxOpenConns = conf.DBServer.MaxOpenConns
+	LollipopGoconf.MaxIdleConns = conf.DBServer.MaxIdleConns
+	LollipopGoconf.MasterMysql_IP = conf.DBServer.MasterMysql_IP
+	LollipopGoconf.MasterMysql_Port = conf.DBServer.MasterMysql_Port
+	//--------------------------------------------------------------------------
 	DB = &mysql_db{}
 	DB.mysql_open()
 	return
