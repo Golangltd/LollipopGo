@@ -22,13 +22,11 @@ var strServerType = "GW"
 var GL_type = "G"
 
 func init() {
-	// 加载配置
 	LollipopGoconf.LogLevel = conf.Server.LogLevel
 	LollipopGoconf.LogPath = conf.Server.LogPath
 	LollipopGoconf.LogFlag = conf.LogFlag
 	LollipopGoconf.ConsolePort = conf.Server.ConsolePort
 	LollipopGoconf.ProfilePath = conf.Server.ProfilePath
-	// 启动所有的版本
 	LollipopGo.Run()
 }
 
@@ -116,22 +114,15 @@ func main() {
 	panic("【服务器类型】不存在")
 }
 
-// 字符串分割函数
 func Strings_Split(Data string, Split string) []string {
 	return strings.Split(Data, Split)
 }
 
-// 超时踢人
 func G_timeout_kick_Player() {
 	for {
 		select {
 		case <-time.After(10 * time.Second):
 			{
-				// 1 获取我们心跳数据--玩家的 测试一个玩家 data[A] = 1
-				// 2 玩家的心跳保存下来-- 临时的保存  datatmp[A] = 1
-				// 3 每10s 对比一次：临时的保存的数据 与我们心跳的数据是否相同 data[A] == datatmp[A]
-				// 4 30s 还是没有变化  kick player  A
-				// 并发安全map优化：
 				for itr := M.Iterator(); itr.HasNext(); {
 					k, v, _ := itr.Next()
 					// 取分隔符
@@ -187,7 +178,6 @@ func G_timeout_kick_Player() {
 
 }
 
-// 数据推送给客户端定时
 func G_timer() {
 	for {
 		select {
@@ -212,7 +202,6 @@ func G_timer() {
 	return
 }
 
-// 游戏服务器---网关之间的通信
 func GS2GW_Timer(ws *websocket.Conn) {
 	for {
 		select {
