@@ -1,13 +1,13 @@
 package network
 
-var ServerConf struct {
+var (
 	LoginServerAddr  string
 	GateWayAddr      string
 	DBServerAddr     string
 	GlobalServerAddr string
 	GMServerAddr     string
 	DSQServerAddr    string // 子游戏服务器配置
-}
+)
 
 type Conner interface {
 	ConnGateWayServer(data interface{})
