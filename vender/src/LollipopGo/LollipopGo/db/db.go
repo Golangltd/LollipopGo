@@ -12,12 +12,3 @@ var (
 	SlaveMysql_IP       string
 	SlaveMysql_Port     string
 )
-
-var (
-	LoginName        string
-	LoginPassword    string
-	MaxOpenConns     string
-	MaxIdleConns     string
-	MasterRedis_IP   string
-	MasterRedis_Port string
-)
