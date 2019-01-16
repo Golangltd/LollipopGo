@@ -1,8 +1,6 @@
 package main
 
 import (
-	_ "LollipopGo/db/mysql"
-	_ "LollipopGo/db/redis"
 	"cache2go"
 	"encoding/base64"
 	"flag"
@@ -40,10 +38,6 @@ func init() {
 	MRoom = concurrent.NewConcurrentMap()
 	MServer = concurrent.NewConcurrentMap()
 	cacheGW = cache2go.Cache("LollipopGo_GateWay")
-	// go G_timer()
-	// go G_timeout_kick_Player()
-	// redis 测试
-	// go Redis_DB.INIT()
 	return
 }
 
