@@ -536,11 +536,12 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 
 	data := conf.RoomListDatabak[StrRoomID]
 	fmt.Println("针对某房间ID去获取，相应的数据的", conf.RoomListDatabak, data.NeedLev, StrRoomID)
-	dataplayer := DB_Save_RoleSTBak("87b00940bb1c37364f93dcaabc2096d0")
+	//dataplayer := DB_Save_RoleSTBak("87b00940bb1c37364f93dcaabc2096d0")
+	dataplayer := DB_Save_RoleSTBak(StrOpenID)
 
 	//dataplayer := DB_Save_RoleSTBak(StrOpenID)
 	fmt.Println("玩家数据：", dataplayer)
-	dataplayer.OpenID = StrOpenID
+	// dataplayer.OpenID = StrOpenID
 	fmt.Println("玩家数据bak：", dataplayer)
 	fmt.Println("StrOpenID玩家数据：", StrOpenID)
 	s := string([]byte(data.NeedLev)[2:])

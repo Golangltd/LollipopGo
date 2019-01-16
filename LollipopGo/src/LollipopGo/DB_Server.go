@@ -258,7 +258,7 @@ func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
 		ServerID:   1001,
 		ServerName: "大厅服务器",
 		// ServerIPAndPort: "gateway.a.babaliuliu.com:8888", // 测试环境
-		// ServerIPAndPort: "gateway.b.babaliuliu.com:8888", // 本机  test149.babaliuliu.com
+		//ServerIPAndPort: "gateway.b.babaliuliu.com:8888", // 本机  test149.babaliuliu.com
 		ServerIPAndPort: conf.G_ServerList["1"].IP_Port,
 		State:           "空闲",
 		OLPlayerNum:     1024,
