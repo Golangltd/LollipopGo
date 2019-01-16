@@ -1,7 +1,6 @@
 package conf
 
 import (
-	"LollipopGo/LollipopGo/log"
 	"encoding/json"
 	"io/ioutil"
 )
@@ -27,29 +26,40 @@ var Server struct {
 	ProfilePath string
 }
 
-// 加载服务器配置
+// 数据库配置
+var DBServer struct {
+	MasterLoginName     string
+	MasterLoginPassword string
+	SlaveLoginName      string
+	SlaveLoginPassword  string
+	MaxOpenConns        string
+	MaxIdleConns        string
+	MasterMysql_IP      string
+	MasterMysql_Port    string
+	SlaveMysql_IP       string
+	SlaveMysql_Port     string
+}
+
 func init() {
 	// 基础配置
 	if true {
-		data, err := ioutil.ReadFile("conf/server.json")
-		if err != nil {
-			log.Debug("-------------%v", err)
-		}
-		err = json.Unmarshal(data, &Server)
-		if err != nil {
-			log.Debug("+++++++++++++%v", err)
-		}
+		data, _ := ioutil.ReadFile("conf/server.json")
+		json.Unmarshal(data, &Server)
+
 	}
+
 	// 服务器配置
 	if true {
-		data, err := ioutil.ReadFile("conf/cluster.json")
-		if err != nil {
-			log.Debug("-------------%v", err)
-		}
-		err = json.Unmarshal(data, &ServerConf)
-		if err != nil {
-			log.Debug("+++++++++++++%v", err)
-		}
+		data, _ := ioutil.ReadFile("conf/cluster.json")
+		json.Unmarshal(data, &ServerConf)
+
+	}
+
+	//  读取数据库配置
+	if true {
+		data, _ := ioutil.ReadFile("conf/mysql.json")
+		json.Unmarshal(data, &DBServer)
+
 	}
 
 }
