@@ -538,8 +538,8 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		idataA := res.Data().(*RoomPlayerDSQ).AChessNum
 		fmt.Println("已经吃掉几个A", idataA)
 		if idataA == 8 {
-			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDB
-			data.OpenIDB = strpopenid
+			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
+			data.OpenIDA = strpopenid
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
@@ -549,8 +549,8 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		idataA := res.Data().(*RoomPlayerDSQ).AChessNum
 		fmt.Println("已经吃掉几个A", idataA)
 		if idataA == 8 {
-			data.OpenIDA = strpopenid
-			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDA
+			data.OpenIDB = strpopenid
+			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDA
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
