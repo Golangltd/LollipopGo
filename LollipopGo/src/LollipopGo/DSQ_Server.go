@@ -570,7 +570,6 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 
 //------------------------------------------------------------------------------
 func SetRecord_A_B_chess(itype int) {
-	// A B
 	cacheDSQ.Add(itype, 0, 1)
 	return
 }
@@ -609,7 +608,6 @@ func CacheSaveRoomData(iRoomID int, data *RoomPlayerDSQ, openid string) {
 func CacheGetOtherPlayerByPlayerUID(iRoomID int, player string) string {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		//panic("没有对应数据")
 		return ""
 	}
 	if res.Data().(*RoomPlayerDSQ).OpenIDA == player {
@@ -623,7 +621,6 @@ func CacheGetOtherPlayerByPlayerUID(iRoomID int, player string) string {
 func CacheGetPlayerUID(iRoomID int, player string) string {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		//panic("没有对应数据")
 		return ""
 	}
 	fmt.Println("save data:", player)
@@ -643,7 +640,6 @@ func CacheGetPlayerUID(iRoomID int, player string) string {
 func CacheSavePlayerUID(iRoomID int, player string) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		//panic("没有对应数据")
 		return
 	}
 	fmt.Println("result:", res.Data().(*RoomPlayerDSQ).OpenIDA)
@@ -661,7 +657,6 @@ func CacheSavePlayerUID(iRoomID int, player string) {
 func CacheGetRoomDataByRoomID(iRoomID int, opneid string) ([4][4]int, bool, int) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		// panic("棋盘数据更新失败！")
 		return [4][4]int{{}, {}, {}, {}}, false, 0
 	}
 	fmt.Println("n>1获取棋盘数据", iRoomID)
@@ -691,7 +686,6 @@ func CacheGetRoomDataByRoomID(iRoomID int, opneid string) ([4][4]int, bool, int)
 func CacheGetRoomDataByPlayer(iRoomID int, opneid string) int {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		//panic("棋盘数据更新失败！")
 	}
 	fmt.Println("n>1获取棋盘数据", iRoomID, opneid)
 
@@ -722,7 +716,6 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		//panic("棋盘数据更新失败！")
 		return
 	}
 
@@ -730,7 +723,6 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 	ipos_y := 0
 	strsplit := Strings_Split(Update_pos, ",")
 	if len(strsplit) != 2 {
-		panic("棋盘数据更新失败！")
 		return
 	}
 	for i := 0; i < len(strsplit); i++ {
@@ -790,7 +782,6 @@ func CacheGetReChessData(iRoomID int) ([4][4]int, int) {
 
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		panic("棋盘数据获取数据失败！")
 	}
 	return res.Data().(*RoomPlayerDSQ).ReChessData, res.Data().(*RoomPlayerDSQ).LeftTime
 }
@@ -799,7 +790,6 @@ func CacheGetReChessData(iRoomID int) ([4][4]int, int) {
 func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, stropenid string) (string, string, string) {
 	res, err1 := cacheDSQ.Value(iRoomID)
 	if err1 != nil {
-		//panic("棋盘数据获取数据失败！")
 		return "", "", ""
 	}
 	ipos_x := 0
