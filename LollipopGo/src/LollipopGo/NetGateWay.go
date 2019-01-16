@@ -761,7 +761,6 @@ func (this *NetDataConn) GateWaySavePalyerData(stropenid string, data map[string
 	return
 }
 
-// func (this *NetDataConn) GateWayGetPalyerData(stropenid string) *player.PlayerSt {
 func (this *NetDataConn) GateWayGetPalyerData(stropenid string) map[string]interface{} {
 	res, err1 := cacheGW.Value(stropenid + "huancun")
 	if err1 != nil {
