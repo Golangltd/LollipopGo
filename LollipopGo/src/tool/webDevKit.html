@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>webDevKit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            z-index: -999;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #playerWrap {
+            position: relative;
+        }
+
+        .playerBox {
+            position: relative;
+            margin: 0px;
+            padding: 0px;
+            background-color: rgb(143, 188, 143);
+            float: left;
+        }
+
+        .player {
+            position: absolute;
+        }
+
+        /* #btnRotate {
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            width: 100px;
+            height: 50px;
+            font-size: 30px;
+            background-color: cadetblue;
+            color: white;
+        } */
+
+        .btnReload {
+            margin: 10px;
+        }
+
+        .landscape {
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .portrait {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+
+        /* modal: */
+
+        .Modal {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 500;
+            top: 0px;
+            left: 0px;
+            color: white;
+        }
+
+        .ModalBg {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .ModalContent {
+            position: absolute;
+            z-index: 2;
+            text-align: center;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        /* cocos */
+
+        body {
+            cursor: default;
+            color: #888;
+            background-color: #333;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+            height: 100%;
+            /* for firefox */
+            width: 100%;
+            position: absolute;
+            padding: 0px;
+            border: 0px;
+            margin: 0px;
+        }
+
+        /* Remove spin of input type number */
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0;
+            /* <-- Apparently some margin are still there even though it's hidden */
+        }
+
+        body,
+        canvas,
+        div {
+            outline: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        canvas {
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        .wrapper {
+            position: relative;
+            border: 1px solid #444;
+            background: #222;
+        }
+
+        .toolbar {
+            /*position: absolute;*/
+            /*left: 10px;*/
+            /*top: 10px;*/
+            min-height: 27px;
+            padding: 4px 0px 4px 10px;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-flex-direction: row;
+            flex-direction: row;
+            z-index: 999;
+        }
+
+        .toolbar * {
+            font-size: 12px;
+            font-family: /* https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/ */
+            -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+        }
+
+        .toolbar .item {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .toolbar select {
+            height: 25px;
+            padding: 0px 0px;
+            box-shadow: none;
+            background-image: none;
+            border: 1px solid #171717;
+            background: #444;
+            color: #aaa;
+        }
+
+        .toolbar select:focus {
+            outline: none;
+            border: 1px solid #09f;
+        }
+
+        .toolbar button {
+            border: 1px solid #171717;
+            border-radius: 2px;
+            text-align: center;
+            padding: 4px 8px;
+            cursor: pointer;
+            color: #bdbdbd;
+            font-weight: bold;
+            background-image: linear-gradient(#5a5a5a, #444);
+        }
+
+        .toolbar button.checked {
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+            color: #09f;
+            background-image: linear-gradient(#333, #222);
+        }
+
+        .toolbar button:focus {
+            outline: none;
+        }
+
+        .toolbar button:active {
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+            color: #888;
+            background-image: linear-gradient(#333, #222);
+        }
+
+        .toolbar input {
+            width: 40px;
+            height: 10px;
+            padding: 4px 4px;
+            box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.3);
+            border: 1px solid #171717;
+            background: #444;
+            color: #aaa;
+        }
+
+        @media screen and (max-width: 760px) {
+            .toolbar {
+                display: none;
+            }
+            .wrapper {
+                border: 0px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+        }
+
+        .stripes span {
+            background-size: 30px 30px;
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+            animation: animate-stripes 1s linear infinite;
+        }
+
+        @keyframes animate-stripes {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 60px 0;
+            }
+        }
+
+        /* cocos */
+    </style>
+</head>
+
+<body>
+    <div class="toolbar">
+        <div class="item"><button id="btnRotate">旋&nbsp&nbsp&nbsp&nbsp转</button></div>
+        <div class="item">
+            <span style="font-size: small; margin-right: -2px;" class="item">人数:</span>
+            <select id="playerNum">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+            </select>
+        </div>
+        <div class="item">
+            <button id="btnTopReload" style="margin-right: -2px;">刷新1</button>
+            <select id="selectReload">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+            </select>
+        </div>
+        <div class="item">
+            <span style="margin-right: -2px;">起始uid:</span>
+            <button id="btnSubUid" style="margin-right: -2px">-10</button>
+            <input id="baseUid" type="text" value="1000" style="text-align: center">
+            <button id="btnAddUid" style="margin-left: -2px">+10</button>
+        </div>
+        <div class="item"><button id="btnSettings">设置</button></div>
+    </div>
+    <div id="playerWrap"></div>
+    <!-- 设置界面 -->
+    <div class="Modal" id="setting">
+        <div class="ModalBg"></div>
+        <div class="ModalContent">
+            <div>
+                <span>地址:</span>
+                <input id="baseUrl" type="text" value="http://localhost:7456">
+            </div>
+            <!-- <div style="margin-top: 10px">
+                <span>起始uid:</span>
+                <input id="btnSubUid" type="button" value="-10">
+                <input id="baseUid" type="text" value="1000">
+                <input id="btnAddUid" type="button" value="+10">
+            </div> -->
+            <!-- <div style="margin-top: 10px">
+                <span>玩家数:</span>
+                <input id="playerNum" type="text" value="3">
+            </div> -->
+            <div style="margin-top: 10px">
+                <span>玩家宽:</span>
+                <input id="playerWidth" type="text" value="315">
+            </div>
+            <div style="margin-top: 10px">
+                <span>玩家高:</span>
+                <input id="playerHeight" type="text" value="560">
+            </div>
+            <div style="margin-top: 10px">
+                <span>缩放:</span>
+                <input id="playerScale" type="text" value="1">
+            </div>
+            <div style="margin-top: 10px; text-align: left">
+                <span>刷新:</span>
+                <div id="reloadWrap"></div>
+            </div>
+            <div style="margin-top: 30px">
+                <input type="button" value="保存" style="width: 100px; height: 40px;" onclick="saveSetting(); initView();">
+                <input type="button" value="取消" style="width: 100px; height: 40px;" onclick="$('#setting').hide('normal')">
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    var sPortrait = '横屏';
+    var sLandscape = '竖屏';
+
+    var oCfg = {};
+    oCfg.baseUrl = 'http://localhost:7456';
+    oCfg.baseUid = Math.floor(Math.random() * 100) * 100;
+    oCfg.orientation = sPortrait;
+    oCfg.playerNum = 2;
+    oCfg.playerScale = 0.4;
+    oCfg.playerWidth = 1280 * oCfg.playerScale;
+    oCfg.playerHeight = 720 * oCfg.playerScale;
+    oCfg.reloadIdx = 1;
+    var DIFFWH = (oCfg.playerWidth - oCfg.playerHeight) / 2;
+
+    function initEvent() {
+        $('#btnRotate').on('click', function() {
+            var oThis = $(this);
+            var sText = oThis.val();
+
+            if (sLandscape == sText) {
+                oCfg.orientation = sPortrait;
+            } else if (sPortrait == sText) {
+                oCfg.orientation = sLandscape;
+            }
+            oThis.val(oCfg.orientation);
+            updateOrientation();
+        });
+        $('#btnSettings').on('click', function() {
+            $('#setting').toggle('normal');
+        });
+        $('#btnSubUid').on('click', function() {
+            var nUid = parseInt($('#baseUid').val());
+            $('#baseUid').val(nUid - 10);
+            saveSetting();
+            initView();
+        });
+        $('#btnAddUid').on('click', function() {
+            var nUid = parseInt($('#baseUid').val());
+            $('#baseUid').val(nUid + 10);
+            saveSetting();
+            initView();
+        });
+        $('#btnRotate').on('mousedown', function() {
+            if (2 === event.button) {
+                $('#setting').toggle('normal');
+            }
+        });
+        $('#setting').on('mousedown', function() {
+            if (2 === event.button) {
+                $(this).toggle('normal');
+            }
+        });
+        $('body').on('click', '.btnReload', function() {
+            var oThis = $(this);
+            var sIdx = oThis.attr('data-idx');
+            var oPlayer = $('.player[data-idx="' + sIdx + '"]');
+            oPlayer.attr('src', oPlayer.attr('src'));
+        });
+        $('#playerNum').on('change', (event) => {
+            saveSetting();
+            initView();
+        });
+        $('#selectReload').on('change', (event) => {
+            saveSetting();
+            var value = parseInt(event.target.value);
+            $('#btnTopReload').text('刷新' + value).trigger('click');
+        });
+        $('#btnTopReload').on('click', function() {
+            var text = $(this).text();
+            var index = text.replace(/[^0-9]/ig, "")
+            var oPlayer = $('.player[data-idx="' + (index - 1) + '"]');
+            oPlayer.attr('src', oPlayer.attr('src'));
+        });
+    }
+
+    function updateOrientation() {
+        if (sPortrait == oCfg.orientation) {
+            $('.player').each(function(i, element) {
+                var oThis = $(element);
+                oThis.removeClass('landscape').addClass('portrait').css('top', 0).css('left', 0);
+                oThis.parent('.playerBox').css('width', oCfg.playerHeight).css('height', oCfg.playerWidth);
+            });
+        } else if (sLandscape == oCfg.orientation) {
+            $('.player').each(function(i, element) {
+                var oThis = $(element);
+                oThis.removeClass('portrait').addClass('landscape').css('top', -DIFFWH).css('left',
+                    DIFFWH);
+                oThis.parent('.playerBox').css('width', oCfg.playerWidth).css('height', oCfg.playerHeight);
+            });
+        }
+    }
+
+    function initView() {
+        DIFFWH = (oCfg.playerWidth - oCfg.playerHeight) / 2;
+
+        var sHtmlPlayer = '';
+        var sHtmlReload = '';
+        for (var i = 0; i < oCfg.playerNum; ++i) {
+            sHtmlPlayer += '<div class="playerBox">';
+            sHtmlPlayer += '<iframe class="player" data-idx="' + i + '"></iframe>';
+            sHtmlPlayer += '</div>';
+
+            sHtmlReload += '<input type="button" class="btnReload" data-idx="' + i + '" value="玩家' + i + '">'
+        }
+        $('#playerWrap').html(sHtmlPlayer);
+        $('#reloadWrap').html(sHtmlReload);
+
+        $('.player').each(function(i, element) {
+            var oThis = $(element);
+            var nUid = oCfg.baseUid + i;
+            oThis.attr('src', oCfg.baseUrl + '?acc=' + nUid);
+            oThis.css('width', oCfg.playerHeight).css('height', oCfg.playerWidth);
+            oThis.parent('.playerBox').css('width', oCfg.playerHeight).css('height', oCfg.playerWidth);
+            oThis.attr('frameborder', 'no');
+        });
+
+        updateOrientation();
+    }
+
+    function loadCfgFromLocal() {
+        var sCfg = localStorage.getItem('xmWebDevKit');
+        try {
+            var oCfgTmp = JSON.parse(sCfg);
+            Object.assign(oCfg, oCfgTmp);
+        } catch (error) {}
+        $('#baseUrl').val(oCfg.baseUrl);
+        $('#baseUid').val(oCfg.baseUid);
+        $('#playerNum').val(oCfg.playerNum);
+        $('#btnRotate').val(oCfg.orientation);
+        $('#playerWidth').val(oCfg.playerWidth / oCfg.playerScale);
+        $('#playerHeight').val(oCfg.playerHeight / oCfg.playerScale);
+        $('#playerScale').val(oCfg.playerScale);
+        $('#btnTopReload').text('刷新' + oCfg.reloadIdx);
+        $('#selectReload').val(oCfg.reloadIdx);
+    }
+
+    function saveCfgToLocal() {
+        localStorage.setItem('xmWebDevKit', JSON.stringify(oCfg));
+    }
+
+    function saveSetting() {
+        $('#setting').hide('normal');
+        oCfg.baseUrl = $('#baseUrl').val();
+        oCfg.baseUid = parseInt($('#baseUid').val());
+        oCfg.playerNum = parseInt($('#playerNum').val());
+        oCfg.orientation = $('#btnRotate').val();
+        oCfg.playerWidth = parseFloat($('#playerWidth').val()) * parseFloat($('#playerScale').val());
+        oCfg.playerHeight = parseFloat($('#playerHeight').val()) * parseFloat($('#playerScale').val());
+        oCfg.playerScale = parseFloat($('#playerScale').val());
+        oCfg.reloadIdx = parseFloat($('#selectReload').val());
+
+        saveCfgToLocal();
+    }
+
+    // 入口函数
+    (function() {
+        $('#setting').hide();
+        loadCfgFromLocal();
+        initView();
+        initEvent();
+        // 退出保存配置
+        window.onbeforeunload = () => saveCfgToLocal();
+    })();
+</script>
+
+</html>
