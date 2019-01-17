@@ -487,8 +487,9 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 			}
 		}
 	}
-
+	//_ = iStrRoomUID
 	data_send.RoomUID = iStrRoomUID
+	//data_send.RoomUID = util.Str2int_LollipopGo(this.GateWayGetPlayerRoomID(StrOpenID))
 	// fmt.Println("stropenidA", data_send)
 	this.SendClientDataFunc(stropenidA, "connect", data_send)
 	this.SendClientDataFunc(stropenidB, "connect", data_send)
@@ -929,12 +930,17 @@ func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interf
 		Itype:     Itype,     // Itype == 1：表示主动选择房间；Itype == 2：表示快速开始
 		RoomID:    iRoomID,   // 房间ID
 	}
-
-	// this.PlayerSendMessage(data)
+	// 保存roomiD
+	this.GateWaySavePlayerRoomID(StrOpenID, data.RoomID)
+	if Itype == "1" {
+		if (util.Str2int_LollipopGo(iRoomID)) < 1000000 {
+			data.RoomID = this.GateWayGetPlayerRoomID(StrOpenID)
+			// this.GateWaySavePlayerRoomID(StrOpenID, data.RoomID)
+		}
+	}
 	// 发送给 global server
 	this.SendServerDataFunc(strGlobalServer, "Global_Server", data)
-	// 保存roomiD
-	this.GateWaySavePlayerRoomID(StrOpenID, iRoomID)
+
 	return
 }
 
