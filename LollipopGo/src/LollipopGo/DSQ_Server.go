@@ -534,7 +534,6 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 			}
 		}
 	}
-	return
 }
 
 //------------------------------------------------------------------------------
