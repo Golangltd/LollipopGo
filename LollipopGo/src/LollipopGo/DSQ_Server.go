@@ -492,7 +492,26 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 		select {
 		case <-time.After(DSQTimeSpeed / 2):
 			{
-				icount++
+
+				//--------------------------------------------------------------
+				ilen := len(TimeOutDSQ)
+				iilen := 0
+				tmp := make(map[int]int)
+				for v := range TimeOutDSQ {
+					fmt.Println("-==-=-=--=--key", v)
+					fmt.Println("-==-=-=--=--valve", TimeOutDSQ[v])
+					if v == iRoomIDbak {
+						icount = 0
+						continue
+					}
+					tmp[v] = TimeOutDSQ[v]
+					iilen++
+				}
+				TimeOutDSQ <- tmp
+				//--------------------------------------------------------------
+				if iilen == ilen {
+					icount++
+				}
 				if icount >= 30 {
 					res, err1 := cacheDSQ.Value(iRoomID)
 					if err1 != nil {
@@ -513,25 +532,10 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 					PlayerSendToServer(conn, data)
 					runtime.Goexit()
 					return
-
 				}
-			}
-		case i := <-TimeOutDSQ:
-			{
-				tmp := make(map[int]int)
-				for v := range i {
-					fmt.Println("-==-=-=--=--key", v)
-					fmt.Println("-==-=-=--=--valve", i[v])
-					if v == iRoomIDbak {
-						icount = 0
-					}
-					tmp[v] = i[v]
-				}
-				TimeOutDSQ <- tmp
 			}
 		}
 	}
-
 	return
 }
 
