@@ -935,7 +935,6 @@ func (this *NetDataConn) PlayerChooseGameModeGame(ProtocolData map[string]interf
 	if Itype == "1" {
 		if (util.Str2int_LollipopGo(iRoomID)) < 1000000 {
 			data.RoomID = this.GateWayGetPlayerRoomID(StrOpenID)
-			// this.GateWaySavePlayerRoomID(StrOpenID, data.RoomID)
 		}
 	}
 	// 发送给 global server

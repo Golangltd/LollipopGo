@@ -743,7 +743,7 @@ func CacheUpdateRoomData(iRoomID int, Update_pos string, value int) {
 // 检查是否是七个回合没有吃棋子
 func CheckIs7GoAround(iGoAround int, OpenIDA string, OpenIDB string, iRoomID int) {
 
-	if iGoAround == 7 {
+	if iGoAround == 14 {
 		fmt.Println("吃掉棋子去检测 --》7")
 		data := &Proto2.DSQ_GameHint{
 			Protocol:  Proto.G_GameDSQ_Proto,
@@ -752,7 +752,7 @@ func CheckIs7GoAround(iGoAround int, OpenIDA string, OpenIDB string, iRoomID int
 			OpenIDB:   OpenIDB,
 		}
 		PlayerSendToServer(ConnDSQ, data)
-	} else if iGoAround == 10 {
+	} else if iGoAround == 20 {
 
 		fmt.Println("吃掉棋子去检测 --》10")
 		res, err1 := cacheDSQ.Value(iRoomID)
