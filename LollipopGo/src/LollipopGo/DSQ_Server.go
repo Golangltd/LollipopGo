@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/rpc"
 	"net/rpc/jsonrpc"
+	"runtime"
 	"strings"
 	"time"
 
@@ -31,6 +32,7 @@ var DSQ_qi = []int{                                                            /
 var cacheDSQ *cache2go.CacheTable
 var DSQLeftTime int = 30
 var DSQTimeSpeed = time.Millisecond * 2000
+var TimeOutDSQ chan map[int]int
 
 type RoomPlayerDSQ struct {
 	RoomID       int
@@ -69,6 +71,7 @@ type RoomPlayerDSQ struct {
 
 // 初始化操作
 func init() {
+	TimeOutDSQ = make(chan map[int]int)
 	//if strServerType == "DSQ" {
 	if !initDSQGateWayNet() {
 		fmt.Println("链接 gateway server 失败!")
@@ -378,6 +381,7 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	CheckGameIsOver(iRoomID, StrOpenID)
 	// fmt.Println("++++++++++++++++++++", data)
 	PlayerSendToServer(conn, data)
+	SetPlayerChupaiGoround(iRoomID, StrOpenID)
 	return
 }
 
@@ -417,7 +421,7 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	// fmt.Println("++++++++++++++++++++", stropenid)
 	// 发送数据
 	PlayerSendToServer(conn, data)
-
+	SetPlayerChupaiGoround(iRoomID, StrOpenID)
 	return
 }
 
@@ -474,37 +478,60 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		InitData:  DSQ_Pai,
 	}
 	PlayerSendToServer(conn, data)
-	// cserli go CheckGameOfPlayerLeftTime(iRoomID, conn)
+	SetPlayerChupaiGoround(iRoomID, StrOpenID)
+	go CheckGameOfPlayerLeftTime(iRoomID, conn)
 	return
 }
 
 //------------------------------------------------------------------------------
 func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
+	icount := 0
+	iRoomIDbak := iRoomID
 
 	for {
 		select {
-		case <-time.After(DSQTimeSpeed):
+		case <-time.After(DSQTimeSpeed / 2):
 			{
-				res, err1 := cacheDSQ.Value(iRoomID)
-				if err1 != nil {
-					continue
-				}
-				ilefttime := res.Data().(*RoomPlayerDSQ).LeftTime
-				inowtime := int(util.GetNowUnix_LollipopGo())
-				if inowtime-ilefttime > DSQLeftTime {
+				icount++
+				if icount >= 30 {
+					res, err1 := cacheDSQ.Value(iRoomID)
+					if err1 != nil {
+						continue
+					}
 					data := &Proto2.DSQ2GW_BroadCast_GameOver{
 						Protocol:  Proto.G_GameDSQ_Proto,
 						Protocol2: Proto2.DSQ2GW_BroadCast_GameOverProto2,
 						IsDraw:    false,
 					}
-					data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDA
-					data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
+					openidtmp := GetPlayerChupaiGoround(iRoomIDbak)
+					data.OpenIDA = openidtmp
+					if res.Data().(*RoomPlayerDSQ).OpenIDA != openidtmp {
+						data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDA
+					} else {
+						data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
+					}
 					PlayerSendToServer(conn, data)
+					runtime.Goexit()
 					return
+
 				}
+			}
+		case i := <-TimeOutDSQ:
+			{
+				tmp := make(map[int]int)
+				for v := range i {
+					fmt.Println("-==-=-=--=--key", v)
+					fmt.Println("-==-=-=--=--valve", i[v])
+					if v == iRoomIDbak {
+						icount = 0
+					}
+					tmp[v] = i[v]
+				}
+				TimeOutDSQ <- tmp
 			}
 		}
 	}
+
 	return
 }
 
@@ -577,6 +604,20 @@ func SetRecord_A_B_chess(itype int) {
 func GetRecord_A_B_chess(itype int) int {
 
 	return 0
+}
+
+//------------------------------------------------------------------------------
+func SetPlayerChupaiGoround(iroomID int, opneid string) {
+	cacheDSQ.Add(iroomID+223, 30, opneid)
+}
+
+func GetPlayerChupaiGoround(iRoomID int) string {
+
+	res, err1 := cacheDSQ.Value(iRoomID)
+	if err1 != nil {
+		return ""
+	}
+	return res.Data().(string)
 }
 
 //------------------------------------------------------------------------------

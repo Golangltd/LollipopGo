@@ -1,60 +1,64 @@
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"net/url"
-)
+// import (
+// 	"fmt"
+// 	"net/http"
+// 	"time"
+// )
 
-var daat *EmailST
+// var chandata chan map[int]int
 
-type EmailST struct {
-	ID        int
-	Sender    string
-	Name      string
-	Type      int
-	Time      string
-	Content   string
-	IsAdd_ons bool // 是否有附件
-	IsOpen    bool // 是否打开过
-	IsGet     bool // 是否打开过
-	//ItemList  map[int]*ItemST
-}
+// func init() {
+// 	chandata = make(chan map[int]int)
+// 	go TTimerAddData()
+// 	go TTimeGetData()
 
-func main() {
+// }
 
-	daat := &EmailST{
-		ID:        1,
-		Sender:    "admin",
-		Name:      "admin",
-		Type:      1,
-		Content:   "qwertyuio",
-		IsAdd_ons: false,
-	}
+// // 压入数据测试
+// func TTimerAddData() {
 
-	u, _ := url.Parse("http://localhost:8892/GolangLtdGM")
-	q := u.Query()
-	q.Set("Protocol", "11")
-	q.Set("Protocol2", "3")
-	q.Set("IMsgtype", "1")
-	fmt.Println("---daat", daat)
-	str, _ := json.Marshal(&daat)
-	q.Set("EmailData", string(str))
-	u.RawQuery = q.Encode()
-	fmt.Printf("%s /n", u.String())
-	res, err := http.Get(u.String())
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	result, err := ioutil.ReadAll(res.Body)
-	res.Body.Close()
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	fmt.Printf("%s", result)
-}
+// 	vcount := 1
+// 	keycount := 10000
+
+// 	for {
+// 		select {
+// 		case <-time.After(time.Second * 10):
+// 			{
+// 				data := make(map[int]int)
+// 				data[keycount] = vcount
+// 				vcount++
+// 				keycount++
+// 				chandata <- data
+// 			}
+// 		}
+// 	}
+// }
+
+// // 获取数据测试
+// func TTimeGetData() {
+// 	for {
+
+// 		select {
+// 		case <-time.After(time.Second * 1):
+// 			{
+// 			}
+// 		case i := <-chandata:
+// 			{
+// 				for v := range i {
+// 					fmt.Println("-----------------i", i)
+// 					fmt.Println("-----------------v", v)
+// 					fmt.Println("-----------------vi", i[v])
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+// func main() {
+
+// 	strport := "8892" //  GM 系统操作 -- 修改金币等操作
+// 	http.HandleFunc("/GolangLtdGM", IndexHandlerGM)
+// 	http.ListenAndServe(":"+strport, nil)
+// 	return
+// }
