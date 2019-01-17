@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-ffunc init() {
-	
+func init() {
+
 }
 
 //Query232 查询
