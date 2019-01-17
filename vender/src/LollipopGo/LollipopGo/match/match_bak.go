@@ -90,6 +90,7 @@ func DoingMatch() {
 			roomid = util.Int2str_LollipopGo(MatchRoomUID)
 			datamatch.RoomUID = roomid
 			datamatch.RoomPlayerMap[data.OpenID] = data
+			DelMatchQueue(data.OpenID)
 		}
 
 		if i%2 == 0 {
