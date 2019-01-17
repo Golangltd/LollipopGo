@@ -487,12 +487,10 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 	icount := 0
 	iRoomIDbak := iRoomID
-
 	for {
 		select {
 		case <-time.After(DSQTimeSpeed / 2):
 			{
-
 				//--------------------------------------------------------------
 				ilen := len(TimeOutDSQ)
 				iilen := 0
