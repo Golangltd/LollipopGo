@@ -703,7 +703,6 @@ func G2GW_PlayerEntryHallProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 	fmt.Println(data)
 	PlayerSendToServer(conn, data)
 	return
-
 }
 
 // 保存数据都DB 人物信息
