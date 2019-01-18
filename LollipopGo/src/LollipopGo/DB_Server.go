@@ -17,11 +17,13 @@ import (
 
 var (
 	service = "127.0.0.1:8890"
+	cacheDB *cache2go.CacheTable
 )
 
 func init() {
 	arith := new(Arith)
 	rpc.Register(arith)
+	cacheDSQ = cache2go.Cache("LollipopGo_DB")
 	return
 }
 
@@ -155,8 +157,6 @@ func (t *Arith) ModefyPlayerEmailDataGM(data *player.EmailST, reply *Proto2.GMS2
 		}
 	}()
 
-	//--------------------------------------------------------------------------
-	// 保存数据库操作
 	bret := Mysyl_DB.DB.InsertPlayerGameEmailST2DB(data)
 	if bret {
 		// www.Golang.ltd
@@ -214,9 +214,24 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 			fmt.Println("Global server 异常错误", ErrorST)
 		}
 	}()
+
+	//--------------------------------------------------------------------------
+	// 获取缓存数据
+	if false {
+		iuid := args.UID
+		res, err := cacheDB.Value(iuid)
+		if err != nil {
+		}
+		if res.Data() != nil {
+			*reply = res.Data().(*player.PlayerSt)
+			return nil
+		}
+	}
+	//--------------------------------------------------------------------------
 	if Mysyl_DB.DB != nil {
 		_, data := Mysyl_DB.DB.InsertPlayerST2DB(args)
 		*reply = data
+		cacheDB.Add(args.UID+"DB_Player", 60*30, data)
 	} else {
 	}
 	return nil
