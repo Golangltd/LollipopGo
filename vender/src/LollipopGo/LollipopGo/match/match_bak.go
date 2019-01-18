@@ -61,7 +61,7 @@ func DoingMatch() {
 	Imax = len(Match_Chan)
 	if Imax == 1 {
 		fmt.Println(Match_Chan, "等待匹配")
-		if TimeOutCount == 1000 {
+		if TimeOutCount == 360 {
 			data, ok := <-Match_Chan
 			_, _ = data, ok
 			TimeOutCount = 0

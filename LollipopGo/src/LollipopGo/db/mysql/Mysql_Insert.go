@@ -29,6 +29,7 @@ func insertToDB(db *sql.DB) {
 	} else {
 		fmt.Println("插入数据成功：", id)
 	}
+	defer stmt.Close()
 }
 
 // ID        int
@@ -61,6 +62,7 @@ func (this *mysql_db) InsertPlayerGameEmailST2DB(data *player.EmailST) bool {
 	} else {
 		fmt.Println("插入数据成功：", id)
 	}
+	defer stmt.Close()
 	//--------------------------------------------------------------------------
 
 	return true
@@ -92,6 +94,7 @@ func (this *mysql_db) InsertPlayerGameInfoST2DB(data *Proto2.DB_GameOver) bool {
 	} else {
 		fmt.Println("插入数据成功：", id)
 	}
+	defer stmt.Close()
 	//--------------------------------------------------------------------------
 	return true
 }
@@ -121,6 +124,7 @@ func (this *mysql_db) InsertPlayerST2DB(data *player.PlayerSt) (bool, player.Pla
 	} else {
 		fmt.Println("插入数据成功：", id)
 	}
+	defer stmt.Close()
 
 	/*
 		&PlayerSt.UID, &uid,

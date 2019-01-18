@@ -8,6 +8,7 @@ import (
 	"LollipopGo/db/mysql"
 	"Proto"
 	"Proto/Proto2"
+	"cache2go"
 	"fmt"
 	"net"
 	"net/rpc"
@@ -218,20 +219,20 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 	//--------------------------------------------------------------------------
 	// 获取缓存数据
 	if false {
-		iuid := args.UID
-		res, err := cacheDB.Value(iuid)
-		if err != nil {
-		}
-		if res.Data() != nil {
-			*reply = res.Data().(*player.PlayerSt)
-			return nil
-		}
+		// iuid := args.UID
+		// res, err := cacheDB.Value(iuid)
+		// if err != nil {
+		// }
+		// if res.Data() != nil {
+		// 	*reply = res.Data().(*player.PlayerSt)
+		// 	return nil
+		// }
 	}
 	//--------------------------------------------------------------------------
 	if Mysyl_DB.DB != nil {
 		_, data := Mysyl_DB.DB.InsertPlayerST2DB(args)
 		*reply = data
-		cacheDB.Add(args.UID+"DB_Player", 60*30, data)
+		//		cacheDB.Add(args.UID+"DB_Player", 60*30, data)
 	} else {
 	}
 	return nil

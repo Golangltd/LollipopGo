@@ -48,6 +48,7 @@ func (this *mysql_db) ReadPlayerEmailInfoData(stropenid string) map[int]*player.
 	} else {
 		fmt.Println("没有错误!")
 	}
+	defer rows.Close()
 
 	dataEmail := make(map[int]*player.EmailST)
 	for rows.Next() {
@@ -69,13 +70,13 @@ func (this *mysql_db) ReadPlayerEmailInfoData(stropenid string) map[int]*player.
 //------------------------------------------------------------------------------
 func (this *mysql_db) ReadAdminEmailInfoData() map[int]*player.EmailST {
 	rows, err := this.STdb.Query("SELECT * FROM t_adminemail where state = 1")
-	defer rows.Close()
 	CheckErr(err)
 	if err != nil {
 		fmt.Println("error:", err)
 	} else {
 		fmt.Println("没有错误!")
 	}
+	defer rows.Close()
 
 	dataEmail := make(map[int]*player.EmailST)
 	for rows.Next() {

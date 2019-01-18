@@ -497,12 +497,12 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 				tmp := make(map[int]int)
 				for v := range TimeOutDSQ {
 					fmt.Println("-==-=-=--=--key", v)
-					fmt.Println("-==-=-=--=--valve", TimeOutDSQ[v])
-					if v == iRoomIDbak {
-						icount = 0
-						continue
-					}
-					tmp[v] = TimeOutDSQ[v]
+					//					fmt.Println("-==-=-=--=--valve", TimeOutDSQ[v])
+					// if v == iRoomIDbak {
+					// 	icount = 0
+					// 	continue
+					// }
+					//					tmp[v] = TimeOutDSQ[v]
 					iilen++
 				}
 				TimeOutDSQ <- tmp
