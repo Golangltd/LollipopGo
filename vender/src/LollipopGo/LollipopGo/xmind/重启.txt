@@ -1,0 +1,31 @@
+// 服务器重启流程
+mysql -uroot -p
+/etc/my.cnf
+
+service mysqld start
+service httpd start
+redis-server 6379.conf
+
+//  查看最大链接
+show variables like "max_connections";
+
+
+   >mysql -uuser -ppassword(命令行登录MySQL)
+
+    mysql>show variables like 'max_connections';(查可以看当前的最大连接数)
+
+    msyql>set global max_connections=1000;(设置最大连接数为1000，可以再次查看是否设置成功)
+
+    mysql>exit(推出)
+
+
+//  超时时间
+查看mysql server超时时间：
+
+   msyql> show global variables like '%timeout%';
+ 
+设置mysql server超时时间（以秒为单位）： 
+ 
+  msyql> set global wait_timeout=10;
+
+  msyql> set global interactive_timeout=10;
