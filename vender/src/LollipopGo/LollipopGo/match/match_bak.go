@@ -6,6 +6,8 @@ import (
 	"cache2go"
 	"fmt"
 	"time"
+
+	"code.google.com/p/go.net/websocket"
 )
 
 //------------------------------------------------------------------------------
@@ -22,6 +24,7 @@ var (
 	cache            *cache2go.CacheTable
 	MatchRoomUID     int = 1000
 	TimeOutCount     int = 0
+	ConnMatch        *websocket.Conn
 )
 
 //------------------------------------------------------------------------------
@@ -66,6 +69,7 @@ func DoingMatch() {
 			_, _ = data, ok
 			TimeOutCount = 0
 			fmt.Println(Match_Chan, "匹配超时剔除队列")
+			//------------------------------------------------------------------
 		}
 		return
 	}
