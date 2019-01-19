@@ -36,5 +36,5 @@ func (this *mysql_db) mysql_open() {
 	this.STdb.SetMaxOpenConns(dbMaxOpenConns)
 	this.STdb.SetMaxIdleConns(dbMaxIdleConns)
 	this.STdb.Ping()
-	defer Odb.Close()
+	// defer Odb.Close()
 }

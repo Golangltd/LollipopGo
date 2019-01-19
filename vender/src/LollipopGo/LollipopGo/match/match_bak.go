@@ -65,7 +65,7 @@ func DoingMatch() {
 			data, ok := <-Match_Chan
 			_, _ = data, ok
 			TimeOutCount = 0
-			fmt.Println(Match_Chan, "匹配超时")
+			fmt.Println(Match_Chan, "匹配超时剔除队列")
 		}
 		return
 	}
