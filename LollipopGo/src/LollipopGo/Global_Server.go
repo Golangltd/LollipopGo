@@ -63,6 +63,7 @@ func initGateWayNet() bool {
 		return false
 	}
 	Conn = conn
+	match.ConnMatch = conn
 	go GameServerReceiveG(Conn)
 	initConn(Conn)
 	return true
