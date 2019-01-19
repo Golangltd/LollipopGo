@@ -457,7 +457,7 @@ func (this *NetDataConn) GWPlayerMatchGameGL(ProtocolData map[string]interface{}
 		Protocol:  Proto.G_GateWay_Proto, // 游戏主要协议
 		Protocol2: Proto2.S2GWS_PlayerChooseGameModeProto2,
 		OpenID:    StrOpenID, // 玩家唯一标识
-		//RoomUID:     StrRoomUID,
+		// RoomUID:     StrRoomUID,
 		MatchPlayer: MatchPlayerST,
 		ChessBoard:  ChessBoard,
 		ResultID:    iResultID,
