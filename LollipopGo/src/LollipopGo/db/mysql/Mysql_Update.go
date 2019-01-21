@@ -17,6 +17,7 @@ func (this *mysql_db) Modefy_AdminGameEmailInfoDataGM() bool {
 	strSql := "update t_adminemail set state=? where id > 0"
 	// 修改数据
 	stmt, err := this.STdb.Prepare(strSql)
+	defer stmt.Close()
 	CheckErr(err)
 	res, err := stmt.Exec(0)
 	affect, err := res.RowsAffected()
