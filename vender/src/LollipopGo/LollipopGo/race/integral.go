@@ -1,7 +1,28 @@
 package race
 
-/*
-   积分赛，规则：
-1  玩家需要报名
-2  定时开赛
-*/
+var (
+	IRace_Time int
+)
+
+// 比赛接口
+type ReacIF interface {
+	BaoMingRaceData()
+	BaoMingExit()
+	GetRaceDataFromDB()
+	PutRaceDataToDB()
+}
+
+// 比赛结构
+type RaceSt struct {
+	RaceUID  int
+	RaceName string
+	RaceTime string
+	RaceDesc string
+	RaceNum  int
+	RaceJl   string
+}
+
+// 初始化
+func init() {
+	return
+}
