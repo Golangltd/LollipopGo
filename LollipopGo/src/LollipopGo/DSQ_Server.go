@@ -915,7 +915,14 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 	if iyuanlai <= 8 && ihoulai > 8 {
 		if iyuanlai == 1 && ihoulai-Proto2.Mouse == 8 {
 			// 大象吃不了老鼠
-			return sendopenid, otheropenid, ""
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
+			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			return sendopenid, otheropenid, strnewpos
 		}
 		res.Data().(*RoomPlayerDSQ).GoAround = 0
 		res.Data().(*RoomPlayerDSQ).LeftTime = int(util.GetNowUnix_LollipopGo())
@@ -927,9 +934,9 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 
 			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
-				res.Data().(*RoomPlayerDSQ).BChessNum++
-			} else {
 				res.Data().(*RoomPlayerDSQ).AChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
 			}
 
 			// CheckIs7GoAround(res.Data().(*RoomPlayerDSQ).GoAround, sendopenid, otheropenid, iRoomID)
@@ -943,9 +950,9 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
-				res.Data().(*RoomPlayerDSQ).BChessNum++
-			} else {
 				res.Data().(*RoomPlayerDSQ).AChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
 			}
 			return sendopenid, otheropenid, strnewpos
 
@@ -961,7 +968,6 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 
 		} else if iyuanlai > ihoulai-Proto2.Mouse { // 自毁
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
-
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 
 			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
@@ -977,8 +983,15 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 	} else if iyuanlai > 8 && ihoulai <= 8 {
 
 		if iyuanlai-Proto2.Mouse == 1 && ihoulai == Proto2.Mouse {
+			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).AChessNum++
+			}
 			// 大象吃不了老鼠
-			return "", "", ""
+			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
+			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
+			return sendopenid, otheropenid, strnewpos
 		}
 
 		// sendopenid, otheropenid := "", ""
@@ -992,15 +1005,16 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 		res.Data().(*RoomPlayerDSQ).GoAround = 0
 		res.Data().(*RoomPlayerDSQ).LeftTime = int(util.GetNowUnix_LollipopGo())
 		if iyuanlai-Proto2.Mouse == 8 && ihoulai == 1 {
+
 			res.Data().(*RoomPlayerDSQ).ChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
-				res.Data().(*RoomPlayerDSQ).BChessNum++
-			} else {
 				res.Data().(*RoomPlayerDSQ).AChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
 			}
 			return sendopenid, otheropenid, strnewpos
 		}
@@ -1012,9 +1026,9 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			res.Data().(*RoomPlayerDSQ).ReChessData[ipos_x][ipos_y] = iyuanlai
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
-				res.Data().(*RoomPlayerDSQ).BChessNum++
-			} else {
 				res.Data().(*RoomPlayerDSQ).AChessNum++
+			} else {
+				res.Data().(*RoomPlayerDSQ).BChessNum++
 			}
 			return sendopenid, otheropenid, strnewpos
 
@@ -1030,7 +1044,6 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 
 		} else if iyuanlai-Proto2.Mouse < ihoulai { // 自毁
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
-
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 
 			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
