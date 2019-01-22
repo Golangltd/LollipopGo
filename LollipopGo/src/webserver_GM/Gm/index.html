@@ -32,15 +32,21 @@ license that can be found in the LICENSE file.
 			mod = result.module;
 			inst = result.instance;
 			document.getElementById("runButton").disabled = false;
+			console.log('mod',mod);
+			console.log('inst',inst);
+			// document.write('LollipopGo架构');
+			alert("LollipopGo架构")
 		});
-
+        
+		// html  执行的函数
 		async function run() {
 			console.clear();
 			await go.run(inst);
 			inst = await WebAssembly.instantiate(mod, go.importObject); // reset instance
+			console.log('inst',inst);
 		}
+		
 	</script>
-
 	<button onClick="run();" id="runButton" disabled>Run</button>
 </body>
 

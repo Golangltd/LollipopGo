@@ -5,7 +5,15 @@ import (
 )
 
 func main() {
-	// 浏览器打印日志消息
+
 	fmt.Println("Hello, LollipopGo!")
-	return
+
+	data := Add(10, 8)
+	fmt.Println("add:", data)
+}
+
+func Add(i, j int) int {
+
+	return i + j
+
 }
