@@ -64,7 +64,7 @@ func DoingMatch() {
 	Imax = len(Match_Chan)
 	if Imax == 1 {
 		fmt.Println(Match_Chan, "等待匹配")
-		if TimeOutCount == 360 {
+		if TimeOutCount == 60 {
 			data, ok := <-Match_Chan
 			_, _ = data, ok
 			TimeOutCount = 0
@@ -85,10 +85,11 @@ func DoingMatch() {
 
 		if data, ok := <-Match_Chan; ok {
 			fmt.Println("3333333333333333333333", data)
-			if GetMatchPlayer(data.OpenID) {
-				fmt.Println(data.OpenID, "玩家已经退出！")
-				continue
-			}
+			// if GetMatchPlayer(data.OpenID) {
+			// 	// 自动清理玩家 channel的基础机制
+			// 	fmt.Println(data.OpenID, "玩家已经退出！")
+			// 	break
+			// }
 
 			datamatch.RoomLimTime = 10
 			roomid = util.Int2str_LollipopGo(MatchRoomUID)
@@ -119,7 +120,14 @@ func Sort_timer() {
 }
 
 func SetQuitMatch(OpenID string) {
-	cache.Add(OpenID+"QuitMatch", 0, "exit")
+	//cache.Add(OpenID+"QuitMatch", 0, "exit")
+	if data, ok := <-Match_Chan; ok {
+		if data.OpenID == OpenID {
+			fmt.Println(data.OpenID, "玩家已经退出！")
+			return
+		}
+		Match_Chan <- data
+	}
 }
 
 func DelQuitMatchList(OpenID string) {
