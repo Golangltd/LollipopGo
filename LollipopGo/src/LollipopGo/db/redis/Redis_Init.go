@@ -13,18 +13,18 @@ var client *redis.Client
 func INIT() {
 	// 链接
 	client = redis.NewClient(&redis.Options{
-		Addr:     "127.0.0.1:6379",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Addr:     "db.a.babaliuliu.com:6379",
+		Password: "",
+		DB:       0,
 	})
 	// 心跳  -- 一直做的事情
-	go Redis_Ping(client)
+	// go Redis_Ping(client)
 
-	return
+	// return
 
 	// 设置  --  测试时间 耗时 --
 	t1 := time.Now()
-	for i := 0; i < 100000; i++ {
+	for i := 0; i < 1000; i++ {
 		err := client.Set("key", i+1, 0).Err()
 		if err != nil {
 			panic(err)
