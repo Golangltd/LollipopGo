@@ -85,10 +85,10 @@ func DoingMatch() {
 
 		if data, ok := <-Match_Chan; ok {
 			fmt.Println("3333333333333333333333", data)
-			//			if GetMatchPlayer(data.OpenID) {
-			//				fmt.Println(data.OpenID, "玩家已经退出！")
-			//				continue
-			//			}
+			if GetMatchPlayer(data.OpenID) {
+				fmt.Println(data.OpenID, "玩家已经退出！")
+				continue
+			}
 
 			datamatch.RoomLimTime = 10
 			roomid = util.Int2str_LollipopGo(MatchRoomUID)

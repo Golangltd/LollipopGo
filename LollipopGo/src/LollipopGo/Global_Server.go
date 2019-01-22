@@ -495,7 +495,7 @@ func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[s
 		Protocol:  Proto.G_GameGlobal_Proto,
 		Protocol2: Proto2.G2GW_PlayerQuitMatchGameProto2,
 		OpenID:    StrOpenID,
-		ResultID:  0,
+		ResultID:  1,
 	}
 	PlayerSendToServer(conn, data_send)
 	return
