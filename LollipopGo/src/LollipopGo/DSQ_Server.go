@@ -84,7 +84,6 @@ func init() {
 	return
 }
 
-// 初始化RPC
 func initDSQNetRPC() {
 	client, err := jsonrpc.Dial("tcp", service)
 	if err != nil {
@@ -94,7 +93,6 @@ func initDSQNetRPC() {
 	cacheDSQ = cache2go.Cache("LollipopGo_DSQ")
 }
 
-// 初始化网关
 func initDSQGateWayNet() bool {
 
 	fmt.Println("用户客户端客户端模拟！")
@@ -106,29 +104,23 @@ func initDSQGateWayNet() bool {
 		return false
 	}
 	ConnDSQ = conn
-	// 协程支持  --接受线程操作 全球协议操作
 	go GameServerReceiveDSQ(ConnDSQ)
-	// 发送链接的协议 ---》
 	initConnDSQ(ConnDSQ)
 	return true
 }
 
-// 链接到网关
 func initConnDSQ(conn *websocket.Conn) {
 	fmt.Println("---------------------------------")
-	// 协议修改
 	data := &Proto2.DSQ2GW_ConnServer{
 		Protocol:  Proto.G_GameDSQ_Proto, // 游戏主要协议
 		Protocol2: Proto2.DSQ2GW_ConnServerProto2,
 		ServerID:  util.MD5_LollipopGO("8895" + "DSQ server"),
 	}
 	fmt.Println(data)
-	// 2 发送数据到服务器
 	PlayerSendToServer(conn, data)
 	return
 }
 
-// 处理数据
 func GameServerReceiveDSQ(ws *websocket.Conn) {
 	for {
 		var content string
@@ -137,7 +129,6 @@ func GameServerReceiveDSQ(ws *websocket.Conn) {
 			fmt.Println(err.Error())
 			continue
 		}
-		// decode
 		fmt.Println(strings.Trim("", "\""))
 		fmt.Println(content)
 		content = strings.Replace(content, "\"", "", -1)
@@ -146,43 +137,35 @@ func GameServerReceiveDSQ(ws *websocket.Conn) {
 			fmt.Println(errr)
 			continue
 		}
-		// 解析数据 --
 		fmt.Println("返回数据：", string(contentstr))
 		go SyncMeassgeFunDSQ(string(contentstr))
 	}
 }
 
-// 链接分发 处理
 func SyncMeassgeFunDSQ(content string) {
 	var r Requestbody
 	r.req = content
 
 	if ProtocolData, err := r.Json2map(); err == nil {
-		// 处理我们的函数
 		HandleCltProtocolDSQ(ProtocolData["Protocol"], ProtocolData["Protocol2"], ProtocolData)
 	} else {
 		log.Debug("解析失败：", err.Error())
 	}
 }
 
-//  主协议处理
 func HandleCltProtocolDSQ(protocol interface{}, protocol2 interface{}, ProtocolData map[string]interface{}) {
-	defer func() { // 必须要先声明defer，否则不能捕获到panic异常
+	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
-			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
 				Protocol:  Proto.G_Error_Proto,      // 主协议
 				Protocol2: Proto2.G_Error_All_Proto, // 子协议
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
-			// 发送给玩家数据
 			fmt.Println("Global server的主协议!!!", ErrorST)
 		}
 	}()
-
-	// 协议处理
 	switch protocol {
 	case float64(Proto.G_GameDSQ_Proto):
 		{ // DSQ Server 主要协议处理
@@ -248,7 +231,6 @@ func GW2DSQ_PlayerRelinkGameProto2Fucn(conn *websocket.Conn, ProtocolData map[st
 		Protocol:  Proto.G_GameDSQ_Proto,
 		Protocol2: Proto2.DSQ2GW_PlayerRelinkGameProto2,
 		OpenIDA:   StrOpenID,
-		// OpenIDB   string
 		LeftTime:  lefttime,
 		ChessData: redata,
 	}
@@ -280,9 +262,7 @@ func GW2DSQ_PlayerGiveUpProto2Fucn(conn *websocket.Conn, ProtocolData map[string
 		//		SuccPlayer:      nil,                                                                         // 胜利者
 	}
 	PlayerSendToServer(conn, data)
-	// 删除房间数据
 	cacheDSQ.Delete(iRoomID)
-
 	return
 	//--------------------------------------------------------------------------
 	// 失败者*数据保存到db
@@ -558,16 +538,16 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		idataB := res.Data().(*RoomPlayerDSQ).BChessNum
 		fmt.Println("已经吃掉几个B", idataB)
 		if idataB == 8 {
-			data.OpenIDB = strpopenid
-			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDB
+			data.OpenIDA = strpopenid
+			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
 		idataA := res.Data().(*RoomPlayerDSQ).AChessNum
 		fmt.Println("已经吃掉几个A", idataA)
 		if idataA == 8 {
-			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDB
-			data.OpenIDA = strpopenid
+			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDB
+			data.OpenIDB = strpopenid
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
@@ -577,8 +557,8 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		idataA := res.Data().(*RoomPlayerDSQ).AChessNum
 		fmt.Println("已经吃掉几个A", idataA)
 		if idataA == 8 {
-			data.OpenIDB = strpopenid
-			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDA
+			data.OpenIDA = strpopenid
+			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDA
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
@@ -586,8 +566,8 @@ func CheckGameIsOver(iRoomID int, strpopenid string) bool {
 		idataB := res.Data().(*RoomPlayerDSQ).BChessNum
 		fmt.Println("已经吃掉几个B", idataB)
 		if idataB == 8 {
-			data.OpenIDB = res.Data().(*RoomPlayerDSQ).OpenIDA
-			data.OpenIDA = strpopenid
+			data.OpenIDA = res.Data().(*RoomPlayerDSQ).OpenIDA
+			data.OpenIDB = strpopenid
 			PlayerSendToServer(ConnDSQ, data)
 			return true
 		}
@@ -972,13 +952,15 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 
 			if stropenid == res.Data().(*RoomPlayerDSQ).OpenIDA {
 				res.Data().(*RoomPlayerDSQ).BChessNum++
+				fmt.Println("=+++++++++++++++++++:BBBBBBBBBBB")
 			} else {
 				res.Data().(*RoomPlayerDSQ).AChessNum++
+				fmt.Println("=+++++++++++++++++++:AAAAAAAAAAA")
 			}
+			fmt.Println("=+++++++++++++++++++:")
 			return sendopenid, otheropenid, strnewpos
 		}
-
-		return sendopenid, otheropenid, strnewpos
+		// return sendopenid, otheropenid, strnewpos
 
 	} else if iyuanlai > 8 && ihoulai <= 8 {
 
@@ -994,14 +976,6 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			return sendopenid, otheropenid, strnewpos
 		}
 
-		// sendopenid, otheropenid := "", ""
-		// if res.Data().(*RoomPlayerDSQ).OpenIDA == stropenid {
-		// 	sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDA
-		// 	otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDB
-		// } else if res.Data().(*RoomPlayerDSQ).OpenIDB == stropenid {
-		// 	sendopenid = res.Data().(*RoomPlayerDSQ).OpenIDB
-		// 	otheropenid = res.Data().(*RoomPlayerDSQ).OpenIDA
-		// }
 		res.Data().(*RoomPlayerDSQ).GoAround = 0
 		res.Data().(*RoomPlayerDSQ).LeftTime = int(util.GetNowUnix_LollipopGo())
 		if iyuanlai-Proto2.Mouse == 8 && ihoulai == 1 {
@@ -1042,7 +1016,8 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			res.Data().(*RoomPlayerDSQ).BChessNum++
 			return sendopenid, otheropenid, strnewpos
 
-		} else if iyuanlai-Proto2.Mouse < ihoulai { // 自毁
+		} else if iyuanlai-Proto2.Mouse > ihoulai { // 自毁
+			// 12 -8 = 4       < 2
 			res.Data().(*RoomPlayerDSQ).ChessData[iyunalaiX][iyunalaiY] = 0
 			res.Data().(*RoomPlayerDSQ).ReChessData[iyunalaiX][iyunalaiY] = 0
 
@@ -1053,8 +1028,7 @@ func CacheMoveChessIsUpdateData(iRoomID int, Update_pos string, MoveDir int, str
 			}
 			return sendopenid, otheropenid, strnewpos
 		}
-
-		return sendopenid, otheropenid, strnewpos
+		// return sendopenid, otheropenid, strnewpos
 	}
 
 	return "", "", ""
