@@ -1,12 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
+<!--
+Copyright 2018 The Go Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<title>Golan语言社区 LollipopGo Web后台Gm系统</title>
-	<!-- 	<a href="http://www.byteedu.com/" class="button button-raised button-primary button-pill">测试数据</a> -->
-		<link href="css/buttons.css" rel="stylesheet" type="text/css"/>
-	</head>
-	<body>
-		主页
-    </body>
+
+<head>
+	<meta charset="utf-8">
+	<title>Golang语言社区 LollipopGo游戏服务器框架</title>
+</head>
+
+<body>
+	<!--
+	Add the following polyfill for Microsoft Edge 17/18 support:
+	<script src="https://cdn.jsdelivr.net/npm/text-encoding@0.7.0/lib/encoding.min.js"></script>
+	(see https://caniuse.com/#feat=textencoder)
+	-->
+	<script src="./js/wasm_exec.js"></script>
+	<script>
+		if (!WebAssembly.instantiateStreaming) { // polyfill
+			WebAssembly.instantiateStreaming = async (resp, importObject) => {
+				const source = await (await resp).arrayBuffer();
+				return await WebAssembly.instantiate(source, importObject);
+			};
+		}
+
+		const go = new Go();
+		let mod, inst;
+		WebAssembly.instantiateStreaming(fetch("asm/LollipopGo.wasm"), go.importObject).then((result) => {
+			mod = result.module;
+			inst = result.instance;
+			document.getElementById("runButton").disabled = false;
+		});
+
+		async function run() {
+			console.clear();
+			await go.run(inst);
+			inst = await WebAssembly.instantiate(mod, go.importObject); // reset instance
+		}
+	</script>
+
+	<button onClick="run();" id="runButton" disabled>Run</button>
+</body>
+
 </html>
