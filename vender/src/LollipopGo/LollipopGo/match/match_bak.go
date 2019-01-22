@@ -120,7 +120,7 @@ func Sort_timer() {
 }
 
 func SetQuitMatch(OpenID string) {
-	//cache.Add(OpenID+"QuitMatch", 0, "exit")
+	cache.Add(OpenID+"QuitMatch", 0, "exit")
 	if data, ok := <-Match_Chan; ok {
 		if data.OpenID == OpenID {
 			fmt.Println(data.OpenID, "玩家已经退出！")

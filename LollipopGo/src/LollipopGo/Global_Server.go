@@ -488,8 +488,6 @@ func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[s
 		return
 	}
 	StrOpenID := ProtocolData["OpenID"].(string)
-	// 玩家主动退出
-	match.SetQuitMatch(StrOpenID)
 	// 发送消息
 	data_send := &Proto2.G2GW_PlayerQuitMatchGame{
 		Protocol:  Proto.G_GameGlobal_Proto,
@@ -498,6 +496,8 @@ func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[s
 		ResultID:  1,
 	}
 	PlayerSendToServer(conn, data_send)
+	// 玩家主动退出
+	match.SetQuitMatch(StrOpenID)
 	return
 }
 
