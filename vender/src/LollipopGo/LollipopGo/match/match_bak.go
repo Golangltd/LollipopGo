@@ -65,8 +65,8 @@ func DoingMatch() {
 	if Imax == 1 {
 		fmt.Println(Match_Chan, "等待匹配")
 		if TimeOutCount == 60 {
-			data, ok := <-Match_Chan
-			_, _ = data, ok
+			//data, ok := <-Match_Chan
+			//_, _ = data, ok
 			TimeOutCount = 0
 			fmt.Println(Match_Chan, "匹配超时剔除队列")
 			//------------------------------------------------------------------
@@ -124,11 +124,11 @@ func SetQuitMatch(OpenID string) {
 	if data, ok := <-Match_Chan; ok {
 		if data.OpenID == OpenID {
 			fmt.Println(data.OpenID, "玩家已经退出！")
+			cache.Delete(OpenID + "QuitMatch")
 			return
 		}
 		Match_Chan <- data
 	}
-	cache.Delete(OpenID + "QuitMatch")
 }
 
 func DelQuitMatchList(OpenID string) {
