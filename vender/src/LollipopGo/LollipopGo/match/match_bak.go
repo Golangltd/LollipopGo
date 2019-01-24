@@ -128,6 +128,7 @@ func SetQuitMatch(OpenID string) {
 		}
 		Match_Chan <- data
 	}
+	cache.Delete(OpenID + "QuitMatch")
 }
 
 func DelQuitMatchList(OpenID string) {
@@ -136,8 +137,11 @@ func DelQuitMatchList(OpenID string) {
 
 func GetMatchPlayer(OpenID string) bool {
 	ok := false
-	_, err1 := cache.Value(OpenID + "QuitMatch")
-	if err1 == nil {
+	res, err1 := cache.Value(OpenID + "QuitMatch")
+	if err1 != nil {
+		return ok
+	}
+	if res.Data().(string) == "exit" {
 		ok = true
 	}
 	return ok

@@ -34,7 +34,7 @@ type EmailGM struct {
 	Name       string
 	OPType     int    // 操作类型 1 新增 2 编辑  3 删除
 	SendType   int    // 1 表示全服玩家  2 指定玩家发送
-	PlayerUID  string // 玩家UID
+	OpenID     string // 玩家UID
 	SendTime   string // 发送时间，符串1：表示立即发送 ，预定发送表示后面定时发送
 	Content    string
 	ItemList   string
