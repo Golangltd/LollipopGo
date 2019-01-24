@@ -60,6 +60,11 @@ func GetChanLength() int {
 }
 
 func DoingMatch() {
+
+	if GetChanLength() == 0 {
+		return
+	}
+
 	TimeOutCount++
 	Imax = len(Match_Chan)
 	if Imax == 1 {
@@ -123,7 +128,7 @@ func SetQuitMatch(OpenID string) {
 	cache.Add(OpenID+"QuitMatch", 0, "exit")
 	if data, ok := <-Match_Chan; ok {
 		if data.OpenID == OpenID {
-			fmt.Println(data.OpenID, "玩家已经退出！")
+			fmt.Println(data.OpenID, "SetQuitMatch   玩家已经退出！")
 			cache.Delete(OpenID + "QuitMatch")
 			return
 		}
@@ -163,4 +168,5 @@ func SetMatchQueue(OpenID string) {
 
 func DelMatchQueue(OpenID string) {
 	cache.Delete(OpenID + "MatchQueue")
+	// SetQuitMatch(OpenID)
 }
