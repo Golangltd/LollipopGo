@@ -497,7 +497,7 @@ func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[s
 	}
 	PlayerSendToServer(conn, data_send)
 	// 玩家主动退出
-	match.SetQuitMatch(StrOpenID)
+	// 	match.SetQuitMatch(StrOpenID)
 	match.DelMatchQueue(StrOpenID)
 	return
 }
