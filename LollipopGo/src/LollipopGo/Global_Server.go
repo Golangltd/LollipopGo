@@ -2,7 +2,7 @@ package main
 
 import (
 	"LollipopGo/LollipopGo/conf"
-	"LollipopGo/LollipopGo/error"
+	_ "LollipopGo/LollipopGo/error"
 	"LollipopGo/LollipopGo/log"
 	"LollipopGo/LollipopGo/match"
 	"Proto"
@@ -498,6 +498,7 @@ func G2GW_PlayerQuitMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[s
 	PlayerSendToServer(conn, data_send)
 	// 玩家主动退出
 	match.SetQuitMatch(StrOpenID)
+	match.DelMatchQueue(StrOpenID)
 	return
 }
 
@@ -523,11 +524,11 @@ func G2GW_PlayerMatchGameProto2Fucn(conn *websocket.Conn, ProtocolData map[strin
 		// ChessBoard:  {{}, {}, {}, {}},
 		ResultID: 0,
 	}
-	if match.GetMatchQueue(StrOpenID) {
-		data_send.ResultID = Error.IsMatch
-		PlayerSendToServer(conn, data_send)
-		return
-	}
+	// if match.GetMatchQueue(StrOpenID) {
+	// 	data_send.ResultID = Error.IsMatch
+	// 	PlayerSendToServer(conn, data_send)
+	// 	return
+	// }
 	match.SetMatchQueue(StrOpenID)
 
 	if StrItype == "2" {

@@ -10,7 +10,11 @@ const (
 
 // 系统消息结构
 type MsgST struct {
-	MsgID   int    // 消息ID
-	MsgType int    // 前端和消息类型去显示到对应的模块
-	MsgDesc string // 消息内容
+	MsgID     int    // 消息ID
+	MsgDesc   string // 消息内容
+	MsgState  int    // 消息状态 1，表示上架，2：下架
+	MsgType   int    // 1 表示全服
+	LoopType  int    // 1：永久，2：次数
+	LoopCount int    // 循环次数
+	LoopTime  int    // 循环时间
 }

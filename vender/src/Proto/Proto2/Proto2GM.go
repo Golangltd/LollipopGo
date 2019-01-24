@@ -15,6 +15,7 @@ const (
 	*/
 	W2GMS_Modify_PlayerEmailDataProto2 // W2GMS_Modify_PlayerEmailDataProto2  == 3 修改邮件数据
 	GMS2W_Modify_PlayerEmailDataProto2 // GMS2W_Modify_PlayerEmailDataProto2  == 4
+
 )
 
 //------------------------------------------------------------------------------
@@ -25,9 +26,10 @@ const (
 type W2GMS_Modify_PlayerEmailData struct {
 	Protocol  int
 	Protocol2 int
-	IMsgtype  int             // 1:表示邮件，2：跑马灯消息，3:针对个人
-	OpenID    string          // 玩家唯一ID
-	EmailData *player.EmailST // 邮件的消息
+	IMsgtype  int    // 1:表示邮件，2：跑马灯消息，3:针对个人
+	OpenID    string // 玩家唯一ID
+	// EmailData *player.EmailST // 邮件的消息
+	EmailData *player.EmailGM // 邮件的消息
 	MsgData   *player.MsgST   // 跑马灯的消息
 }
 
