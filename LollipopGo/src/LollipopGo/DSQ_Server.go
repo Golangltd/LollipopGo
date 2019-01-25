@@ -363,9 +363,19 @@ func GW2DSQ_PlayerMoveChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	PlayerSendToServer(conn, data)
 	SetPlayerChupaiGoround(iRoomID, StrOpenID)
 	//--------------------------------------------------------------------------
-	datatmp := make(map[int]int64)
-	datatmp[iRoomID] = time.Now().Unix()
-	TimeOutDSQ <- datatmp
+	if iRoomID != 0 {
+		tmp := make(map[int]int64)
+		data := <-TimeOutDSQ
+		tmp = data
+		for k, v := range tmp {
+			if iRoomID == k {
+				tmp[iRoomID] = time.Now().Unix()
+			} else {
+				tmp[k] = v
+			}
+		}
+		TimeOutDSQ <- tmp
+	}
 	return
 }
 
@@ -406,9 +416,20 @@ func GW2DSQ_PlayerStirChessProto2Fucn(conn *websocket.Conn, ProtocolData map[str
 	// 发送数据
 	PlayerSendToServer(conn, data)
 	SetPlayerChupaiGoround(iRoomID, StrOpenID)
-	datatmp := make(map[int]int64)
-	datatmp[iRoomID] = time.Now().Unix()
-	TimeOutDSQ <- datatmp
+	if iRoomID != 0 {
+		tmp := make(map[int]int64)
+		data := <-TimeOutDSQ
+		tmp = data
+		for k, v := range tmp {
+			if iRoomID == k {
+				tmp[iRoomID] = time.Now().Unix()
+			} else {
+				tmp[k] = v
+			}
+		}
+		TimeOutDSQ <- tmp
+		fmt.Println("++++++++++++++++++++翻棋子 CD重置：", TimeOutDSQ)
+	}
 	return
 }
 
@@ -435,7 +456,6 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 		}
 		fmt.Println(data)
 		PlayerSendToServer(conn, data)
-		//
 		// CacheSavePlayerUID(iRoomID, StrOpenID)
 		// SetPlayerChupaiGoround(iRoomID, StrOpenID)
 		return
@@ -468,11 +488,13 @@ func DSQ2GW_PlayerGameInitProto2Fucn(conn *websocket.Conn, ProtocolData map[stri
 	PlayerSendToServer(conn, data)
 	SetPlayerChupaiGoround(iRoomID, StrOpenID)
 	//--------------------------------------------------------------------------
-	datatmp := make(map[int]int64)
-	datatmp[iRoomID] = time.Now().Unix()
-	TimeOutDSQ <- datatmp
-	fmt.Println("-==-=-=--=--GAMESTART-----")
-	go CheckGameOfPlayerLeftTime(iRoomID, conn)
+	if iRoomID != 0 {
+		tmp := make(map[int]int64)
+		tmp[iRoomID] = time.Now().Unix()
+		TimeOutDSQ <- tmp
+		fmt.Println("-==-=-=--=--GAMESTART-----")
+		go CheckGameOfPlayerLeftTime(iRoomID, conn)
+	}
 	//--------------------------------------------------------------------------
 	return
 }
@@ -487,29 +509,58 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 			{
 				icount := 0
 				iitime := time.Now().Unix()
-				if len(TimeOutDSQ) > 0 && len(tmp) == 0 {
+
+				if len(TimeOutDSQ) > 0 {
 					data := <-TimeOutDSQ
 					tmp = data
-					fmt.Println("-==-=-=--=--data", data)
+					TimeOutDSQ <- tmp
 				}
-				//--------------------------------------------------------------
+
+				fmt.Println("-==-=-=--=--iRoomIDbak", tmp)
+				fmt.Println("-==-=-=--=--iRoomIDbak", iRoomIDbak)
+				iNowtime := tmp[iRoomIDbak]
 				for k, v := range tmp {
-					fmt.Println("-==-=-=--=--key", k)
-					fmt.Println("-==-=-=--=--valve", v)
 					if k == iRoomIDbak {
-						fmt.Println("v-iitime", iitime-tmp[k])
-						if iitime-tmp[k] >= 30 {
-							icount = 33
-							fmt.Println("icount = 33")
-							delete(tmp, k)
-							goto GAMEOVER
-						}
+						iNowtime = v
 					}
-					if tmp[k] < v {
-						tmp[k] = v
-					}
+				}
+				if iNowtime == 0 {
+					fmt.Println("-==-=-=--=--iNowtime == 0")
+					continue
+				}
+				fmt.Println("v-iitime", iitime-iNowtime)
+				if iitime-tmp[iRoomIDbak] >= 30 {
+					icount = 33
+					delete(tmp, iRoomIDbak)
+					goto GAMEOVER
 				}
 				continue
+
+				// icount := 0
+				// iitime := time.Now().Unix()
+				// if len(TimeOutDSQ) > 0 && len(tmp) == 0 {
+				// 	data := <-TimeOutDSQ
+				// 	tmp = data
+				// 	fmt.Println("-==-=-=--=--data", data)
+				// }
+				// //--------------------------------------------------------------
+				// for k, v := range tmp {
+				// 	fmt.Println("-==-=-=--=--key", k)
+				// 	fmt.Println("-==-=-=--=--valve", v)
+				// 	if k == iRoomIDbak {
+				// 		fmt.Println("v-iitime", iitime-tmp[k])
+				// 		if iitime-tmp[k] >= 30 {
+				// 			icount = 33
+				// 			fmt.Println("icount = 33")
+				// 			delete(tmp, k)
+				// 			goto GAMEOVER
+				// 		}
+				// 	}
+				// 	if tmp[k] < v {
+				// 		tmp[k] = v
+				// 	}
+				// }
+				// continue
 				//--------------------------------------------------------------
 			GAMEOVER:
 				if icount >= 30 {
