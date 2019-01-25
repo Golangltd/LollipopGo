@@ -487,7 +487,7 @@ func CheckGameOfPlayerLeftTime(iRoomID int, conn *websocket.Conn) {
 			{
 				icount := 0
 				iitime := time.Now().Unix()
-				if len(TimeOutDSQ) > 0 {
+				if len(TimeOutDSQ) > 0 && len(tmp) == 0 {
 					data := <-TimeOutDSQ
 					tmp = data
 					fmt.Println("-==-=-=--=--data", data)
