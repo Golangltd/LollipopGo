@@ -27,6 +27,8 @@ var (
 	ConnMatch        *websocket.Conn
 )
 
+var TempMatch map[string]string
+
 //------------------------------------------------------------------------------
 
 type RoomMatch struct {
@@ -61,14 +63,20 @@ func GetChanLength() int {
 
 func DoingMatch() {
 
-	if GetChanLength() == 0 {
-		return
-	}
+	//	if GetChanLength() == 0 {
+	//		return
+	//	}
 
 	TimeOutCount++
 	Imax = len(Match_Chan)
 	if Imax == 1 {
 		fmt.Println(Match_Chan, "等待匹配")
+
+		if len(QuitMatchData) == 1 {
+			data, ok := <-Match_Chan
+			_, _ = data, ok
+			DelQuitMatchList(data.OpenID)
+		}
 		if TimeOutCount == 60 {
 			//data, ok := <-Match_Chan
 			//_, _ = data, ok
@@ -125,19 +133,22 @@ func Sort_timer() {
 }
 
 func SetQuitMatch(OpenID string) {
-	cache.Add(OpenID+"QuitMatch", 0, "exit")
-	if data, ok := <-Match_Chan; ok {
-		if data.OpenID == OpenID {
-			fmt.Println(data.OpenID, "SetQuitMatch   玩家已经退出！")
-			cache.Delete(OpenID + "QuitMatch")
-			return
-		}
-		Match_Chan <- data
-	}
+	//	cache.Add(OpenID+"QuitMatch", 0, "exit")
+	//	if data, ok := <-Match_Chan; ok {
+	//		if data.OpenID == OpenID {
+	//			fmt.Println(data.OpenID, "SetQuitMatch   玩家已经退出！")
+	//			cache.Delete(OpenID + "QuitMatch")
+	//			return
+	//		}
+	//		Match_Chan <- data
+	//	}
+	QuitMatchData[OpenID] = OpenID
+
 }
 
 func DelQuitMatchList(OpenID string) {
-	cache.Delete(OpenID + "QuitMatch")
+	// cache.Delete(OpenID + "QuitMatch")
+	delete(QuitMatchData, OpenID)
 }
 
 func GetMatchPlayer(OpenID string) bool {
@@ -168,5 +179,5 @@ func SetMatchQueue(OpenID string) {
 
 func DelMatchQueue(OpenID string) {
 	cache.Delete(OpenID + "MatchQueue")
-	// SetQuitMatch(OpenID)
+	SetQuitMatch(OpenID)
 }
