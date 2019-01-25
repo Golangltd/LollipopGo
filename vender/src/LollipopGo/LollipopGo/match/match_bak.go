@@ -63,28 +63,18 @@ func GetChanLength() int {
 
 func DoingMatch() {
 
-	//	if GetChanLength() == 0 {
-	//		return
-	//	}
-
 	TimeOutCount++
 	Imax = len(Match_Chan)
 	if Imax == 1 {
 		fmt.Println(Match_Chan, "等待匹配")
-
-		if len(QuitMatchData) == 1 {
-			data, ok := <-Match_Chan
-			_, _ = data, ok
-			DelQuitMatchList(data.OpenID)
+		data := <-Match_Chan
+		if len(QuitMatchData[data.OpenID]) > 0 {
+			delete(QuitMatchData, data.OpenID)
+			return
+		} else {
+			Match_Chan <- data
+			return
 		}
-		if TimeOutCount == 60 {
-			//data, ok := <-Match_Chan
-			//_, _ = data, ok
-			TimeOutCount = 0
-			fmt.Println(Match_Chan, "匹配超时剔除队列")
-			//------------------------------------------------------------------
-		}
-		return
 	}
 
 	roomid := ""
@@ -98,12 +88,6 @@ func DoingMatch() {
 
 		if data, ok := <-Match_Chan; ok {
 			fmt.Println("3333333333333333333333", data)
-			// if GetMatchPlayer(data.OpenID) {
-			// 	// 自动清理玩家 channel的基础机制
-			// 	fmt.Println(data.OpenID, "玩家已经退出！")
-			// 	break
-			// }
-
 			datamatch.RoomLimTime = 10
 			roomid = util.Int2str_LollipopGo(MatchRoomUID)
 			datamatch.RoomUID = roomid
@@ -112,7 +96,6 @@ func DoingMatch() {
 		}
 
 		if i%2 == 0 {
-			// datamatch.PlayerBOpenID = data.OpenID
 			MatchData[roomid] = datamatch
 			MatchData_Chan <- MatchData
 			fmt.Println("0------------", MatchData_Chan)
@@ -133,21 +116,11 @@ func Sort_timer() {
 }
 
 func SetQuitMatch(OpenID string) {
-	//	cache.Add(OpenID+"QuitMatch", 0, "exit")
-	//	if data, ok := <-Match_Chan; ok {
-	//		if data.OpenID == OpenID {
-	//			fmt.Println(data.OpenID, "SetQuitMatch   玩家已经退出！")
-	//			cache.Delete(OpenID + "QuitMatch")
-	//			return
-	//		}
-	//		Match_Chan <- data
-	//	}
 	QuitMatchData[OpenID] = OpenID
 
 }
 
 func DelQuitMatchList(OpenID string) {
-	// cache.Delete(OpenID + "QuitMatch")
 	delete(QuitMatchData, OpenID)
 }
 
@@ -179,5 +152,5 @@ func SetMatchQueue(OpenID string) {
 
 func DelMatchQueue(OpenID string) {
 	cache.Delete(OpenID + "MatchQueue")
-	SetQuitMatch(OpenID)
+	QuitMatchData[OpenID] = OpenID
 }
