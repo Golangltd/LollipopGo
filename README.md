@@ -31,6 +31,7 @@ Golang语言社区
 <li>希望更多喜欢Go语言的同学及想从事Go语言开发游戏服务器的同学一个方向的指引</li>
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
 <li>LollipopGo架构 最新版本: v1.0.20190117</li>
+<li>LollipopGo架构 最新版本文档说明:<a href="http://www.byteedu.com/bytedoc/web/#/item/index" title="Title">点击访问(字节教育提供支持)</a></li>
 <li> LollipopGo对应的最新cocos creator客户端版本地址：<a href="http://www.babaliuliu.com/20190118/" title="Title">点击访问(www.BaBaLiuLiu.Com)</a> </li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" title="Title">腾讯课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" title="Title">网易云课堂</a></li>
