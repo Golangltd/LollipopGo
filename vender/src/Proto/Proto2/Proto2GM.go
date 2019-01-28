@@ -16,7 +16,45 @@ const (
 	W2GMS_Modify_PlayerEmailDataProto2 // W2GMS_Modify_PlayerEmailDataProto2  == 3 修改邮件数据
 	GMS2W_Modify_PlayerEmailDataProto2 // GMS2W_Modify_PlayerEmailDataProto2  == 4
 
+	// 获取邮件
+	W2GMS_Get_PlayerEmailDataProto2 // W2GMS_Modify_PlayerEmailDataProto2  == 5 修改邮件数据
+	GMS2W_Get_PlayerEmailDataProto2 // GMS2W_Modify_PlayerEmailDataProto2  == 6
+
+	// 修改邮件
+	W2GMS_Update_PlayerEmailDataProto2 // W2GMS_Modify_PlayerEmailDataProto2  == 7 修改邮件数据
+	GMS2W_Update_PlayerEmailDataProto2 // GMS2W_Modify_PlayerEmailDataProto2  == 8
+
 )
+
+// W2GMS_Update_PlayerEmailDataProto2
+type W2GMS_Update_PlayerEmailData struct {
+	Protocol  int
+	Protocol2 int
+	UID       int
+	OPType    int
+	EmailData *player.EmailGM
+}
+
+type GMS2W_Update_PlayerEmailData struct {
+	Protocol  int
+	Protocol2 int
+	ResultID  int
+}
+
+//------------------------------------------------------------------------------
+
+// W2GMS_Get_PlayerEmailDataProto2
+type W2GMS_Get_PlayerEmailData struct {
+	Protocol  int
+	Protocol2 int
+}
+
+type GMS2W_Get_PlayerEmailData struct {
+	Protocol  int
+	Protocol2 int
+	ResultID  int
+	EmailData map[int]*player.EmailGM // 邮件的消息
+}
 
 //------------------------------------------------------------------------------
 /*
