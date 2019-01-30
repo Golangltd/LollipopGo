@@ -75,7 +75,6 @@ func (this *PoolMatch) GetMatchResult(igameid int, imatchtype int) {
 
 	} else if imatchtype == Match_3V3 {
 		// 3V3 匹配
-
 	}
 	// 匹配数据发给 GateWay Server
 	// send_gateway_data(){}
@@ -85,17 +84,11 @@ func (this *PoolMatch) GetMatchResult(igameid int, imatchtype int) {
 // 获取已经匹配的数量；数量需要记录
 // 1 匹配的结果也是需要的发送给DB服务器,玩家登录后返回的数据自带匹配数据
 // 2 对战记录
-func (this *PoolMatch) MatchRecord() {
-
-	return
-}
+func (this *PoolMatch) MatchRecord() {}
 
 // 发送数据给gateway server
 // 1 这里就是并不需要过多处理
-func (this *PoolMatch) PlayerSendMessage() {
-
-	return
-}
+func (this *PoolMatch) PlayerSendMessage() {}
 
 func (this *PoolMatch) TimerMatch() {}
 
