@@ -1,64 +1,48 @@
 package main
 
-// import (
-// 	"fmt"
-// 	"net/http"
-// 	"time"
-// )
+import (
+	"flag"
+	"fmt"
+	"log"
+	"net/http"
+	"strings"
+)
 
-// var chandata chan map[int]int
+var Gmap map[int]int
+var TimeOutDSQ chan map[int]int
 
-// func init() {
-// 	chandata = make(chan map[int]int)
-// 	go TTimerAddData()
-// 	go TTimeGetData()
+var (
+	listen = flag.String("listen", ":8080", "listen address")
+	dir    = flag.String("dir", ".", "directory to serve")
+)
 
-// }
+func init() {
+	Gmap = make(map[int]int)
+	TimeOutDSQ = make(chan map[int]int, 1000)
+	return
+}
 
-// // 压入数据测试
-// func TTimerAddData() {
+func main() {
 
-// 	vcount := 1
-// 	keycount := 10000
+	Gmap[1000] = 1111
+	Gmap[3000] = 3333
 
-// 	for {
-// 		select {
-// 		case <-time.After(time.Second * 10):
-// 			{
-// 				data := make(map[int]int)
-// 				data[keycount] = vcount
-// 				vcount++
-// 				keycount++
-// 				chandata <- data
-// 			}
-// 		}
-// 	}
-// }
+	TimeOutDSQ <- Gmap
 
-// // 获取数据测试
-// func TTimeGetData() {
-// 	for {
+	data := <-TimeOutDSQ
+	fmt.Println(len(data))
+	for k, v := range data {
+		fmt.Println(k)
+		fmt.Println(v)
+	}
 
-// 		select {
-// 		case <-time.After(time.Second * 1):
-// 			{
-// 			}
-// 		case i := <-chandata:
-// 			{
-// 				for v := range i {
-// 					fmt.Println("-----------------i", i)
-// 					fmt.Println("-----------------v", v)
-// 					fmt.Println("-----------------vi", i[v])
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
-// func main() {
-
-// 	strport := "8892" //  GM 系统操作 -- 修改金币等操作
-// 	http.HandleFunc("/GolangLtdGM", IndexHandlerGM)
-// 	http.ListenAndServe(":"+strport, nil)
-// 	return
-// }
+	//--------------------------------------------------------------------------
+	flag.Parse()
+	log.Printf("listening on %q...", *listen)
+	log.Fatal(http.ListenAndServe(*listen, http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+		if strings.HasSuffix(req.URL.Path, ".wasm") {
+			resp.Header().Set("content-type", "application/wasm")
+		}
+		http.FileServer(http.Dir(*dir)).ServeHTTP(resp, req)
+	})))
+}
