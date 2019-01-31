@@ -10,6 +10,10 @@ import (
 	"code.google.com/p/go.net/websocket"
 )
 
+/*
+   作者邮箱 : lihaibin@bytedancing.com
+   有疑问，发邮箱
+*/
 //------------------------------------------------------------------------------
 
 var (

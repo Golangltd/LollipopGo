@@ -72,7 +72,6 @@ func (this *PoolMatch) GetMatchResult(igameid int, imatchtype int) {
 		// 发送给网关
 	} else if imatchtype == Match_2V2 {
 		// 2V2 匹配
-
 	} else if imatchtype == Match_3V3 {
 		// 3V3 匹配
 	}
