@@ -24,9 +24,6 @@ QQ群
 -----------
 [腾讯专栏](https://cloud.tencent.com/developer/column/2170)
 
-项目说明文档(密码:byteedu)
------------
-[说明文档](http://www.byteedu.com/bytedoc/web/?#/1)
 
 Golang语言社区
 -----------
@@ -41,6 +38,11 @@ Golang语言社区
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" title="Title">网易云课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" title="Title">B站(bilibili.com)</a></li>
 </ol>
+
+项目说明文档(密码:byteedu)
+-----------
+[说明文档](http://www.byteedu.com/bytedoc/web/?#/1)
+
 
 架构整体流程图
 -----------
