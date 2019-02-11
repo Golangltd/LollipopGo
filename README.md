@@ -24,6 +24,10 @@ QQ群
 -----------
 [腾讯专栏](https://cloud.tencent.com/developer/column/2170)
 
+项目说明文档(密码:byteedu)
+-----------
+[说明文档](http://www.byteedu.com/bytedoc/web/?#/1)
+
 Golang语言社区
 -----------
 
