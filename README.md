@@ -39,7 +39,7 @@ Golang语言社区
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" title="Title">B站(bilibili.com)</a></li>
 </ol>
 
-项目说明文档(密码:byteedu)
+说明文档(密码:byteedu)
 -----------
 [说明文档](http://www.byteedu.com/bytedoc/web/?#/1)
 
