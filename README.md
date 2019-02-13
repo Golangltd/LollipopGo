@@ -24,6 +24,10 @@ QQ群
 -----------
 [腾讯专栏](https://cloud.tencent.com/developer/column/2170)
 
+Go语言文档汇总
+-----------
+[文档汇总](http://www.byteedu.com/forum.php?mod=viewthread&tid=25)
+
 
 Golang语言社区
 -----------
