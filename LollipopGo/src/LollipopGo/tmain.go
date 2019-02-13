@@ -29,7 +29,7 @@ func init() {
 	LollipopGo.Run()
 }
 
-func main() {
+func mainbak() {
 	// os.Args[0] == 执行文件的名字
 	// os.Args[1] == 第一个参数
 	// os.Args[2] == 类型 Client -websocket-> GW -websocket/rpc-> GS -websocket/rpc-> DB
@@ -175,30 +175,6 @@ func G_timeout_kick_Player() {
 		}
 	}
 
-}
-
-func G_timer() {
-	for {
-		select {
-		case <-time.After(20 * time.Second):
-			{
-				if len(G_PlayerData) == 0 {
-					continue
-				}
-
-				if G_PlayerData["123456"] != nil {
-					data := &Proto2.S2C_PlayerLogin{
-						Protocol:   Proto.GameData_Proto,
-						Protocol2:  Proto2.S2C_PlayerLoginProto2,
-						PlayerData: nil,
-					}
-					G_PlayerData["123456"].PlayerSendMessage(data)
-					glog.Info("发送数据：", data)
-				}
-			}
-		}
-	}
-	return
 }
 
 func GS2GW_Timer(ws *websocket.Conn) {
