@@ -1,7 +1,6 @@
 package Proto2
 
 import (
-	_ "LollipopGo/LollipopGo/match"
 	_ "LollipopGo/LollipopGo/player"
 )
 
