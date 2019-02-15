@@ -121,7 +121,6 @@ func Sort_timer() {
 
 func SetQuitMatch(OpenID string) {
 	QuitMatchData[OpenID] = OpenID
-
 }
 
 func DelQuitMatchList(OpenID string) {
