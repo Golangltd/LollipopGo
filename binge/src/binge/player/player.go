@@ -1,5 +1,0 @@
-package player
-
-func init() {
-
-}
