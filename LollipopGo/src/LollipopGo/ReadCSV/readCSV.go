@@ -83,8 +83,9 @@ func ReadCsv_ConfigFile_GameInfoST_FunNew() bool {
 		Infotmp.ResPath = ss[i][8]
 		// 保存数据
 		conf.G_GameListNew[Infotmp.GameID] = Infotmp
+		fmt.Println(">>>>", conf.G_GameListNew)
 		// 保存数据更新数据
-		M_CSV.Set(Infotmp.GameID, 0)
+		// M_CSV.Set(Infotmp.GameID, 0)
 	}
 	return true
 }

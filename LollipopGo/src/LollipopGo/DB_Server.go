@@ -252,13 +252,14 @@ func (t *Arith) Muliply(args *Args, reply *Proto2.GL2C_GameLogin) error {
 	}
 	// 返回数据
 	*reply = Proto2.GL2C_GameLogin{
-		Protocol:   1,
-		Protocol2:  2,
-		Tocken:     "22222",
-		PlayerST:   nil,
-		GateWayST:  data,
-		GameList:   conf.G_GameList,
-		BannerList: conf.G_BannerList,
+		Protocol:    1,
+		Protocol2:   2,
+		Tocken:      "22222",
+		PlayerST:    nil,
+		GateWayST:   data,
+		GameList:    conf.G_GameList,
+		GameListNew: conf.G_GameListNew,
+		BannerList:  conf.G_BannerList,
 	}
 	return nil
 }
