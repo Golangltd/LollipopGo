@@ -22,4 +22,5 @@ type S2C_HallPlayerLogin struct {
 	Protocol  int                   // 主协议 -- 模块化
 	Protocol2 int                   // 子协议 -- 模块化的功能
 	GameList  map[string]*GGameList // 游戏列表
+	// GameListNew map[string]*GGameListNew // 游戏列表
 }
