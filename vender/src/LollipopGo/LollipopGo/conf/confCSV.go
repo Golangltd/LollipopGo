@@ -26,15 +26,15 @@ func init() {
 
 // 游戏列表
 type GameListNew struct {
-	GameID    string
-	Name      string
-	IconPath  string
-	IsShelves string
-	StartTime string
-	EndTime   string
-	IsNewest  string
-	IsHot     string
-	ResPath   string
+	GameID     string
+	Name       string
+	IconPath   string
+	Flag       string
+	Index      string
+	StartTime  string
+	EndTime    string
+	IsPortrait string
+	ResPath    string
 }
 
 //------------------------------------------------------------------------------
