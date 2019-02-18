@@ -1,3 +1,3 @@
-﻿游戏ID(GameID),游戏名称(Name),游戏ICON(IconPath),是否上架(IsShelves),上架时间(StartTime),下架时间(EndTime),是否最新上架(IsNewest),是否热门游戏(IsHot),资源文件路径(ResPath)
-10001,斗兽棋|AnimalChecker,doushouqi01|doushouqi02,1,2018-12-14 14:16:38,3018-12-14 14:16:39,1,1,game/AnimalChecker/
-10002,扫雷|Mine,saolei01,0,2018-12-14 14:16:38,3018-12-15 14:16:39,0,0,http://test.babaliuliu.com:8891/game/Maine.zip
+﻿游戏ID(GameID),游戏名称(Name),游戏ICON(IconPath),游戏标识(Flag),排序(Index),上架时间(StartTime),下架时间(EndTime),是否是竖屏(IsPortrait),资源文件路径(ResPath)
+10001,斗兽棋|AnimalChecker,doushouqi,2,1,2018-12-14 14:16:38,3018-12-14 14:16:39,1,AnimalChecker
+10002,扫雷|Mine,saolei,1,2,2018-12-14 14:16:38,3018-12-15 14:16:39,1,http://test.babaliuliu.com:8891/game/Maine.zip

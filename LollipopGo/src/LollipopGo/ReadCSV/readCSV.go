@@ -75,11 +75,11 @@ func ReadCsv_ConfigFile_GameInfoST_FunNew() bool {
 		Infotmp.GameID = ss[i][0]
 		Infotmp.Name = ss[i][1]
 		Infotmp.IconPath = ss[i][2]
-		Infotmp.IsShelves = ss[i][3]
-		Infotmp.StartTime = ss[i][4]
-		Infotmp.EndTime = ss[i][5]
-		Infotmp.IsNewest = ss[i][6]
-		Infotmp.IsHot = ss[i][7]
+		Infotmp.Flag = ss[i][3]
+		Infotmp.Index = ss[i][4]
+		Infotmp.StartTime = ss[i][5]
+		Infotmp.EndTime = ss[i][6]
+		Infotmp.IsPortrait = ss[i][7]
 		Infotmp.ResPath = ss[i][8]
 		// 保存数据
 		conf.G_GameListNew[Infotmp.GameID] = Infotmp
