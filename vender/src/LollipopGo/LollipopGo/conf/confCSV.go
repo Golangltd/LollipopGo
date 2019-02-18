@@ -1,16 +1,18 @@
 package conf
 
 // csv配置表
-var G_GameList map[string]*GameList      // 游戏大厅列表
-var G_BannerList map[string]*Banner      // 游戏轮播列表
-var G_RoomList map[string]interface{}    // 房间列表
-var RoomListData map[string]*RoomList    // 房间列表
-var RoomListDatabak map[string]*RoomList // 房间列表
-var DSQGameExp map[string]*DSQ_Exp       // 斗兽棋经验列表
-var G_ServerList map[string]*ServerList  // 服务器列表
+var G_GameListNew map[string]*GameListNew // 游戏大厅列表New版本
+var G_GameList map[string]*GameList       // 游戏大厅列表
+var G_BannerList map[string]*Banner       // 游戏轮播列表
+var G_RoomList map[string]interface{}     // 房间列表
+var RoomListData map[string]*RoomList     // 房间列表
+var RoomListDatabak map[string]*RoomList  // 房间列表
+var DSQGameExp map[string]*DSQ_Exp        // 斗兽棋经验列表
+var G_ServerList map[string]*ServerList   // 服务器列表
 
 func init() {
 	G_GameList = make(map[string]*GameList)
+	G_GameListNew = make(map[string]*GameListNew)
 	G_BannerList = make(map[string]*Banner)
 	G_RoomList = make(map[string]interface{})
 	RoomListData = make(map[string]*RoomList)
@@ -18,6 +20,21 @@ func init() {
 	DSQGameExp = make(map[string]*DSQ_Exp)
 	G_ServerList = make(map[string]*ServerList)
 	return
+}
+
+//------------------------------------------------------------------------------
+
+// 游戏列表
+type GameListNew struct {
+	GameID    string
+	Name      string
+	IconPath  string
+	IsShelves string
+	StartTime string
+	EndTime   string
+	IsNewest  string
+	IsHot     string
+	ResPath   string
 }
 
 //------------------------------------------------------------------------------

@@ -29,7 +29,7 @@ func init() {
 	LollipopGo.Run()
 }
 
-func mainbak() {
+func main() {
 	// os.Args[0] == 执行文件的名字
 	// os.Args[1] == 第一个参数
 	// os.Args[2] == 类型 Client -websocket-> GW -websocket/rpc-> GS -websocket/rpc-> DB

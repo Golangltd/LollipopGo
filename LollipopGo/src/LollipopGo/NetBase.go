@@ -164,7 +164,6 @@ func (this *NetDataConn) SendClientDataFunc(StrMD5 string, ClientType string, Da
 // 推送格式
 // 例子参考
 // www.521.mom
-// www.golang.mom
 func (this *NetDataConn) XC_Data_Send_AllPlayer_State(StrMD5 string, Data interface{}) bool {
 	//发给手机
 	for itr := M.Iterator(); itr.HasNext(); {
