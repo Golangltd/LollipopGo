@@ -14,4 +14,5 @@ const (
 	G_GameGlobal_Proto        //  G_GameGlobal_Proto == 9  负责全局的游戏逻辑
 	G_GameDSQ_Proto           //  G_GameDSQ_Proto == 10    斗兽棋的主协议
 	G_GameGM_Proto            //  G_GameGM_Proto == 11     游戏GM管理系统
+	G_GamePay_Proto           //  G_GamePay_Proto == 12    游戏支付系统
 )
