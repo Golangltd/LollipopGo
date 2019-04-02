@@ -174,7 +174,6 @@ func G_timeout_kick_Player() {
 			}
 		}
 	}
-
 }
 
 func GS2GW_Timer(ws *websocket.Conn) {
@@ -199,7 +198,6 @@ func GS2GW_Timer(ws *websocket.Conn) {
 					continue
 				}
 				glog.Info("发送数据：", data)
-
 			}
 		}
 	}
