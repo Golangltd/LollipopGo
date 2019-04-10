@@ -84,8 +84,8 @@ func (t *Arith) GetPlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) er
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
 			ErrorST := Proto2.G_Error_All{
-				Protocol:  Proto.G_Error_Proto,      // 主协议
-				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				Protocol:  Proto.G_Error_Proto,
+				Protocol2: Proto2.G_Error_All_Proto,
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
@@ -108,10 +108,9 @@ func (t *Arith) GetPlayerbakEmailDataGM(args *string, reply *map[int]*player.Ema
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
-			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
-				Protocol:  Proto.G_Error_Proto,      // 主协议
-				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				Protocol:  Proto.G_Error_Proto,
+				Protocol2: Proto2.G_Error_All_Proto,
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
@@ -128,10 +127,9 @@ func (t *Arith) GetPlayerEmailDataGM(data *int, reply *map[int]*player.EmailST) 
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
-			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
-				Protocol:  Proto.G_Error_Proto,      // 主协议
-				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				Protocol:  Proto.G_Error_Proto,
+				Protocol2: Proto2.G_Error_All_Proto,
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
@@ -147,10 +145,9 @@ func (t *Arith) ModefyPlayerEmailDataGM(data *player.EmailST, reply *Proto2.GMS2
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
-			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
-				Protocol:  Proto.G_Error_Proto,      // 主协议
-				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				Protocol:  Proto.G_Error_Proto,
+				Protocol2: Proto2.G_Error_All_Proto,
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
@@ -172,8 +169,8 @@ func (t *Arith) ModefyPlayerDataGM(args *Proto2.W2GMS_Modify_PlayerData, reply *
 			strerr := fmt.Sprintf("%s", err)
 			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
-				Protocol:  Proto.G_Error_Proto,      // 主协议
-				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				Protocol:  Proto.G_Error_Proto,
+				Protocol2: Proto2.G_Error_All_Proto,
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
@@ -207,8 +204,8 @@ func (t *Arith) SavePlayerST2DB(args *player.PlayerSt, reply *player.PlayerSt) e
 			strerr := fmt.Sprintf("%s", err)
 			//发消息给客户端
 			ErrorST := Proto2.G_Error_All{
-				Protocol:  Proto.G_Error_Proto,      // 主协议
-				Protocol2: Proto2.G_Error_All_Proto, // 子协议
+				Protocol:  Proto.G_Error_Proto,
+				Protocol2: Proto2.G_Error_All_Proto,
 				ErrCode:   "80006",
 				ErrMsg:    "亲，您发的数据的格式不对！" + strerr,
 			}
