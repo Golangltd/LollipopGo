@@ -59,7 +59,6 @@ func IndexHandler(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(w, "88901")
 		return
 	}
-
 }
 
 // jsonrpc 数据处理
