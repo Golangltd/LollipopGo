@@ -70,6 +70,15 @@ func uploadMore(w http.ResponseWriter, r *http.Request) {
 }
 
 // 通过http://127.0.0.1:9090/uploadOne和http://127.0.0.1:9090/upladMore来测试文件上传。
+
+/*
+  策划配置好CSV文件后上传到服务器
+  1. 文件上传到制定文件夹
+  2. Gm命令通知所有服务器重新加载配置文件，这个时候要求暂停玩家数据的更新，相当于热更新操作！
+  3. 账号建权系统的建立
+  4. 日志系统
+  5. 版本回滚系统等
+*/
 func main() {
 	http.HandleFunc("/uploadMore", uploadMore)
 	http.HandleFunc("/uploadOne", uploadOne)
