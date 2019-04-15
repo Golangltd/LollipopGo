@@ -20,9 +20,9 @@ func uploadOne(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 		//创建上传目录
-		os.Mkdir("./upload", os.ModePerm)
+		os.Mkdir(FileDir, os.ModePerm)
 		//创建上传文件
-		cur, err := os.Create("./upload/" + header.Filename)
+		cur, err := os.Create(FilePath + header.Filename)
 		defer cur.Close()
 		if err != nil {
 			log.Fatal(err)
@@ -52,9 +52,9 @@ func uploadMore(w http.ResponseWriter, r *http.Request) {
 				log.Fatal(err)
 			}
 			//创建上传目录
-			os.Mkdir("./upload", os.ModePerm)
+			os.Mkdir(FileDir, os.ModePerm)
 			//创建上传文件
-			cur, err := os.Create("./upload/" + files[i].Filename)
+			cur, err := os.Create(FilePath + files[i].Filename)
 			defer cur.Close()
 			if err != nil {
 				log.Fatal(err)
