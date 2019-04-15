@@ -2,7 +2,9 @@
 Golang语言社区  全球服游戏服务器框架,目前协议支持websocket、http及RPC，采用状态同步，愿景：打造竞技实时【比赛】对战游戏平台框架！ 功能持续更新中... ...
 >微信订阅号：Golang语言社区<Br/>
 >微信服务号：Golang技术社区<Br/>
+>[架构视频讲解:www.ByteEdu.Com](http://www.byteedu.com/forum.php?mod=viewthread&tid=306)<Br/>
 >关注可了解更多的Go语言技术教程及课程活动。问题或建议，请公众号留言<Br/>
+
 
 论坛
 --------------
