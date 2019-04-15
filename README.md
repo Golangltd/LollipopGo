@@ -3,6 +3,7 @@ Golang语言社区  全球服游戏服务器框架,目前协议支持websocket�
 >微信订阅号：Golang语言社区<Br/>
 >微信服务号：Golang技术社区<Br/>
 >  点击访问：[架构说明讲解](http://www.byteedu.com/forum.php?mod=viewthread&tid=306)<Br/>
+>  特此说明：商业版本的联系彬哥<Br/>
 
 
 论坛
