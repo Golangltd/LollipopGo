@@ -38,7 +38,7 @@ Golang语言社区
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
 <li>LollipopGo架构 最新版本: v1.0.20190117</li>
 <li>LollipopGo架构 最新版本文档说明(密码:byteedu):<a href="http://www.byteedu.com/bytedoc/web/#/item/index" target="_blank">点击访问</a></li>
-<li> LollipopGo对应的最新cocos creator客户端版本地址：<a href="http://47.107.125.75/20190118/" target="_blank">点击访问(不同厂商浏览器试玩游戏对战，例如：谷歌浏览器、360浏览器)</a> </li>
+<li> LollipopGo对应的最新cocos creator客户端版本地址：<a href="http://game1.golang.ltd/20190118/" target="_blank">点击访问(不同厂商浏览器试玩游戏对战，例如：谷歌浏览器、360浏览器)</a> </li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" target="_blank">腾讯课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" target="_blank">网易云课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" target="_blank">B站(bilibili.com)</a></li>
