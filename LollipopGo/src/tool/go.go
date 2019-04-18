@@ -1,5 +1,11 @@
-package main //main函数
-import "fmt" //相当于#include
+package main
+
+import "fmt"
+
+func init() {
+	fmt.Println("Main()函数启动")
+}
+
 func main() {
 	ar := [10]int{9, 8, 6, 4, 2, 7, 1, 3, 0, 5}
 	num := len(ar)             //:=自动匹配变量类型
