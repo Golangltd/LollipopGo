@@ -16,8 +16,7 @@ import (
 )
 
 //-----
-var EmailDatatmp1 map[int]*player.EmailGM // 邮件的消息
-
+var EmailDatatmp1 map[int]*player.EmailGM // 邮件的消息,数据更新操作
 //-----
 
 /*
