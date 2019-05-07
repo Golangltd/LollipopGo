@@ -14,4 +14,5 @@ func init() {
 	ReadCsv_ConfigFile_DSQGameInfoST_Fun()
 	ReadCsv_ConfigFile_ServerListInfoST_Fun()
 	ReadCsv_ConfigFile_GameInfoST_FunNew()
+	ReadCsv_ConfigFile_RaceListInfoST_Fun()
 }

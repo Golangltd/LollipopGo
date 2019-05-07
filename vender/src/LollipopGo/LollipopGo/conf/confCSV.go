@@ -9,6 +9,7 @@ var RoomListData map[string]*RoomList     // 房间列表
 var RoomListDatabak map[string]*RoomList  // 房间列表
 var DSQGameExp map[string]*DSQ_Exp        // 斗兽棋经验列表
 var G_ServerList map[string]*ServerList   // 服务器列表
+var G_RaceList map[string]*RaceList       // 比赛列表
 
 func init() {
 	G_GameList = make(map[string]*GameList)
@@ -19,6 +20,7 @@ func init() {
 	RoomListDatabak = make(map[string]*RoomList)
 	DSQGameExp = make(map[string]*DSQ_Exp)
 	G_ServerList = make(map[string]*ServerList)
+	G_RaceList = make(map[string]*RaceList)
 	return
 }
 
@@ -119,6 +121,18 @@ type ItemList struct {
 type AwardList struct {
 	AwardID   string // 前端在玩家兑换中查找
 	AwardName string
+}
+
+//------------------------------------------------------------------------------
+// 比赛功能的结构
+type RaceList struct {
+	ID        string
+	Name      string
+	Desc      string
+	Limit     string
+	Starttime string
+	Endtime   string
+	Changci   string
 }
 
 //------------------------------------------------------------------------------
