@@ -14,8 +14,8 @@ func INIT() {
 	// 链接
 	client = redis.NewClient(&redis.Options{
 		Addr:     "db.a.babaliuliu.com:6379",
-		Password: "",
-		DB:       0,
+		Password: "ruilide2016", // no password set
+		DB:       0,             // use default DB
 	})
 	// 心跳  -- 一直做的事情
 	// go Redis_Ping(client)

@@ -53,8 +53,24 @@ const (
 	/*
 	   比赛系统： 报名，报名成功，根据绝体日期进行比赛
 	*/
+	C2GWS_RaceBaoMingProto2 // C2GWS_RaceBaoMingProto2 == 30   比赛报名
+	S2GWS_RaceBaoMingProto2 // S2GWS_RaceBaoMingProto2 == 31
 
 )
+
+//------------------------------------------------------------------------------
+// C2GWS_RaceBaoMingProto2
+type C2GWS_RaceBaoMing struct {
+	Protocol  int
+	Protocol2 int
+	OpenID    string // 玩家唯一的ID
+}
+
+type S2GWS_RaceBaoMing struct {
+	Protocol  int
+	Protocol2 int
+	ResultID  int // 1:成功，2：失败
+}
 
 //------------------------------------------------------------------------------
 // Broadcast_PlayerUpGradeProto2

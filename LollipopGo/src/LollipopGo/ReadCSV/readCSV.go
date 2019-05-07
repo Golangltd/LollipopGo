@@ -8,6 +8,34 @@ import (
 	"strings"
 )
 
+// 读取比赛列表
+func ReadCsv_ConfigFile_RaceListInfoST_Fun() bool {
+	fileName := "racelist.csv"
+	fileName = "./csv/" + fileName
+	cntb, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		panic("读取配置文件出错!")
+		return false
+	}
+	// 读取文件数据
+	r2 := csv.NewReader(strings.NewReader(string(cntb)))
+	ss, _ := r2.ReadAll()
+	sz := len(ss)
+	for i := 1; i < sz; i++ {
+		Infotmp := new(conf.RaceList)
+		Infotmp.ID = ss[i][0]
+		Infotmp.Name = ss[i][1]
+		Infotmp.Desc = ss[i][2]
+		Infotmp.Limit = ss[i][3]
+		Infotmp.Starttime = ss[i][4]
+		Infotmp.Endtime = ss[i][5]
+		Infotmp.Changci = ss[i][6]
+		conf.G_RaceList[Infotmp.ID] = Infotmp
+	}
+
+	return true
+}
+
 // 读取服务器列表
 func ReadCsv_ConfigFile_ServerListInfoST_Fun() bool {
 	fileName := "serverlist.csv"
