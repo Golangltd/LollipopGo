@@ -36,6 +36,7 @@ type GL2C_GameLogin struct {
 	GameList    map[string]*conf.GameList    // 游戏列表
 	GameListNew map[string]*conf.GameListNew // 游戏列表New
 	BannerList  map[string]*conf.Banner      // 广告列表
+	RaceList    map[string]*conf.RaceList    // 广告列表
 }
 
 //------------------------------------------------------------------------------
