@@ -15,4 +15,5 @@ const (
 	G_GameDSQ_Proto           //  G_GameDSQ_Proto == 10    斗兽棋的主协议
 	G_GameGM_Proto            //  G_GameGM_Proto == 11     游戏GM管理系统
 	G_GamePay_Proto           //  G_GamePay_Proto == 12    游戏支付系统
+	G_GameRace_Proto          //  G_GameRace_Proto  == 13 游戏比赛系统
 )
