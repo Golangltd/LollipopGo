@@ -22,11 +22,22 @@ type G_Broadcast_GameRaceResult struct {
 }
 
 //------------------------------------------------------------------------------
+// G_Broadcast_GameRaceDataProto2   广播比赛信息，包括正在比赛的玩家和结束的玩家
+type G_Broadcast_GameRaceData struct {
+	Protocol  int
+	Protocol2 int
+	Racing    int // 比赛中
+	Raced     int // 结束
+}
+
+//------------------------------------------------------------------------------
 //  G_Broadcast_GameRaceStartProto2   比赛开始
 type G_Broadcast_GameRaceStart struct {
 	Protocol  int
 	Protocol2 int
 	RoomTmpID int // 自动匹配成功的房间ID信息
+	OpenIDA   string
+	OpenIDB   string
 }
 
 //------------------------------------------------------------------------------

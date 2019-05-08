@@ -56,7 +56,30 @@ const (
 	C2GWS_RaceBaoMingProto2 // C2GWS_RaceBaoMingProto2 == 30   比赛报名
 	S2GWS_RaceBaoMingProto2 // S2GWS_RaceBaoMingProto2 == 31
 
+	GGW_Broadcast_GameRaceStartProto2  // GGW_Broadcast_GameRaceStartProto2 == 32  比赛开始发送比赛的房间信息
+	GGW_Broadcast_GameRaceDataProto2   // GGW_Broadcast_GameRaceDataProto2 == 33  实时更新 比赛的信息
+	GGW_Broadcast_GameRaceResultProto2 // GGW_Broadcast_GameRaceResultProto2 == 34  比赛结束
+
 )
+
+//------------------------------------------------------------------------------
+// GGW_Broadcast_GameRaceDataProto2
+type GGW_Broadcast_GameRaceData struct {
+	Protocol  int
+	Protocol2 int
+	Racing    int // 比赛中
+	Raced     int // 结束
+}
+
+//------------------------------------------------------------------------------
+// GGW_Broadcast_GameRaceStartProto2
+type GGW_Broadcast_GameRaceStart struct {
+	Protocol  int
+	Protocol2 int
+	RoomTmpID int // 自动匹配成功的房间ID信息
+	OpenIDA   string
+	OpenIDB   string
+}
 
 //------------------------------------------------------------------------------
 // C2GWS_RaceBaoMingProto2
