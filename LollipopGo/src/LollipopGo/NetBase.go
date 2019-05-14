@@ -21,6 +21,7 @@ func wwwGolangLtd(ws *websocket.Conn) {
 		MapSafe:       M,
 		MapSafeServer: MServer,
 	}
+	// 这里启动协程
 	NetDataConntmp.PullFromClient()
 }
 
