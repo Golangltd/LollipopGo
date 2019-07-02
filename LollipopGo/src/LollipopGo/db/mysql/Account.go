@@ -6,9 +6,9 @@ import (
 
 var (
 	dbhostsip      = "db.a.babaliuliu.com:3306"
-	dbusername     = "root"
-	dbpassowrd     = "ruilide2016"
-	dbname         = "gl_XiaoMq"
+	dbusername     = ""
+	dbpassowrd     = ""
+	dbname         = ""
 	DB             *mysql_db
 	dbMaxOpenConns = 2000
 	dbMaxIdleConns = 1000
