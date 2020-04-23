@@ -1,0 +1,195 @@
+/*
+ *  Copyright (c) 2016, https://github.com/nebula-im
+ *  All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.nebulaim.zproto";
+option java_outer_classname = "ZProtoSync";
+option optimize_for = CODE_SIZE;
+
+import "schema.tl.sync.proto";
+
+package mtproto;
+
+
+// ## telegram的同步服务思考
+//  - telegram消息的同步有两种类型的数据：
+//      * 一是消息类服务，此类服务是基于用户的同步，需要进行离线存储，通过pts和qts来进行同步，
+//        pts和qts与用户进行绑定（qts是否和用户进行绑定还需要观察）
+//      * 另一类是在线推送服务，如果设备终端在线需要推送到客户端设备，
+//        一旦推送结束此消息生命周期就结束，并不需要进行离线存储，
+//        例如phoneCall握手服务以及修改用户配置后同步到其他客户端设备等，通过seq进行同步
+//
+//  - 同步服务需要提供给调用方两种类型的接口
+//      * 基于用户的推送接口，分两种
+//          * 推送到该用户下所有的在线客户端设备
+//          * 推送到该用户下除了某一个设备之外的所有其他在线客户端设备
+//      * 基于设备的推送接口
+//          * 推送给指定设备
+//          * 推送到该用户下除了某一个设备之外的所有其他在线客户端设备
+//
+//  - pts和qts以及seq由sync_server服务生成并维护sync队列
+//    > 注意，因为消息服务不维护pts和qts以及seq，但发消息等rpc调用会返回pts以及qts和seq，
+//    > sync_server还要提供一些接口给消息服务获取pts和qts以及seq
+//
+
+// 同步类型
+enum SyncType {
+    SYNC_TYPE_UNKNOWN               = 0;        // unknown
+    SYNC_TYPE_USER                  = 1;        // 该用户所有设备
+    SYNC_TYPE_USER_NOTME            = 2;        // 该用户除了某个设备
+    SYNC_TYPE_USER_ME               = 3;        // 该用户指定某个设备
+    SYNC_TYPE_RPC_RESULT            = 4;        // 通过push通道返回rpc
+    SYNC_TYPE_NONE                  = 5;        // 不同步
+
+    // SYNC_TYPE_AUTH_KEY              = 3;        // 发送给指定设备
+    // SYNC_TYPE_AUTH_KEY_USER         = 4;        // 该用户所有设备
+    // SYNC_TYPE_AUTH_KEY_USERNOTME    = 5;        // 该用户除了某个设备
+}
+
+//message MessageDataEmpty {
+//}
+//
+//message MessageData {
+//    int32 message_type = 1;
+//}
+
+message VoidRsp {
+}
+
+//message PushClientID {
+//    int64 auth_key_id = 1;
+//    int64 session_id = 2;
+//    int64 netlib_session_id = 3;
+//}
+
+// PushMessage state
+message ClientUpdatesState {
+    int32 pts = 1;
+    int32 pts_count = 2;
+    int32 qts = 3;
+    int32 qts_count = 4;
+    int32 seq = 5;
+    int32 seq_start = 6;
+    int32 date = 7;
+}
+
+// updateShortMessage
+// updateShortChatMessage
+// updateShort
+// updatesCombined
+// updates
+// updateShortSentMessage
+
+///////////////////////////////////////////////////////////////////////
+// SERVER_AUTH_REQ
+message ConnectToSessionServerReq {
+}
+
+message SessionServerConnectedRsp {
+    int32  server_id = 1;
+    string server_name = 2;
+}
+
+// PushUpdatesData --> VoidRsp
+message PushUpdatesData {
+    int64 auth_key_id = 1;
+    int64 session_id = 2;
+    ClientUpdatesState state = 3;
+    bytes  updates_data = 5;
+}
+
+// Updates
+// messages_affectedHistory
+// messages_affectedMessages
+message RpcResultData {
+    // int32 rpc_result_type = 1;
+    Updates updates = 2;
+    TL_messages_affectedHistory affected_history = 3;
+    TL_messages_affectedMessages affected_messages = 4;
+}
+
+///////////////////////////////////////////////////////////////////////
+// RPC
+message UpdatesRequest {
+    SyncType push_type = 1;
+    int32 layer = 2;
+    int32 server_id = 3;
+    int64 auth_key_id = 4;
+    int64 session_id = 5;
+    int32 push_user_id = 6;
+    int64 client_msg_id = 7;
+    Updates updates = 8;
+    RpcResultData rpc_result = 9;
+}
+
+// message
+//message UpdatesListRequest {
+//    repeated UpdatesRequest updates_list = 1;
+//}
+
+///////////////////////////////////////////////////////////////////////
+message NewUpdatesRequest {
+    int64 auth_key_id = 1;
+    int32 user_id = 2;
+}
+
+// func (s *UpdatesServiceImpl) UpdatesGetDifference(ctx context.Context, request *mtproto.TLUpdatesGetDifference) (*mtproto.Updates_Difference, error) {
+
+// GetServerUpdatesState
+// func (m *UpdateModel) GetUpdateListByGtPts(userId, pts int32) []*mtproto.Update {
+message UserGtPtsUpdatesRequest {
+    int32 user_id = 1;
+    int32 pts = 2;
+}
+
+message ChannelGtPtsUpdatesRequest {
+    int32 channel_id = 1;
+    int32 pts = 2;
+}
+
+message ChannelPtsRequest {
+    int32 channel_id = 1;
+}
+
+message SeqId {
+    int32 pts = 1;
+}
+
+message UpdatesStateRequest {
+    int64 auth_key_id = 1;
+    int32 user_id = 2;
+    int32 pts = 3;
+    int32 qts = 4;
+}
+
+// Interface exported by the server.
+service RPCSync {
+    rpc SyncUpdatesData(UpdatesRequest) returns (ClientUpdatesState);
+    rpc PushUpdatesData(UpdatesRequest) returns (VoidRsp);
+    // PushUpdatesDataList(UpdatesListRequest) returns (VoidRsp);
+    rpc GetNewUpdatesData(NewUpdatesRequest) returns (Updates);
+
+    rpc GetCurrentChannelPts(ChannelPtsRequest) returns (SeqId);
+    rpc GetUserGtPtsUpdatesData(UserGtPtsUpdatesRequest) returns (Updates);
+    rpc GetChannelGtPtsUpdatesData(ChannelGtPtsUpdatesRequest) returns (Updates);
+    rpc GetServerUpdatesState(UpdatesStateRequest) returns (updates_State);
+
+
+    rpc UpdateUpdatesState(UpdatesStateRequest) returns (VoidRsp);
+}

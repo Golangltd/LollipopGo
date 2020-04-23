@@ -1,6 +1,0 @@
-{
-    "LoginServerAddr": "127.0.0.1:8891",
-    "GateWayAddr": "127.0.0.1:8888",
-    "DBServerAddr": "127.0.0.1:8890",
-    "GlobalServerAddr": "127.0.0.1:8891"
-}

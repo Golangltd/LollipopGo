@@ -1,0 +1,5 @@
+#dalgen.toml
+
+dalFilePath = ".."
+#dalFilePath = "../telegramd/biz_model/dal"
+mysqlDsn = "root:@/nebulaim?charset=utf8"

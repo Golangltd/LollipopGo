@@ -1,8 +1,0 @@
-{
-    "LoginName": "",
-    "LoginPassword": "",
-    "MaxOpenConns": "1000",
-	"MaxIdleConns": "1000",
-    "MasterRedis_IP": "db.c.babaliuliu.com",
-    "MasterRedis_Port": "6309",
-}

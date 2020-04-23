@@ -1,0 +1,59 @@
+/*
+ *  Copyright (c) 2018, https://github.com/nebulaim
+ *  All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "im.nebula.service.status";
+option java_outer_classname = "StatusProto";
+option optimize_for = CODE_SIZE;
+
+package contact;
+
+////////////////////////////////////////////////////////////////////////////////////////
+message Int32 {
+    int32 v = 1;
+}
+
+message Int32List {
+    repeated int32 vlist = 1;
+}
+
+message Int64List {
+    repeated int64 vlist = 1;
+}
+
+message Void {
+}
+
+message InputContactData {
+	int32 userId = 1;
+    string phone = 2;
+	string first_name = 3;
+	string last_name = 4;
+}
+
+message ImportedContactData {
+    int32 user_id = 1;
+    int32 importers = 2;
+	bool mutual_updated = 3;
+}
+
+message DeleteResult {
+    int32 user_id = 1;
+    int32 state = 2;
+}

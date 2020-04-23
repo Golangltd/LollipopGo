@@ -1,0 +1,41 @@
+# auth_session.toml
+
+ver = "0.0.1"
+#logPath = "/tmp/biz_server.log"
+
+[rpcServer]
+addr = "0.0.0.0:10010"
+
+[rpcServer.rpcDiscovery]
+serviceName = "auth_session"
+nodeID = "node1"
+rPCAddr = "127.0.0.1:10010"
+etcdAddrs = ["http://127.0.0.1:2379"]
+interval = "2s"
+tTL = "10s"
+
+[[redis]]
+name = "cache"
+addr = "127.0.0.1:6379"
+idle = 100
+active = 100
+dialTimeout = "1s"
+readTimeout = "1s"
+writeTimeout = "1s"
+idleTimeout = "10s"
+dbNum = "0"
+password = ""
+
+[[mysql]]
+name = "immaster"
+dsn = "root:@/nebulaim?charset=utf8mb4"
+#root:1@tcp(127.0.0.1:3306)/nebulaim?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+active = 5
+idle = 2
+
+[[mysql]]
+name = "imslave"
+dsn = "root:@/nebulaim?charset=utf8mb4"
+# root:1@tcp(127.0.0.1:3306)/nebulaim?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+active = 5
+idle = 2

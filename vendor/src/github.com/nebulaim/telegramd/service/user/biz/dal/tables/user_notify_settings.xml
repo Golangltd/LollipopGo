@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table sqlname="user_notify_settings">
+    <operation name="Insert">
+        <sql>
+            INSERT INTO
+                user_notify_settings (user_id, peer_type, peer_id, show_previews, silent, mute_until, sound)
+            VALUES
+                (:user_id, :peer_type, :peer_id, :show_previews, :silent, :mute_until, :sound)
+        </sql>
+    </operation>
+
+    <operation name="SelectByUserId" result_set="list">
+        <sql>
+            SELECT
+                id, show_previews, silent, mute_until, sound
+            FROM
+                user_notify_settings
+            WHERE
+                user_id=:user_id
+        </sql>
+    </operation>
+
+    <operation name="SelectByPeer">
+        <sql>
+            SELECT
+                id, show_previews, silent, mute_until, sound
+            FROM
+                user_notify_settings
+            WHERE
+                user_id=:user_id AND peer_type = :peer_type AND peer_id=:peer_id
+        </sql>
+    </operation>
+
+    <operation name="SelectByUsers">
+        <sql>
+            SELECT
+                id, show_previews, silent, mute_until, sound
+            FROM
+                user_notify_settings
+            WHERE
+                user_id=:user_id AND peer_type = 5
+        </sql>
+    </operation>
+
+    <operation name="SelectByChannels">
+        <sql>
+            SELECT
+                id, show_previews, silent, mute_until, sound
+            FROM
+                user_notify_settings
+            WHERE
+                user_id=:user_id AND peer_type = 6
+        </sql>
+    </operation>
+
+    <operation name="SelectByAll">
+        <sql>
+            SELECT
+                id, show_previews, silent, mute_until, sound
+            FROM
+                user_notify_settings
+            WHERE
+                user_id=:user_id AND peer_type = 7
+        </sql>
+    </operation>
+
+    <operation name="UpdateByPeer">
+        <sql>
+            UPDATE
+                user_notify_settings
+            SET
+                show_previews = :show_previews, silent = :silent, mute_until = :mute_until, sound = :sound, is_deleted = :is_deleted
+            WHERE
+            user_id=:user_id AND peer_type = :peer_type AND peer_id=:peer_id
+        </sql>
+    </operation>
+
+    <operation name="DeleteNotAll">
+        <sql>
+            <![CDATA[
+            UPDATE
+                user_notify_settings
+            SET
+                is_deleted = 1
+            WHERE
+                user_id=:user_id AND peer_type <> 7
+            ]]>
+        </sql>
+    </operation>
+</table>

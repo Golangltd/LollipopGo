@@ -1,0 +1,1 @@
+### golang session id generator

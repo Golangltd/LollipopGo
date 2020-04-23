@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table sqlname="username">
+    <operation name="Insert">
+        <sql>
+            INSERT INTO username
+                (peer_type, peer_id, username)
+            VALUES
+                (:peer_type, :peer_id, :username)
+        </sql>
+    </operation>
+
+    <operation name="SelectByPeer">
+        <sql>
+            SELECT
+                peer_type, peer_id, username
+            FROM
+                username
+            WHERE
+                peer_type = :peer_type AND peer_id = :peer_id
+        </sql>
+    </operation>
+    <operation name="SelectByUserId">
+        <sql>
+            SELECT
+                peer_type, peer_id, username
+            FROM
+                username
+            WHERE
+                peer_type = 2 AND peer_id = :peer_id
+        </sql>
+    </operation>
+    <operation name="SelectByChannelId">
+        <sql>
+            SELECT
+                peer_type, peer_id, username
+            FROM
+                username
+            WHERE
+                peer_type = 4 AND peer_id = :peer_id
+        </sql>
+    </operation>
+    <operation name="SelectByUsername">
+        <sql>
+            SELECT
+                peer_type, peer_id, username
+            FROM
+                username
+            WHERE
+                username=:username
+        </sql>
+    </operation>
+    <operation name="UpdateUsername">
+        <sql>
+            UPDATE
+                username
+            SET
+                username = :username
+            WHERE
+                peer_type = :peer_type AND peer_id = :peer_id
+        </sql>
+    </operation>
+</table>
