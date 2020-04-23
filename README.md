@@ -32,7 +32,8 @@ Golang语言社区
 <ol>
 <li>希望更多喜欢Go语言的同学及想从事Go语言开发游戏服务器的同学一个方向的指引</li>
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
-<li>LollipopGo架构 最新版本: v1.0.20190117 </li>
+<li>LollipopGo架构 最新版本: v2.5.20200123 </li>
+<li>LollipopGo架构 直接下载就可以使用（彬哥维护），无需依赖管理，否则导致部分官方接口无法使用 </li>
 <li>LollipopGo架构 手机对战游戏视频：<a href="https://www.bilibili.com/video/av52239498" target="_blank">点击访问</a></li>
 <li>LollipopGo架构 PC端游对战游戏视频：<a href="https://www.bilibili.com/video/av54726431" target="_blank">点击访问</a></li>
 <li> LollipopGo对应的最新cocos creator客户端版本地址：<a href="http://game1.golang.ltd/20190118/" target="_blank">点击访问(不同厂商浏览器试玩游戏对战，例如：谷歌、360浏览器)</a> </li>
@@ -44,10 +45,11 @@ Golang语言社区
 
 
 
+
 架构整体流程图
 -----------
 <img src="https://github.com/Golangltd/LollipopGo/blob/master/vender/src/LollipopGo/LollipopGo/xmind/LollipopGo%E6%9E%B6%E6%9E%84%E6%8B%93%E6%89%91%E5%9B%BE%20v1.0.20181221.png"/>
 
  <div class="footer">
- 
+
  </div>
