@@ -1,2 +1,0 @@
-test.babaliuliu.com   8891         登录服务器 http
-gateway.a.babaliuliu.com:8888      网关 websocket

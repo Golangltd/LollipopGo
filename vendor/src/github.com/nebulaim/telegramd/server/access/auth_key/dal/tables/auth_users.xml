@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table sqlname="auth_users">
+    <operation name="Insert">
+        <sql>
+            INSERT INTO auth_users
+                (auth_id, user_id, hash, device_model, platform, system_version, api_id, app_name, app_version, date_created, date_active, ip, country, region)
+            VALUES
+                (:auth_id, :user_id, :hash, :device_model, :platform, :system_version, :api_id, :app_name, :app_version, :date_created, :date_active, :ip, :country, :region)
+        </sql>
+    </operation>
+    <operation name="SelectByAuthId">
+        <sql>
+            SELECT
+                auth_id, user_id, hash, device_model, platform, system_version, api_id, app_name, app_version, date_created, date_active, ip, country, region
+            FROM
+                auth_users
+            WHERE
+                auth_id=:auth_id
+        </sql>
+    </operation>
+</table>

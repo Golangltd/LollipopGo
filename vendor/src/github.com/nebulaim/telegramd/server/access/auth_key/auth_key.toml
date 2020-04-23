@@ -1,0 +1,47 @@
+# auth_key.toml
+
+ver = "0.0.1"
+serverId = 1
+
+[server.server]
+name = "handshake"
+protoName = "zproto"
+addr = "0.0.0.0:10005"
+
+[authSessionRpcClient]
+serviceName = "auth_session"
+etcdAddrs = ["http://127.0.0.1:2379"]
+balancer = "round_robin"
+
+[server.discovery]
+serviceName = "handshake"
+nodeID = "node1"
+rPCAddr = "127.0.0.1:10005"
+etcdAddrs = ["http://127.0.0.1:2379"]
+interval = "2s"
+tTL = "10s"
+
+[rpcServer]
+addr = "0.0.0.0:10006"
+
+[rpcServer.rpcDiscovery]
+serviceName = "auth_key"
+nodeID = "node1"
+rPCAddr = "127.0.0.1:10006"
+etcdAddrs = ["http://127.0.0.1:2379"]
+interval = "2s"
+tTL = "10s"
+
+[[mysql]]
+name = "immaster"
+dsn = "root:@/nebulaim?charset=utf8mb4"
+#root:1@tcp(127.0.0.1:3306)/nebulaim?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+active = 5
+idle = 2
+
+[[mysql]]
+name = "imslave"
+dsn = "root:@/nebulaim?charset=utf8mb4"
+# root:1@tcp(127.0.0.1:3306)/nebulaim?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+active = 5
+idle = 2
