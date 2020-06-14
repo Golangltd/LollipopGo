@@ -1,6 +1,0 @@
-1.0 Beta:
-- Do not support pointer, slice, map, channel, function and interface as key. If you want to use these types as key, can implements Hashable interface.
-- Add Hashable interface to support customize hash code and equals logic
-- Add Update method to allow safely use composition operation to update the value from multiple threads
-- Remove NextEntry method of MapIterator, and add Next() method to return key, value and ok flag
-- Add ToSlice method that returns an Entry slice

@@ -1,0 +1,45 @@
+//公用的proto文件，业务无关的一些通用消息
+
+syntax = "proto3";
+package proto;
+
+//错误码
+enum STATUS {
+    //0~99, 通用错误码
+    OK = 0;
+    UNKNOWN_ERROR = 1; // 未知错误
+    NOT_AUTH = 2; // 需要重新认证
+    TOKEN_INVALID = 3; // token错误
+    INSUFFICIENT = 4; // 余额不足
+    REDIRECT = 5; // 需要用户重连到另外的服务器
+    IDLE_TIMEOUT = 6; //闲置时间过长
+    DUP_LOGIN = 7; //重复登录
+    PARAM_ERROR = 8; //参数错误
+    SERVER_CLOSED = 9; //服务器已经关闭
+
+    //200-299 cube错误码
+    CUBE_BANKER_INSUFFICIENT = 200; //上庄金额不足
+    CUBE_BANKER_FULL = 201; //上庄队列已满
+    CUBE_CHIP_ERROR = 202; //筹码错误
+    CUBE_BET_OVER_LIMIT = 203; //单个区域下注金额超出限制
+    CUBE_OFF_BANKER_FOR_CREDIT = 204; //金额不足下庄
+    CUBE_OFF_BANKER_FOR_COUNT = 205; //连庄达到上限下庄
+    CUBE_BET_OVER_CREDIT = 206; //本局下注金额已达上限
+}
+
+// 对时，服务端存活探测探测, id=0
+message Ping {
+    int64 Timestamp = 1;
+}
+
+//对时，服务端返回当前时间，id=99
+message Pong {
+    int64 Timestamp = 1;
+}
+
+//错误信息，id: 100
+message ErrorST {
+    int64 Timestamp = 1; //毫秒级时间戳，下同
+    STATUS Status = 2;
+    string Msg = 3;
+}
