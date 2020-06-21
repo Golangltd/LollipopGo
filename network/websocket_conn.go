@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/golang/glog"
-	"github.com/golang/glog "
 	"golang.org/x/net/websocket"
 	"io"
 	"runtime"
