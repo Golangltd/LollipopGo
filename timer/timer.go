@@ -1,6 +1,56 @@
-package timer
+package LollipopGo_timer
 
-// 启动定时器
-func GlobalTimer() {
+import (
+	"LollipopGo/log"
+	"github.com/name5566/leaf/conf"
+	"runtime"
+	"time"
+)
 
+type Dispatcher struct {
+	ChanTimer chan *Timer
+}
+// Timer
+type Timer struct {
+	t  *time.Timer
+	cb func()
+}
+
+func (t *Timer) Stop() {
+	t.t.Stop()
+	t.cb = nil
+}
+
+func NewDispatcher(l int) *Dispatcher {
+	disp := new(Dispatcher)
+	disp.ChanTimer = make(chan *Timer, l)
+	return disp
+}
+
+func (t *Timer) Cb() {
+	defer func() {
+		t.cb = nil
+		if r := recover(); r != nil {
+			if conf.LenStackBuf > 0 {
+				buf := make([]byte, conf.LenStackBuf)
+				l := runtime.Stack(buf, false)
+				log.Error("%v: %s", r, buf[:l])
+			} else {
+				log.Error("%v", r)
+			}
+		}
+	}()
+
+	if t.cb != nil {
+		t.cb()
+	}
+}
+
+func (disp *Dispatcher) AfterFunc(d time.Duration, cb func()) *Timer {
+	t := new(Timer)
+	t.cb = cb
+	t.t = time.AfterFunc(d, func() {
+		disp.ChanTimer <- t
+	})
+	return t
 }
