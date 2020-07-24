@@ -20,6 +20,5 @@ require (
 )
 
 replace (
-	code.google.com/p/go.net/websocket => github.com/Golangltd/websocket_old v0.0.0-20200610144333-40b6804bddb4
 	golang.org/x/net/websocket => github.com/Golangltd/websocket_old v0.0.0-20200610144333-40b6804bddb4
 )
