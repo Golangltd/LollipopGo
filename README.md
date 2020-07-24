@@ -32,7 +32,7 @@ Golang语言社区
 <ol>
 <li>希望更多喜欢Go语言的同学及想从事Go语言开发游戏服务器的同学一个方向的指引</li>
 <li>课程多维度教学，lollipopGo游戏框架实战课程等等</li>
-<li>LollipopGo架构 最新版本: v2.5.20200423 </li>
+<li>LollipopGo架构 最新版本: v2.8.X </li>
 <li>LollipopGo架构 直接下载就可以使用（彬哥维护），无需依赖管理，否则导致部分官方接口无法使用 </li>
 <li>LollipopGo架构 手机对战游戏视频：<a href="https://www.bilibili.com/video/av52239498" target="_blank">点击访问</a></li>
 <li>LollipopGo架构 PC端游对战游戏视频：<a href="https://www.bilibili.com/video/av54726431" target="_blank">点击访问</a></li>
