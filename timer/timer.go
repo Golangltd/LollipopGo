@@ -2,10 +2,11 @@ package LollipopGo_timer
 
 import (
 	"LollipopGo/log"
-	"github.com/name5566/leaf/conf"
 	"runtime"
 	"time"
 )
+
+var LenStackBuf int = 4096
 
 type Dispatcher struct {
 	ChanTimer chan *Timer
@@ -31,8 +32,8 @@ func (t *Timer) Cb() {
 	defer func() {
 		t.cb = nil
 		if r := recover(); r != nil {
-			if conf.LenStackBuf > 0 {
-				buf := make([]byte, conf.LenStackBuf)
+			if LenStackBuf > 0 {
+				buf := make([]byte, LenStackBuf)
 				l := runtime.Stack(buf, false)
 				log.Error("%v: %s", r, buf[:l])
 			} else {
