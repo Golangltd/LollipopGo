@@ -7,6 +7,7 @@ const (
 	TCP = "tcp"
 	UDP = "udp"
 	KCP = "kcp"
+	NCN = "ncn"
 )
 
 func InitNet( netty string ) interface{} {
@@ -17,6 +18,7 @@ func InitNet( netty string ) interface{} {
 	case KCP:
 	case TCP:
 	case UDP:
+	case NCN:
 	default:
 	}
 	return nil
