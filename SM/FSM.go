@@ -13,6 +13,7 @@ type Callback func()
 
 type Callbacks map[string]Callback
 
+// ad
 func NewFSM(data []int) *FSM {
 	if len(data) == 0{
 		log.Println("create new FSM is fail")
