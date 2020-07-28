@@ -13,18 +13,9 @@ QQ群
 -----------
 221273219
 
-简书
------------
-[简书专栏](https://www.jianshu.com/u/9f8cf18345b5)
-
 腾讯云+社区专栏
 -----------
 [腾讯专栏](https://cloud.tencent.com/developer/column/2170)
-
-架构视频教程
------------
-[流程讲解](http://www.byteedu.com/forum.php?mod=viewthread&tid=306)
-
 
 Golang语言社区
 -----------
