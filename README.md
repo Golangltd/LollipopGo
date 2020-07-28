@@ -48,7 +48,7 @@ Golang语言社区
 ├── log               # 通用的log封装
 ├── network           # 网络处理封装，目前支持：http、rpc、websocket
 ├── Proxy_Server      
-│   └──  Proto         # 反向代理消息公用模块，框架标准
+│   └──  Proto        # 反向代理消息公用模块，框架标准
 ├── SM                # 游戏AI处理,目前支持有限状态机
 ├── standard          # 框架函数、变量命名规则(建议驼峰命名)
 ├── timer             # 通用定时器
