@@ -42,7 +42,7 @@ Golang语言社区
 ```
 ├── encrypt           
 │   ├── DES           # DES加密
-│   └── RSA           # RAS加密
+│   └── RSA           # RSA加密
 ├── error             # 错误统一格式管理模块，全局错误码定义
 ├── global_Interface  # 网络接口定义，分布式服务器需要单独实现接口
 ├── heartbeat         # 通用心跳模块
