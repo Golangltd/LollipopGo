@@ -10,6 +10,9 @@ import (
 
 //生成RSA私钥和公钥，保存到文件中
 func GenerateRSAKey(bits int,path string){
+	if len(path) == 0{
+		path = "."
+	}
 	//GenerateKey函数使用随机数据生成器random生成一对具有指定字位数的RSA密钥
 	//Reader是一个全局、共享的密码用强随机数生成器
 	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
@@ -21,7 +24,7 @@ func GenerateRSAKey(bits int,path string){
 	X509PrivateKey := x509.MarshalPKCS1PrivateKey(privateKey)
 	//使用pem格式对x509输出的内容进行编码
 	//创建文件保存私钥
-	privateFile, err := os.Create("private.pem")
+	privateFile, err := os.Create(path+"/private.pem")
 	if err!=nil{
 		panic(err)
 	}
