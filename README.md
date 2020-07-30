@@ -56,6 +56,7 @@ Golang语言社区
 │   ├── collection    # 集合类的扩展方法
 │   ├── database      # 快速初始化数据库连接
 │   ├── deepcopy      # 通用深拷贝（使用反射）
+│   ├── DFA           # 过滤敏感字
 │   ├── fs            # 文件系统/配置解析
 │   ├── ip            # ip地址库
 │   ├── jsonutils     # json工具库
