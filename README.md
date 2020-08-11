@@ -40,7 +40,8 @@ Golang语言社区
 架构目录说明
 -----------
 ```
-├── encrypt           
+├── encrypt
+│   ├── AES           # AES加密           
 │   ├── DES           # DES加密
 │   └── RSA           # RSA加密
 ├── error             # 错误统一格式管理模块，全局错误码定义
