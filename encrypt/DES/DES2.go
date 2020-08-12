@@ -1,4 +1,4 @@
-package encrypt
+package DES
 
 import (
 	"bytes"
