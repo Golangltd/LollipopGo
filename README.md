@@ -31,7 +31,7 @@ Golang语言社区
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" target="_blank">腾讯课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" target="_blank">网易云课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" target="_blank">B站(bilibili.com)</a></li>
-<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://www.byteedu.com/forum.php?mod=forumdisplay&fid=36" target="_blank">ByteEdu教育平台(ByteEdu.com)</a></li>
+<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://www.gameais.com" target="_blank">LollipopGo框架文档地址：GameAIs平台(GameAIs.com)</a></li>
 </ol>
 
 
