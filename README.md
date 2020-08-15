@@ -27,12 +27,12 @@ Golang语言社区
 <li>LollipopGo架构 直接下载就可以使用（彬哥维护），无需依赖管理，否则导致部分官方接口无法使用 </li>
 <li>LollipopGo架构 手机对战游戏视频：<a href="https://www.bilibili.com/video/av52239498" target="_blank">点击访问</a></li>
 <li>LollipopGo架构 PC端游对战游戏视频：<a href="https://www.bilibili.com/video/av54726431" target="_blank">点击访问</a></li>
-<li> LollipopGo对应的最新cocos creator客户端版本地址：<a href="http://game1.golang.ltd/20190118/" target="_blank">点击访问(不同厂商浏览器试玩游戏对战，例如：谷歌、360浏览器)</a> </li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" target="_blank">腾讯课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" target="_blank">网易云课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" target="_blank">B站(bilibili.com)</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://www.gameais.com" target="_blank">LollipopGo框架文档地址：GameAIs平台(GameAIs.com)</a></li>
 </ol>
+
 
 
 
@@ -50,6 +50,10 @@ Golang语言社区
 ├── leaf              # leaf的一些扩展函数，包括自定义的protobuf消息解析器
 ├── log               # 通用的log封装
 ├── network           # 网络处理封装，目前支持：http、rpc、websocket
+├── PhysX             # 3D游戏Physx支持，目前内测
+│   ├── DLLAndSo      # PhysX动态链接库，支持windows系统及linux系统
+│   ├── PhysXAPI      # Go语言封装的PhysXAPI调用接口
+│   └── example       # Go语言封装接口测试实例
 ├── Proxy_Server      
 │   └──  Proto        # 反向代理消息公用模块，框架标准
 ├── SM                # 游戏AI处理,目前支持有限状态机
