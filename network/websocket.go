@@ -26,15 +26,11 @@ type OnlineUser struct {
 	HandleClt  MsgHandleClt.Msg_data
 }
 
-var icount = 0
-
 func InitConnection(wsConn *websocket.Conn) (*OnlineUser, error) {
 	conn := &OnlineUser{
 		Connection: wsConn,
 		inChan: make(chan string, BytebufLen),
 	}
-	icount++
-	// fmt.Println("Server_Login------------------------- ", icount)
 	go conn.handleLoop()
 	conn.readLoop()
 
