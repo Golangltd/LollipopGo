@@ -31,17 +31,10 @@ var icount = 0
 func InitConnection(wsConn *websocket.Conn) (*OnlineUser, error) {
 	conn := &OnlineUser{
 		Connection: wsConn,
-		// inChan:     make(chan string, 1),
 		inChan: make(chan string, BytebufLen),
-		//outChan:    make(chan interface{}, BytebufLen),
-		//closeChan:  make(chan int, 1),
-		//goExit:     make(chan int, 2),
 	}
-
 	icount++
-	fmt.Println("Server_Login------------------------- ", icount)
-
-	//go conn.writeLoop()
+	// fmt.Println("Server_Login------------------------- ", icount)
 	go conn.handleLoop()
 	conn.readLoop()
 
@@ -55,24 +48,15 @@ func (this *OnlineUser) readLoop() {
 		err := websocket.Message.Receive(this.Connection, &content)
 		if err != nil {
 			if err == io.EOF {
-				// this.goExit <- 1
-				// this.closeChan <- 3
-				// runtime.Goexit()
+				IMsg.CloseEOF(1)
 				break
 			}
 			continue
-			//goto ERR
 		}
 		select {
 		case this.inChan <- content:
-			// case <-this.closeChan:
-			// 	//goto ERR
 		}
 	}
-
-	// ERR:
-	// 	this.Connection.Close()
-
 }
 
 func (this *OnlineUser) handleLoop() {
@@ -86,8 +70,6 @@ func (this *OnlineUser) handleLoop() {
 		var r Requestbody
 		select {
 		case r.req = <-this.inChan:
-			// case <-this.goExit:
-			// 	goto ERR
 		}
 		if len(r.req) <= 0 {
 			continue
@@ -95,28 +77,20 @@ func (this *OnlineUser) handleLoop() {
 
 		if ProtocolData, err := r.Json2map(); err == nil {
 			IMsg.HandleCltProtocol(ProtocolData["Protocol"], ProtocolData["Protocol2"], ProtocolData, this.Connection)
-			// data := IMsg.HandleCltProtocol(ProtocolData["Protocol"], ProtocolData["Protocol2"], ProtocolData, this.Connection)
-			// this.outChan <- data
 		} else {
 			content := r.req
-			//fmt.Println(strings.Trim("", "\""))
-			//fmt.Println(content)
 			content = strings.Replace(content, "\"", "", -1)
 			contentstr, errr := base64Decode([]byte(content))
 			if errr != nil {
 				fmt.Println(errr)
 				continue
 			}
-			//fmt.Println("返回数据：", string(contentstr))
 			r.req = string(contentstr)
 			if ProtocolData, err := r.Json2map(); err == nil {
 				IMsg.HandleCltProtocol(ProtocolData["Protocol"], ProtocolData["Protocol2"], ProtocolData, this.Connection)
 			}
 		}
 	}
-	// ERR:
-	// 	this.Connection.Close()
-	// 	runtime.Goexit()
 }
 
 func base64Decode(src []byte) ([]byte, error) {
@@ -159,11 +133,6 @@ func (this *OnlineUser) PlayerSendMessage(senddata interface{}) int {
 		glog.Flush()
 		return 1
 	}
-	//glog.Info("json.Marshal(b) :", string(b))
-	//data := ""
-	//data = "data" + "=" + string(b[0:len(b)])
-	//glog.Info("json.Marshal(data) :", data)
-	//glog.Flush()
 	err := websocket.JSON.Send(this.Connection, b)
 	if err != nil {
 		glog.Error("PlayerSendMessage send data fail ! err:", err.Error())
@@ -187,7 +156,6 @@ func (r *Requestbody) Json2map() (s map[string]interface{}, err error) {
 }
 
 func PlayerSendToServer(conn *websocket.Conn, data interface{}) {
-
 	jsons, err := json.Marshal(data)
 	if err != nil {
 		glog.Info("err:", err.Error())
@@ -201,7 +169,6 @@ func PlayerSendToServer(conn *websocket.Conn, data interface{}) {
 }
 
 //------------------------------------------------------------------------------
-// 消息中转代理服务器需要
 func PlayerSendToProxyServer(conn *websocket.Conn, senddata interface{}, strOpenID string) {
 	if len(strOpenID) > 50 {
 		return
@@ -219,9 +186,6 @@ func PlayerSendToProxyServer(conn *websocket.Conn, senddata interface{}, strOpen
 		glog.Info("err:", err.Error())
 		return
 	}
-	// base64
-	//encoding := base64.StdEncoding.EncodeToString(jsons)
-	//fmt.Println("encoding",encoding)
 	errq := websocket.Message.Send(conn, jsons)
 	if errq != nil {
 		glog.Info(errq)
@@ -233,7 +197,7 @@ func PlayerSendMessageOfProxy(conn *websocket.Conn, senddata interface{}, strSer
 
 	datasend := Proto_Proxy.C2Proxy_SendData{
 		Protocol:  1,
-		Protocol2: 1, //Proto_Proxy.G2Proxy_SendDataProto,
+		Protocol2: 1,
 		ServerID:  strServerID,
 		Data:      senddata,
 	}
@@ -246,10 +210,6 @@ func PlayerSendMessageOfProxy(conn *websocket.Conn, senddata interface{}, strSer
 		glog.Flush()
 		return 1
 	}
-	//glog.Info("json.Marshal(b) :", string(b))
-	//data := ""
-	//data = "data" + "=" + string(b[0:len(b)])
-	//glog.Info("json.Marshal(data) :", data)
 	glog.Flush()
 	encoding := base64.StdEncoding.EncodeToString(b)
 	err := websocket.JSON.Send(conn, encoding)
@@ -260,5 +220,3 @@ func PlayerSendMessageOfProxy(conn *websocket.Conn, senddata interface{}, strSer
 	}
 	return 0
 }
-
-//------------------------------------------------------------------------------
