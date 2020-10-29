@@ -48,7 +48,7 @@ func (this *OnlineUser) readLoop() {
 		err := websocket.Message.Receive(this.Connection, &content)
 		if err != nil {
 			if err == io.EOF {
-				IMsg.CloseEOF(1)
+				IMsg.CloseEOF(this.Connection)
 				break
 			}
 			continue
