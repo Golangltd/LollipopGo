@@ -216,3 +216,25 @@ func PlayerSendMessageOfProxy(conn *websocket.Conn, senddata interface{}, strSer
 	}
 	return 0
 }
+
+func PlayerSendMessageOfExit(conn *websocket.Conn, senddata interface{}, strServerID string) int {
+
+	var sssend interface{}
+	sssend = senddata
+	glog.Info("协程的数量 :", runtime.NumGoroutine())
+	b, err1 := json.Marshal(sssend)
+	if err1 != nil {
+		glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
+		glog.Flush()
+		return 1
+	}
+	glog.Flush()
+	encoding := base64.StdEncoding.EncodeToString(b)
+	err := websocket.JSON.Send(conn, encoding)
+	if err != nil {
+		glog.Error("PlayerSendMessage send data fail ! err:", err.Error())
+		glog.Flush()
+		return 2
+	}
+	return 0
+}
