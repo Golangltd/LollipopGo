@@ -124,7 +124,6 @@ func (this *OnlineUser) PlayerSendMessage(senddata interface{}) int {
 
 	glog.Info("协程的数量 :", runtime.NumGoroutine())
 	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
-	/*b, err1 := json.Marshal(senddata)*/
 	b, err1 := jsoniter.Marshal(senddata)
 	if err1 != nil {
 		glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
@@ -148,20 +147,14 @@ func (r *Requestbody) Json2map() (s map[string]interface{}, err error) {
 	var result map[string]interface{}
 	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
 	if err := jsoniter.Unmarshal([]byte(r.req), &result); err != nil {
-		//glog.Info("Json2map:", err.Error())
 		return nil, err
 	}
-	/*	if err := json.Unmarshal([]byte(r.req), &result); err != nil {
-		//glog.Info("Json2map:", err.Error())
-		return nil, err
-	}*/
 	return result, nil
 }
 
 func PlayerSendToServer(conn *websocket.Conn, data interface{}) {
 	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
 	jsons, err := jsoniter.Marshal(data)
-	/*jsons, err := json.Marshal(data)*/
 	if err != nil {
 		glog.Info("err:", err.Error())
 		return
@@ -188,7 +181,6 @@ func PlayerSendToProxyServer(conn *websocket.Conn, senddata interface{}, strOpen
 	sssend = data
 	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
 	jsons, err := jsoniter.Marshal(sssend)
-	/*jsons, err := json.Marshal(sssend)*/
 	if err != nil {
 		glog.Info("err:", err.Error())
 		return
@@ -213,7 +205,6 @@ func PlayerSendMessageOfProxy(conn *websocket.Conn, senddata interface{}, strSer
 	glog.Info("协程的数量 :", runtime.NumGoroutine())
 	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
 	b, err1 := jsoniter.Marshal(sssend)
-	/*	b, err1 := json.Marshal(sssend)*/
 	if err1 != nil {
 		glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
 		glog.Flush()
@@ -237,7 +228,6 @@ func PlayerSendMessageOfExit(conn *websocket.Conn, senddata interface{}, strServ
 	glog.Info("协程的数量 :", runtime.NumGoroutine())
 	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
 	b, err1 := jsoniter.Marshal(sssend)
-	/*	b, err1 := json.Marshal(sssend)*/
 	if err1 != nil {
 		glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
 		glog.Flush()
