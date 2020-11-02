@@ -112,7 +112,6 @@ func (this *OnlineUser) writeLoop() {
 		case <-this.goExit:
 			this.Connection.Close()
 			runtime.Goexit() //new24
-
 		}
 	}
 ERR:
