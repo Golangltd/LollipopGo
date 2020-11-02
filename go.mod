@@ -3,7 +3,6 @@ module LollipopGo
 go 1.14
 
 require (
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
@@ -11,6 +10,7 @@ require (
 	github.com/gomodule/redigo v1.8.2
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/jinzhu/gorm v1.9.12
+	github.com/json-iterator/go v1.1.10
 	github.com/klauspost/reedsolomon v1.9.9 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mmcloughlin/avo v0.0.0-20200803215136-443f81d77104 // indirect
