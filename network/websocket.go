@@ -47,7 +47,7 @@ func (this *OnlineUser) readLoop() {
 				IMsg.CloseEOF(this.Connection)
 				break
 			}
-			continue
+			break
 		}
 		select {
 		case this.inChan <- content:
@@ -56,12 +56,14 @@ func (this *OnlineUser) readLoop() {
 }
 
 func (this *OnlineUser) handleLoop() {
+
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)
 			glog.Info("异常捕获:", strerr)
 		}
 	}()
+
 	for {
 		var r Requestbody
 		select {
@@ -107,7 +109,6 @@ func (this *OnlineUser) writeLoop() {
 				this.Connection.Close()
 				runtime.Goexit() //new24
 				goto ERR
-
 			}
 		case <-this.goExit:
 			this.Connection.Close()

@@ -20,7 +20,6 @@ type OnlineKCP struct {
 	goExit     chan int
 	isClosed   bool
 	HandleClt  MsgHandleClt.Msg_data
-
 }
 // 初始化网络
 func InitConnectionKCP(kcpConn *kcp.UDPSession,Listener*kcp.Listener) (*OnlineKCP, error) {
