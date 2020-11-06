@@ -23,6 +23,7 @@ type OnlineKCP struct {
 }
 // 初始化网络
 func InitConnectionKCP(kcpConn *kcp.UDPSession,Listener*kcp.Listener) (*OnlineKCP, error) {
+
 	conn := &OnlineKCP{
 		Listener:Listener,
 		Connection: kcpConn,
@@ -59,6 +60,7 @@ func (this *OnlineKCP) readLoop() {
 }
 
 func (this *OnlineKCP) handleLoop() {
+
 	defer func() {
 		if err := recover(); err != nil {
 			strerr := fmt.Sprintf("%s", err)

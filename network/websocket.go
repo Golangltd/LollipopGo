@@ -81,6 +81,7 @@ func (this *OnlineUser) handleLoop() {
 			contentstr, errr := base64Decode([]byte(content))
 			if errr != nil {
 				fmt.Println(errr)
+				this.Connection.Write([]byte("数据格式错误"))
 				continue
 			}
 			r.req = string(contentstr)
