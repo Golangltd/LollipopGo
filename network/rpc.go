@@ -17,7 +17,7 @@ type RPCSt struct {
 	ConnRPC *rpc.Client
 }
 
-func NewClientConnRPC(Addr string) *RPCSt {
+func InitConnectionRPC(Addr string) *RPCSt {
 	return &RPCSt{
 		ServiceUrl:Addr,
 		SendData:nil,
