@@ -15,6 +15,13 @@ const (
 	KCP = "kcp"
 )
 
+// 连接服务器类型
+const (
+	CONNINIT = iota
+	ConnProxy        // ConnProxy == 1 主动连接 Proxy服务器，Proxy作为全球服或者区域服
+	StartProxy       // StartProxy == 2  Proxy服务器使用
+)
+
 // 初始化网络
 func InitNet( netty string ,netdata ...interface{}) interface{} {
 	switch netty {
@@ -34,6 +41,20 @@ func InitNet( netty string ,netdata ...interface{}) interface{} {
 	}
 	return nil
 }
+
+// 启动网络监听
+func Start(url string,route string,conntype int,netty string)  {
+	switch netty {
+	case WebSocket:
+
+	case RPC:
+	case KCP:
+	case TCP:
+	default:
+		glog.Info("InitNet is failed,net type is not exist!")
+	}
+}
+
 
 
 

@@ -5,6 +5,10 @@ import (
 	"flag"
 )
 
+func init()  {
+	Run()
+}
+
 func Run() {
 	flag.Set("alsologtostderr", "true")
 	flag.Set("log_dir", "./log")

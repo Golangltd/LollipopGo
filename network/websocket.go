@@ -3,13 +3,16 @@ package impl
 import (
 	"LollipopGo/Proxy_Server/Proto"
 	"LollipopGo/global_Interface"
+	"LollipopGo/util"
 	"encoding/base64"
 	"fmt"
 	"github.com/golang/glog"
 	"github.com/json-iterator/go"
 	"golang.org/x/net/websocket"
 	"io"
+	"net/http"
 	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -243,4 +246,65 @@ func PlayerSendMessageOfExit(conn *websocket.Conn, senddata interface{}, strServ
 		return 2
 	}
 	return 0
+}
+
+// WebSocketStart websocket启动
+func WebSocketStart(url string,
+	route string,
+	BuildConnection func(ws *websocket.Conn),
+	conntype int,
+	serverId int,
+	proxyUrl []string, //[0] = ProxyHost;[1]=ProxyPort,[2]=ProxyPath
+	GameServerReceive func(ws *websocket.Conn),
+	ConnXZ *websocket.Conn)  {
+    var StartDesc = ""
+	if conntype == ConnProxy{//作为内网的服务器连接代理服务器
+		proxyURL := AddParamsToGetReq("ws", proxyUrl, map[string]string{"data": "{ID:1}"})
+		glog.Infof("connect to proxy addr:%s\n", proxyURL)
+		conn, err := websocket.Dial(proxyURL, "", "test://golang/")
+		if err != nil {
+			glog.Errorln("err:", err.Error())
+			return
+		}
+		ConnXZ = conn
+		data := Proto_Proxy.G2Proxy_ConnData{
+			Protocol: 1 ,
+			Protocol2: Proto_Proxy.G2Proxy_ConnDataProto,
+			ServerID:  util.MD5_LollipopGO(strconv.Itoa(serverId)),
+		}
+		PlayerSendToServer(conn, data)
+		go GameServerReceive(conn)
+	}else if conntype == StartProxy {
+		StartDesc = "proxy server"
+	}
+	http.Handle("/"+route, websocket.Handler(BuildConnection))
+	glog.Infof("game listen to:[%s]\n", url)
+	glog.Info("game start ok ",StartDesc)
+	if err := http.ListenAndServe(url, nil); err != nil {
+		glog.Info("Entry nil", err.Error())
+		glog.Flush()
+		return
+	}
+}
+
+//添加参数到get请求
+func AddParamsToGetReq(tpType string, strArr []string, paramsMap map[string]string) string {
+	urlPath := getUrlPath(tpType, strArr)
+	if len(paramsMap) <= 0 || paramsMap == nil { //如果没有参数需要添加直接返回当前路径
+		return urlPath
+	}
+	urlPath = urlPath + "?" //如果参数个数大于等于0,路径后缀加上?
+	paramList := make([]string, 0)
+	for k, v := range paramsMap {
+		paramList = append(paramList, fmt.Sprintf("%s=%s", k, v))
+	}
+	tempStr := strings.Join(paramList, "&")
+	return fmt.Sprintf("%s%s", urlPath, tempStr)
+}
+
+
+//获取url路径
+func getUrlPath(tpType string, strArr []string) string {
+	urlPath := strings.Join(strArr, "")
+	return fmt.Sprintf("%s://%s", tpType, urlPath)
 }
