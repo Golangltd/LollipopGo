@@ -278,7 +278,7 @@ func WebSocketStart(url string,
 		StartDesc = "proxy server"
 	}
 	http.Handle("/"+route, websocket.Handler(BuildConnection))
-	glog.Infof("game listen to:[%s]\n", url)
+	glog.Infof("game listen to:[%s]\n", route)
 	glog.Info("game start ok ",StartDesc)
 	if err := http.ListenAndServe(url, nil); err != nil {
 		glog.Info("Entry nil", err.Error())
