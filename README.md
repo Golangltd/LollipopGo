@@ -22,7 +22,7 @@ Go语言交流群
 
 框架示例
 ----------
-[游戏服务器示例(登录服务器，代理服务器等)](https://github.com/Golangltd/LollipopGo_example)
+[游戏服务器示例(登录服务器，代理服务器等)](https://github.com/Golangltd/LollipopGo_Server_Client)
 
 
 腾讯云+社区专栏
