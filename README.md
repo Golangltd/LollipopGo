@@ -52,7 +52,7 @@ Golang语言情怀
 
 架构目录说明
 -----------
-```
+```go
 ├── encrypt
 │   ├── AES           # AES加密           
 │   ├── DES           # DES加密
@@ -78,6 +78,8 @@ Golang语言情怀
 │   ├── deepcopy      # 通用深拷贝（使用反射）
 │   ├── DFA           # 过滤敏感字
 │   ├── fs            # 文件系统/配置解析
+│   ├── hardware      # 文件系统/配置解析
+│   └──  MAC          # 获取MAC地址
 │   ├── ip            # ip地址库
 │   ├── jsonutils     # json工具库
 │   ├── mem           # 常用的内存缓存类
@@ -89,3 +91,4 @@ Golang语言情怀
  <div class="footer">
 
  </div>
+

@@ -17,7 +17,8 @@ func Int2str_LollipopGo(data int) string {
 	return strconv.Itoa(data)
 }
 
-func toString(arg interface{}) string {
+// data to string all
+func ToString(arg interface{}) string {
 	switch arg.(type) {
 	case bool:
 		return boolToString(arg.(bool))
@@ -25,10 +26,6 @@ func toString(arg interface{}) string {
 		return floatToString(float64(arg.(float32)))
 	case float64:
 		return floatToString(arg.(float64))
-		//case complex64:
-		//  p.fmtComplex(complex128(f), 64, verb)
-		//case complex128:
-		//  p.fmtComplex(f, 128, verb)
 	case int:
 		return intToString(int64(arg.(int)))
 	case int8:
