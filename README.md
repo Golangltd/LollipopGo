@@ -3,6 +3,7 @@ Golang语言情怀  全球服游戏服务器框架,目前协议支持websocket�
 >微信订阅号：Golang语言情怀<Br/>
 >微信服务号：Golang语言游戏服务器<Br/>
 >商业定制版：联系彬哥(微信：cserli)<Br/>
+>[谷歌play游戏下载地址](https://play.google.com/store/apps/details?id=com.byteedu.crazydice)
 
 
 论坛
