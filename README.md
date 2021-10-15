@@ -1,8 +1,9 @@
 # LollipopGo 
-Golang语言社区  全球服游戏服务器框架,目前协议支持websocket、http及RPC，采用状态同步，愿景：打造竞技实时【比赛】对战游戏平台框架！ 功能持续更新中... ...
->微信订阅号：Golang语言社区<Br/>
->微信服务号：Golang技术社区<Br/>
+Golang语言情怀  全球服游戏服务器框架,目前协议支持websocket、http及RPC，采用状态同步，愿景：打造竞技实时【比赛】对战游戏平台框架！ 功能持续更新中... ...
+>微信订阅号：Golang语言情怀<Br/>
+>微信服务号：Golang语言游戏服务器<Br/>
 >商业定制版：联系彬哥(微信：cserli)<Br/>
+>[本框架的谷歌play游戏下载地址(游戏中包含谷歌支付及谷歌广告)](https://play.google.com/store/apps/details?id=com.byteedu.crazydice)
 
 
 论坛
@@ -11,15 +12,24 @@ WwW.Golang.Ltd
 
 LollipopGo框架交流群
 -----------
+<<<<<<< HEAD
 221273219(已满)
 
+=======
+>>>>>>> master
 955259501
+
+Go语言交流群
+----------
+221273219
+
 
 腾讯云+社区专栏
 -----------
 [腾讯专栏](https://cloud.tencent.com/developer/column/2170)
 
-Golang语言社区
+
+Golang语言情怀
 -----------
 
 <ol>
@@ -32,7 +42,7 @@ Golang语言社区
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" target="_blank">腾讯课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" target="_blank">网易云课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" target="_blank">B站(bilibili.com)</a></li>
-<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://www.gameais.com" target="_blank">LollipopGo框架文档地址：GameAIs平台(GameAIs.com)</a></li>
+<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://www.gameais.com" target="_blank">LollipopGo框架文档地址，关注公众服务号：Golang语言游戏服务器</a></li>
 </ol>
 
 
@@ -41,7 +51,7 @@ Golang语言社区
 
 架构目录说明
 -----------
-```
+```go
 ├── encrypt
 │   ├── AES           # AES加密           
 │   ├── DES           # DES加密
@@ -67,6 +77,8 @@ Golang语言社区
 │   ├── deepcopy      # 通用深拷贝（使用反射）
 │   ├── DFA           # 过滤敏感字
 │   ├── fs            # 文件系统/配置解析
+│   ├── hardware      
+│   └──  MAC          # 获取MAC地址
 │   ├── ip            # ip地址库
 │   ├── jsonutils     # json工具库
 │   ├── mem           # 常用的内存缓存类
@@ -78,3 +90,4 @@ Golang语言社区
  <div class="footer">
 
  </div>
+
