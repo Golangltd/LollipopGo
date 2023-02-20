@@ -7,7 +7,7 @@ Golang语言情怀  全球服游戏服务器框架,目前协议支持websocket�
 >[谷歌play海外【荒野坦克大战】下载地址：https://play.google.com/store/apps/details?id=com.byteedu.tankBattle](https://play.google.com/store/apps/details?id=com.byteedu.tankBattle)<Br/>
 >[taptap国内【荒野坦克大战】下载地址：https://www.taptap.cn/app/243380](https://www.taptap.cn/app/243380)<Br/>
 >[4399游戏盒子国内【荒野坦克大战】下载地址：http://a.4399.cn/game-id-252256.html](http://a.4399.cn/game-id-252256.html)<Br/>
-
+>[微信小程序国内版本，搜索：荒野坦克<Br/>
 
 
 论坛
