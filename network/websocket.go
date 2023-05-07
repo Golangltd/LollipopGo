@@ -48,7 +48,7 @@ func (this *OnlineUser) readLoop() {
 		if err != nil {
 			if err == io.EOF {
 				IMsg.CloseEOF(this.Connection)
-				break
+				return
 			}
 			break
 		}
@@ -256,9 +256,9 @@ func WebSocketStart(url string,
 	serverId int,
 	proxyUrl []string, //[0] = ProxyHost;[1]=ProxyPort,[2]=ProxyPath
 	GameServerReceive func(ws *websocket.Conn),
-	ConnXZ *websocket.Conn)  {
-    var StartDesc = ""
-	if conntype == ConnProxy{//作为内网的服务器连接代理服务器
+	ConnXZ *websocket.Conn) {
+	var StartDesc = ""
+	if conntype == ConnProxy { //作为内网的服务器连接代理服务器
 		proxyURL := AddParamsToGetReq("ws", proxyUrl, map[string]string{"data": "{ID:1}"})
 		glog.Infof("connect to proxy addr:%s\n", proxyURL)
 		conn, err := websocket.Dial(proxyURL, "", "test://golang/")
@@ -268,18 +268,18 @@ func WebSocketStart(url string,
 		}
 		ConnXZ = conn
 		data := Proto_Proxy.G2Proxy_ConnData{
-			Protocol: 1 ,
+			Protocol:  1,
 			Protocol2: Proto_Proxy.G2Proxy_ConnDataProto,
 			ServerID:  util.MD5_LollipopGO(strconv.Itoa(serverId)),
 		}
 		PlayerSendToServer(conn, data)
 		go GameServerReceive(conn)
-	}else if conntype == StartProxy {
+	} else if conntype == StartProxy {
 		StartDesc = "proxy server"
 	}
 	http.Handle("/"+route, websocket.Handler(BuildConnection))
 	glog.Infof("game listen to:[%s]\n", route)
-	glog.Info("game start ok ",StartDesc)
+	glog.Info("game start ok ", StartDesc)
 	if err := http.ListenAndServe(url, nil); err != nil {
 		glog.Info("Entry nil", err.Error())
 		glog.Flush()
@@ -301,7 +301,6 @@ func AddParamsToGetReq(tpType string, strArr []string, paramsMap map[string]stri
 	tempStr := strings.Join(paramList, "&")
 	return fmt.Sprintf("%s%s", urlPath, tempStr)
 }
-
 
 //获取url路径
 func getUrlPath(tpType string, strArr []string) string {
