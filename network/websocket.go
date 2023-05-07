@@ -46,6 +46,9 @@ func (this *OnlineUser) readLoop() {
 		var content string
 		err := websocket.Message.Receive(this.Connection, &content)
 		if err != nil {
+			if err == io.ErrClosedPipe {
+				glog.Info("---------------------:", io.ErrClosedPipe)
+			}
 			if err == io.EOF {
 				IMsg.CloseEOF(this.Connection)
 				return
