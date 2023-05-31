@@ -32,10 +32,10 @@ func InitNet(netty string, netdata ...interface{}) interface{} {
 		InitConnectionRPC(netty) // rpc 不需要返回
 	case KCP:
 		InitConnectionKCP(netdata[0].(*kcp.UDPSession), netdata[1].(*kcp.Listener))
-		return IMsg
+		return IMsgPB
 	case TCP:
 		InitConnectionTCP(netdata[0].(*net.Conn), netdata[1].(*net.Listener))
-		return IMsg
+		return IMsgPB
 	default:
 		glog.Info("InitNet is failed,net type is not exist!")
 	}
