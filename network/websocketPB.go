@@ -142,7 +142,7 @@ func WebSocketStartPB(url string,
 }
 
 //------------------------------------------------------------------------------
-func PlayerSendToProxyServerPB(conn *websocket.Conn, senddata interface{}, strOpenID string) {
+func PlayerSendToProxyServerPB(conn *websocket.Conn, senddata []byte, strOpenID string) {
 	if len(strOpenID) > 50 {
 		return
 	}
@@ -150,7 +150,7 @@ func PlayerSendToProxyServerPB(conn *websocket.Conn, senddata interface{}, strOp
 		Protocol:    1,
 		Protocol2:   int32(Proto_Proxy.Proxy_P2C_SendData),
 		OpenId:      strOpenID,
-		PackageData: senddata.([]byte),
+		PackageData: senddata,
 	}
 
 	PackageData, err := proto.Marshal(data)
