@@ -1,16 +1,10 @@
 package leaf
 
 import (
-	Proto_Proxy "LollipopGo/Proxy_Server/Proto"
 	_ "LollipopGo/Proxy_Server/Proto"
-	"LollipopGo/log"
-	"LollipopGo/tools/tz"
 	"github.com/name5566/leaf/chanrpc"
-	"github.com/name5566/leaf/conf"
 	"github.com/name5566/leaf/gate"
 	"github.com/name5566/leaf/module"
-	"github.com/name5566/leaf/network/json"
-	L "log"
 	"time"
 )
 
@@ -66,60 +60,4 @@ func CheckAuth(ag gate.Agent) bool {
 		return false
 	}
 	return true
-}
-
-func CloseAgent(ag gate.Agent, status Proto_Proxy.STATUS, errMsg string, userID uint64) {
-	if ag == nil {
-		return
-	}
-	if status == Proto_Proxy.STATUS_UNKNOWN_ERROR {
-		log.Error("server error!!!, msg:%v", errMsg)
-	} else if userID != 0 && status != Proto_Proxy.STATUS_NOT_AUTH {
-		//log.Info("close conn for %v, status: %v, msg: %v", userID, status, errMsg)
-		//// server kickout user, tracked here
-		//log.Track("",
-		//	zap.Uint64("user_id", userID),
-		//	zap.String("type", "kick_out"),
-		//	zap.String("err_msg", errMsg),
-		//	zap.String("status", status.String()),
-		//)
-	}
-	ag.WriteMsg(&Proto_Proxy.ErrorST{
-		Timestamp: tz.GetNowTsMs(),
-		Status:    status,
-		Msg:       errMsg,
-	})
-	ag.Close()
-}
-
-func RegisterCommonProtoMSG(p *processor) {
-	p.Register(&Proto_Proxy.Ping{}, 0)
-	p.Register(&Proto_Proxy.Pong{}, 99)
-	p.Register(&Proto_Proxy.ErrorST{}, 100)
-}
-
-func RegisterCommonJsonMSG(p *json.Processor) {
-	p.Register(&Proto_Proxy.Ping{})
-	p.Register(&Proto_Proxy.Pong{})
-	p.Register(&Proto_Proxy.ErrorST{})
-}
-
-func EnableProfile(port int) {
-	conf.ConsolePort = port
-	conf.ProfilePath = "/tmp"
-}
-
-func ConfigLog(debug bool) {
-	if debug {
-		conf.LogLevel = "debug"
-	} else {
-		conf.LogLevel = "release"
-	}
-	conf.LogFlag = L.LstdFlags
-}
-
-func init() {
-	MsgProcessor.Register(&Proto_Proxy.Ping{}, 0)
-	MsgProcessor.Register(&Proto_Proxy.Pong{}, 99)
-	MsgProcessor.Register(&Proto_Proxy.ErrorST{}, 100)
 }
