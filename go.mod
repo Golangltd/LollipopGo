@@ -6,7 +6,7 @@ require (
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/golang/protobuf v1.2.0
+	github.com/golang/protobuf v1.5.0
 	github.com/gomodule/redigo v1.8.2
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/jinzhu/gorm v1.9.12
@@ -22,7 +22,7 @@ require (
 	github.com/xtaci/kcp-go v5.4.20+incompatible
 	github.com/xtaci/lossyconn v0.0.0-20200209145036-adba10fffc37 // indirect
 	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
-	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a // indirect
+	google.golang.org/protobuf v1.30.0
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
 
