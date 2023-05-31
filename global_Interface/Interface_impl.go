@@ -21,6 +21,6 @@ type Msg_data interface {
 type Msg_dataPB interface {
 	HandleCltProtocolPB(protocol int32, protocol2 int32, ProtocolData []byte, Connection interface{}) interface{}
 	HandleCltProtocolPB2(protocol int32, protocol2 int32, ProtocolData []byte, Connection interface{}) interface{}
-	PlayerSendMessagePB(senddata interface{}) int
+	PlayerSendMessagePB(senddata []byte) int
 	CloseEOFPB(closeEvent interface{}) int
 }
