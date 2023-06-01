@@ -199,7 +199,7 @@ func PlayerSendToProxyServerPB(conn *websocket.Conn, senddata []byte, strOpenID 
 	PackageDatan, err := proto.Marshal(proxydata1)
 
 	data := &Proto_Proxy.ProxyC2S_SendData{
-		Protocol:    1,
+		Protocol:    10,
 		Protocol2:   int32(Proto_Proxy.Proxy_S2P_SendData),
 		OpenId:      strOpenID,
 		PackageData: PackageDatan,
