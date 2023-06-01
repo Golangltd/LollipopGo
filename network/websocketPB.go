@@ -84,9 +84,9 @@ func (this *OnlineUserPB) handleLoopPB() {
 			//	}
 			//}
 		}
-		if ProtocolData, err := r.Json2mapPBServer(); err == nil {
-			IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), r.req, this.Connection)
-		}
+		//if ProtocolData, err := r.Json2mapPBServer(); err == nil {
+		//	IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), r.req, this.Connection)
+		//}
 	}
 }
 
