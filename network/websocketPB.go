@@ -73,7 +73,7 @@ func (this *OnlineUserPB) handleLoopPB() {
 			continue
 		}
 		if ProtocolData, err := r.Json2mapPB(); err == nil {
-			if ProtocolData != nil {
+			if ProtocolData.PackageData == nil {
 				glog.Info("-----------------ProtocolData", ProtocolData)
 				IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), ProtocolData.PackageData, this.Connection)
 			} else {
