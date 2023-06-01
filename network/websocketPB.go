@@ -160,21 +160,37 @@ func PlayerSendToServerPB(conn *websocket.Conn, data []byte) {
 }
 
 //------------------------------------------------------------------------------
-func Proto_Proxy_GamePackage(conn *websocket.Conn, main_cmd int32, sub_cmd int32, senddata []byte, strOpenID string) {
+func PlayerSendToProxyServerPBC(conn *websocket.Conn, main_cmd int32, sub_cmd int32, senddata []byte, strOpenID string) {
 
-	proxydata1 := &Proto_Proxy.ProxyC2S_SendData{
-		Protocol:    main_cmd,
-		Protocol2:   sub_cmd,
+	// 组装GamePackage
+	GamePackage := &Proto_Proxy.GamePackage{
+		MainCmd:     main_cmd,
+		SubCmd:      sub_cmd,
 		OpenId:      strOpenID,
 		PackageData: senddata,
 	}
-	PackageDatan, err := proto.Marshal(proxydata1)
+
+	MarshalGamePackage, err := proto.Marshal(GamePackage)
 	if err != nil {
 		glog.Info("序列化失败:", err)
 		return
 	}
 
-	errq := websocket.Message.Send(conn, PackageDatan)
+	// 组装ProxyC2S_SendData
+	ProxyC2S_SendData := &Proto_Proxy.ProxyC2S_SendData{
+		Protocol:    1,
+		Protocol2:   int32(Proto_Proxy.Proxy_S2P_SendData),
+		OpenId:      strOpenID,
+		PackageData: MarshalGamePackage,
+	}
+	MarshalProxyC2S_SendData, err := proto.Marshal(ProxyC2S_SendData)
+	if err != nil {
+		glog.Info("序列化失败:", err)
+		return
+	}
+
+	// 发往代理服
+	errq := websocket.Message.Send(conn, MarshalProxyC2S_SendData)
 	if errq != nil {
 		glog.Info(errq)
 	}
