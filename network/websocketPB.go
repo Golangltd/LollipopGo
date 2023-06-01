@@ -160,14 +160,11 @@ func PlayerSendToServerPB(conn *websocket.Conn, data []byte) {
 }
 
 //------------------------------------------------------------------------------
-func PlayerSendToProxyServerPBC(conn *websocket.Conn, senddata []byte, strOpenID string) {
-	if len(strOpenID) > 50 {
-		return
-	}
+func PlayerSendToProxyServerPBC(conn *websocket.Conn, main_cmd int32, sub_cmd int32, senddata []byte, strOpenID string) {
 
 	proxydata1 := &Proto_Proxy.ProxyC2S_SendData{
-		Protocol:    1,
-		Protocol2:   int32(Proto_Proxy.Proxy_S2P_SendData),
+		Protocol:    main_cmd,
+		Protocol2:   sub_cmd,
 		OpenId:      strOpenID,
 		PackageData: senddata,
 	}
