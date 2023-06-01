@@ -160,7 +160,7 @@ func PlayerSendToServerPB(conn *websocket.Conn, data []byte) {
 }
 
 //------------------------------------------------------------------------------
-func PlayerSendToProxyServerPBC(conn *websocket.Conn, main_cmd int32, sub_cmd int32, senddata []byte, strOpenID string) {
+func Proto_Proxy_GamePackage(conn *websocket.Conn, main_cmd int32, sub_cmd int32, senddata []byte, strOpenID string) {
 
 	proxydata1 := &Proto_Proxy.ProxyC2S_SendData{
 		Protocol:    main_cmd,
