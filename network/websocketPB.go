@@ -167,7 +167,7 @@ func PlayerSendToProxyServerPBC(conn *websocket.Conn, senddata []byte, strOpenID
 
 	proxydata1 := &Proto_Proxy.ProxyS2C_SendData{
 		Protocol:    1,
-		Protocol2:   int32(Proto_Proxy.Proxy_P2C_SendData),
+		Protocol2:   int32(Proto_Proxy.Proxy_S2P_SendData),
 		OpenId:      strOpenID,
 		PackageData: senddata,
 	}
