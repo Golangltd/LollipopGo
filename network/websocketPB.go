@@ -141,6 +141,14 @@ func WebSocketStartPB(url string,
 	}
 }
 
+func PlayerSendToServerPB(conn *websocket.Conn, data []byte) {
+	errq := websocket.Message.Send(conn, data)
+	if errq != nil {
+		glog.Info(errq)
+	}
+	return
+}
+
 //------------------------------------------------------------------------------
 func PlayerSendToProxyServerPB(conn *websocket.Conn, senddata []byte, strOpenID string) {
 	if len(strOpenID) > 50 {
