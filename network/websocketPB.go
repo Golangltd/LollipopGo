@@ -72,18 +72,18 @@ func (this *OnlineUserPB) handleLoopPB() {
 		if len(r.req) <= 0 {
 			continue
 		}
-		if ProtocolData, err := r.Json2mapPB(); err == nil {
-			IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), r.req, this.Connection)
-			//if ProtocolData.PackageData == nil {
-			//	glog.Info("-----------------ProtocolData", ProtocolData)
-			//	IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), ProtocolData.PackageData, this.Connection)
-			//} else {
-			//	if ProtocolDataServer, err := r.Json2mapPBServer(); err == nil {
-			//		glog.Info("-----------------ProtocolDataServer", ProtocolDataServer)
-			//		IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolDataServer.Protocol), Proto_Proxy.Proxy_CMD(ProtocolDataServer.Protocol2), ProtocolDataServer.PackageData, this.Connection)
-			//	}
-			//}
-		}
+		//if ProtocolData, err := r.Json2mapPB(); err == nil {
+		IMsgPB.HandleCltProtocolPB(r.req, this.Connection)
+		//if ProtocolData.PackageData == nil {
+		//	glog.Info("-----------------ProtocolData", ProtocolData)
+		//	IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), ProtocolData.PackageData, this.Connection)
+		//} else {
+		//	if ProtocolDataServer, err := r.Json2mapPBServer(); err == nil {
+		//		glog.Info("-----------------ProtocolDataServer", ProtocolDataServer)
+		//		IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolDataServer.Protocol), Proto_Proxy.Proxy_CMD(ProtocolDataServer.Protocol2), ProtocolDataServer.PackageData, this.Connection)
+		//	}
+		//}
+		//}
 		//if ProtocolData, err := r.Json2mapPBServer(); err == nil {
 		//	IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), r.req, this.Connection)
 		//}
