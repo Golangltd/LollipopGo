@@ -84,9 +84,9 @@ func (this *OnlineUserPB) handleLoopPB() {
 			//	}
 			//}
 		}
-		if ProtocolData, err := r.Json2mapPBServer(); err == nil {
-			IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), r.req, this.Connection)
-		}
+		//if ProtocolData, err := r.Json2mapPBServer(); err == nil {
+		//	IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), r.req, this.Connection)
+		//}
 	}
 }
 
@@ -173,7 +173,7 @@ func PlayerSendToProxyServerPB(conn *websocket.Conn, senddata []byte, strOpenID 
 	}
 	PackageDatan, err := proto.Marshal(proxydata1)
 
-	data := &Proto_Proxy.ProxyS2C_SendData{
+	data := &Proto_Proxy.ProxyC2S_SendData{
 		Protocol:    1,
 		Protocol2:   int32(Proto_Proxy.Proxy_S2P_SendData),
 		OpenId:      strOpenID,
@@ -205,7 +205,7 @@ func PlayerSendToProxyServerPBConnet(conn *websocket.Conn, senddata []byte, strO
 	}
 	PackageDatan, err := proto.Marshal(proxydata1)
 
-	data := &Proto_Proxy.ProxyS2C_SendData{
+	data := &Proto_Proxy.ProxyC2S_SendData{
 		Protocol:    1,
 		Protocol2:   int32(Proto_Proxy.Proxy_S2P_SendData),
 		OpenId:      strOpenID,
