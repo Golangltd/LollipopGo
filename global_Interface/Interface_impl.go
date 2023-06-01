@@ -1,7 +1,5 @@
 package MsgHandleClt
 
-import Proto_Proxy "LollipopGo/Proxy_Server/Proto"
-
 /*
 ps: v 2.8.X 版本以前
 type Msg_data interface {
@@ -22,7 +20,7 @@ type Msg_data interface {
 
 type Msg_dataPB interface {
 	HandleCltProtocolPB(ProtocolData []byte, Connection interface{}) interface{}
-	HandleCltProtocolPB2(protocol Proto_Proxy.Proxy_CMD, protocol2 Proto_Proxy.Proxy_CMD, ProtocolData []byte, Connection interface{}) interface{}
+	HandleCltProtocolPB2(protocol int32, protocol2 int32, ProtocolData []byte, Connection interface{}) interface{}
 	PlayerSendMessagePB(senddata []byte) int
 	CloseEOFPB(closeEvent interface{}) int
 }
