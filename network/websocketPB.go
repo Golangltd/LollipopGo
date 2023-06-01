@@ -74,9 +74,11 @@ func (this *OnlineUserPB) handleLoopPB() {
 		}
 		if ProtocolData, err := r.Json2mapPB(); err == nil {
 			if ProtocolData != nil {
+				glog.Info("-----------------ProtocolData", ProtocolData)
 				IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolData.Protocol), Proto_Proxy.Proxy_CMD(ProtocolData.Protocol2), ProtocolData.PackageData, this.Connection)
 			} else {
 				if ProtocolDataServer, err := r.Json2mapPBServer(); err == nil {
+					glog.Info("-----------------ProtocolDataServer", ProtocolDataServer)
 					IMsgPB.HandleCltProtocolPB(Proto_Proxy.Proxy_CMD(ProtocolDataServer.Protocol), Proto_Proxy.Proxy_CMD(ProtocolDataServer.Protocol2), ProtocolDataServer.PackageData, this.Connection)
 				}
 			}
@@ -92,7 +94,7 @@ func (r *RequestbodyPB) Json2mapPB() (s *Proto_Proxy.ProxyC2S_SendData, err erro
 	newClientData := &Proto_Proxy.ProxyC2S_SendData{}
 	err = proto.Unmarshal(r.req, newClientData)
 	if err != nil {
-		return &Proto_Proxy.ProxyC2S_SendData{}, err
+		return nil, err
 	}
 	return newClientData, nil
 }
@@ -101,7 +103,7 @@ func (r *RequestbodyPB) Json2mapPBServer() (s *Proto_Proxy.ProxyS2C_SendData, er
 	newClientData := &Proto_Proxy.ProxyS2C_SendData{}
 	err = proto.Unmarshal(r.req, newClientData)
 	if err != nil {
-		return &Proto_Proxy.ProxyS2C_SendData{}, err
+		return nil, err
 	}
 	return newClientData, nil
 }
