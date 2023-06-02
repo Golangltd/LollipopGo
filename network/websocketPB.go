@@ -140,7 +140,6 @@ func PlayerSendToServerPB(conn *websocket.Conn, data []byte) {
 	return
 }
 
-//
 ////------------------------------------------------------------------------------
 //func PlayerSendToProxyServerPBC(conn *websocket.Conn, main_cmd int32, sub_cmd int32, senddata []byte, strOpenID string) {
 //
@@ -178,6 +177,7 @@ func PlayerSendToServerPB(conn *websocket.Conn, data []byte) {
 //	}
 //	return
 //}
+
 //
 ////------------------------------------------------------------------------------
 //func PlayerSendToProxyServerPB(conn *websocket.Conn, senddata []byte, strOpenID string) {
