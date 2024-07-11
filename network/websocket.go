@@ -48,18 +48,13 @@ func (this *OnlineUser) readLoop() {
 		err := websocket.Message.Receive(this.Connection, &content)
 		if err != nil {
 			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
-				IMsg.CloseEOF(this.Connection)
-				//return
-				//continue
+				//IMsg.CloseEOF(this.Connection)
 				return
 			}
-			//break
-			//continue
-			return
+			break
 		}
 		select {
 		case this.inChan <- content:
-			return
 		}
 	}
 }
