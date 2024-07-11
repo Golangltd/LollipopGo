@@ -127,20 +127,22 @@ ERR:
 
 func (this *OnlineUser) PlayerSendMessage(senddata interface{}) int {
 
-	glog.Info("协程的数量 :", runtime.NumGoroutine())
-	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
-	b, err1 := jsoniter.Marshal(senddata)
-	if err1 != nil {
-		glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
-		glog.Flush()
-		return 1
-	}
-	err := websocket.JSON.Send(this.Connection, b)
-	if err != nil {
-		glog.Error("PlayerSendMessage send data fail ! err:", err.Error())
-		glog.Flush()
-		return 2
-	}
+	go func() {
+		glog.Info("协程的数量 :", runtime.NumGoroutine())
+		var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
+		b, err1 := jsoniter.Marshal(senddata)
+		if err1 != nil {
+			glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
+			glog.Flush()
+			//return 1
+		}
+		err := websocket.JSON.Send(this.Connection, b)
+		if err != nil {
+			glog.Error("PlayerSendMessage send data fail ! err:", err.Error())
+			glog.Flush()
+			//return 2
+		}
+	}()
 	return 0
 }
 
