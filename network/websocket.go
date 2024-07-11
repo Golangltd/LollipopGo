@@ -50,6 +50,7 @@ func (this *OnlineUser) readLoop() {
 			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
 				IMsg.CloseEOF(this.Connection)
 				//return
+				this.Connection.Close()
 				continue
 			}
 			//break
