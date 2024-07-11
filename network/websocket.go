@@ -107,42 +107,43 @@ func (this *OnlineUser) writeLoop() {
 			glog.Info("异常捕获:", strerr)
 		}
 	}()
-	for {
-		select {
-		case data := <-this.outChan:
-			if iret := this.PlayerSendMessage(data); iret == 2 {
-				this.Connection.Close()
-				runtime.Goexit() //new24
-				goto ERR
-			}
-		case <-this.goExit:
-			this.Connection.Close()
-			runtime.Goexit() //new24
-		}
-	}
-ERR:
-	this.Connection.Close()
-	runtime.Goexit()
+
+	this.PlayerSendMessage(this.outChan)
+
+	//	for {
+	//		select {
+	//		case data := <-this.outChan:
+	//			if iret := this.PlayerSendMessage(data); iret == 2 {
+	//				this.Connection.Close()
+	//				runtime.Goexit() //new24
+	//				goto ERR
+	//			}
+	//		case <-this.goExit:
+	//			this.Connection.Close()
+	//			runtime.Goexit() //new24
+	//		}
+	//	}
+	//ERR:
+	//	this.Connection.Close()
+	//	runtime.Goexit()
 }
 
 func (this *OnlineUser) PlayerSendMessage(senddata interface{}) int {
 
-	go func() {
-		glog.Info("协程的数量 :", runtime.NumGoroutine())
-		var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
-		b, err1 := jsoniter.Marshal(senddata)
-		if err1 != nil {
-			glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
-			glog.Flush()
-			//return 1
-		}
-		err := websocket.JSON.Send(this.Connection, b)
-		if err != nil {
-			glog.Error("PlayerSendMessage send data fail ! err:", err.Error())
-			glog.Flush()
-			//return 2
-		}
-	}()
+	glog.Info("协程的数量 :", runtime.NumGoroutine())
+	var jsoniter = jsoniter.ConfigCompatibleWithStandardLibrary
+	b, err1 := jsoniter.Marshal(senddata)
+	if err1 != nil {
+		glog.Error("PlayerSendMessage json.Marshal data fail ! err:", err1.Error())
+		glog.Flush()
+		return 1
+	}
+	err := websocket.JSON.Send(this.Connection, b)
+	if err != nil {
+		glog.Error("PlayerSendMessage send data fail ! err:", err.Error())
+		glog.Flush()
+		return 2
+	}
 	return 0
 }
 
