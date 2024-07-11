@@ -35,7 +35,11 @@ func InitConnection(wsConn *websocket.Conn) (*OnlineUser, error) {
 		inChan:     make(chan string, BytebufLen),
 	}
 	go conn.handleLoop()
-	conn.readLoop()
+	//conn.readLoop()
+
+	//711
+	go conn.readLoop()
+	select {}
 
 	return conn, nil
 }
