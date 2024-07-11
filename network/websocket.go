@@ -34,8 +34,7 @@ func InitConnection(wsConn *websocket.Conn) (*OnlineUser, error) {
 		Connection: wsConn,
 		inChan:     make(chan string, BytebufLen),
 	}
-	//go conn.handleLoop()711
-	conn.handleLoop()
+	go conn.handleLoop()
 	conn.readLoop()
 
 	return conn, nil
@@ -53,7 +52,7 @@ func (this *OnlineUser) readLoop() {
 				//return
 				continue
 			}
-			break
+			//break
 			continue
 		}
 		select {
@@ -72,6 +71,9 @@ func (this *OnlineUser) handleLoop() {
 	}()
 
 	for {
+		if this.inChan == nil {
+			continue
+		}
 		var r Requestbody
 		select {
 		case r.req = <-this.inChan:
