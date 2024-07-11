@@ -111,13 +111,13 @@ func (this *OnlineUser) writeLoop() {
 		select {
 		case data := <-this.outChan:
 			if iret := this.PlayerSendMessage(data); iret == 2 {
-				this.Connection.Close()
-				runtime.Goexit() //new24
+				//this.Connection.Close()
+				//runtime.Goexit() //new24
 				goto ERR
 			}
 		case <-this.goExit:
-			this.Connection.Close()
-			runtime.Goexit() //new24
+			//this.Connection.Close()
+			//runtime.Goexit() //new24
 		}
 	}
 ERR:
