@@ -49,9 +49,11 @@ func (this *OnlineUser) readLoop() {
 		if err != nil {
 			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
 				IMsg.CloseEOF(this.Connection)
-				return
+				//return
+				continue
 			}
-			break
+			//break
+			continue
 		}
 		select {
 		case this.inChan <- content:
@@ -108,24 +110,24 @@ func (this *OnlineUser) writeLoop() {
 		}
 	}()
 
-	this.PlayerSendMessage(this.outChan)
+	//this.PlayerSendMessage(this.outChan)
 
-	//	for {
-	//		select {
-	//		case data := <-this.outChan:
-	//			if iret := this.PlayerSendMessage(data); iret == 2 {
-	//				this.Connection.Close()
-	//				runtime.Goexit() //new24
-	//				goto ERR
-	//			}
-	//		case <-this.goExit:
-	//			this.Connection.Close()
-	//			runtime.Goexit() //new24
-	//		}
-	//	}
-	//ERR:
-	//	this.Connection.Close()
-	//	runtime.Goexit()
+	for {
+		select {
+		case data := <-this.outChan:
+			if iret := this.PlayerSendMessage(data); iret == 2 {
+				this.Connection.Close()
+				runtime.Goexit() //new24
+				goto ERR
+			}
+		case <-this.goExit:
+			this.Connection.Close()
+			runtime.Goexit() //new24
+		}
+	}
+ERR:
+	this.Connection.Close()
+	runtime.Goexit()
 }
 
 func (this *OnlineUser) PlayerSendMessage(senddata interface{}) int {
