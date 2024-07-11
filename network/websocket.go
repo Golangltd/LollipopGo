@@ -34,7 +34,8 @@ func InitConnection(wsConn *websocket.Conn) (*OnlineUser, error) {
 		Connection: wsConn,
 		inChan:     make(chan string, BytebufLen),
 	}
-	go conn.handleLoop()
+	//go conn.handleLoop()711
+	conn.handleLoop()
 	conn.readLoop()
 
 	return conn, nil
@@ -50,10 +51,9 @@ func (this *OnlineUser) readLoop() {
 			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
 				IMsg.CloseEOF(this.Connection)
 				//return
-				this.Connection.Close()
 				continue
 			}
-			//break
+			break
 			continue
 		}
 		select {
@@ -103,33 +103,33 @@ func base64Decode(src []byte) ([]byte, error) {
 	return base64.StdEncoding.DecodeString(string(src))
 }
 
-func (this *OnlineUser) writeLoop() {
-	defer func() {
-		if err := recover(); err != nil {
-			strerr := fmt.Sprintf("%s", err)
-			glog.Info("异常捕获:", strerr)
-		}
-	}()
-
-	//this.PlayerSendMessage(this.outChan)
-
-	for {
-		select {
-		case data := <-this.outChan:
-			if iret := this.PlayerSendMessage(data); iret == 2 {
-				this.Connection.Close()
-				runtime.Goexit() //new24
-				goto ERR
-			}
-		case <-this.goExit:
-			this.Connection.Close()
-			runtime.Goexit() //new24
-		}
-	}
-ERR:
-	this.Connection.Close()
-	runtime.Goexit()
-}
+//func (this *OnlineUser) writeLoop() {
+//	defer func() {
+//		if err := recover(); err != nil {
+//			strerr := fmt.Sprintf("%s", err)
+//			glog.Info("异常捕获:", strerr)
+//		}
+//	}()
+//
+//	//this.PlayerSendMessage(this.outChan)
+//
+//	for {
+//		select {
+//		case data := <-this.outChan:
+//			if iret := this.PlayerSendMessage(data); iret == 2 {
+//				this.Connection.Close()
+//				runtime.Goexit() //new24
+//				goto ERR
+//			}
+//		case <-this.goExit:
+//			this.Connection.Close()
+//			runtime.Goexit() //new24
+//		}
+//	}
+//ERR:
+//	this.Connection.Close()
+//	runtime.Goexit()
+//}
 
 func (this *OnlineUser) PlayerSendMessage(senddata interface{}) int {
 
