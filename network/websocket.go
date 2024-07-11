@@ -52,7 +52,7 @@ func (this *OnlineUser) readLoop() {
 		err := websocket.Message.Receive(this.Connection, &content)
 		if err != nil {
 			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
-				//IMsg.CloseEOF(this.Connection)
+				IMsg.CloseEOF(this.Connection)
 				return
 			}
 			break
