@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-var BytebufLen int64 = 10000000000
+var BytebufLen int64 = 10000000
 var IMsg MsgHandleClt.Msg_data
 
 type OnlineUser struct {
