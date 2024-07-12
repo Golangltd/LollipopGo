@@ -14,6 +14,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var BytebufLen int64 = 10000000
@@ -36,11 +37,7 @@ func InitConnection(wsConn *websocket.Conn) (*OnlineUser, error) {
 	}
 
 	defer conn.Connection.Close()
-
 	go conn.handleLoop()
-	//conn.readLoop()
-
-	//711
 	go conn.readLoop()
 	select {}
 
@@ -62,10 +59,11 @@ func (this *OnlineUser) readLoop() {
 		}
 		select {
 		case this.inChan <- content:
-		//case <-time.After(3 * time.Second):
-		//	fmt.Println("超时----")
-		default:
-			fmt.Println("Channel is empty, unable to read data")
+		case <-time.After(90 * time.Second):
+			glog.Info("readLoop:超时----")
+			return
+			//default:
+			//	fmt.Println("Channel is empty, unable to read data")
 		}
 	}
 }
@@ -86,6 +84,9 @@ func (this *OnlineUser) handleLoop() {
 		var r Requestbody
 		select {
 		case r.req = <-this.inChan:
+		case <-time.After(90 * time.Second):
+			glog.Info("handleLoop:超时----")
+			return
 		}
 		if len(r.req) <= 0 {
 			continue
