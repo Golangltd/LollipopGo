@@ -53,8 +53,9 @@ func (this *OnlineUser) readLoop() {
 		if err != nil {
 			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
 				IMsg.CloseEOF(this.Connection)
-				runtime.Goexit()
 				glog.Info("协程的数量 :", runtime.NumGoroutine())
+				this.Connection.Close()
+				runtime.Goexit()
 				return
 			}
 			break
@@ -63,8 +64,9 @@ func (this *OnlineUser) readLoop() {
 		case this.inChan <- content:
 		case <-time.After(30 * time.Second):
 			glog.Info("readLoop:超时----")
-			runtime.Goexit()
 			glog.Info("协程的数量 :", runtime.NumGoroutine())
+			this.Connection.Close()
+			runtime.Goexit()
 			return
 			//default:
 			//	fmt.Println("Channel is empty, unable to read data")
@@ -90,8 +92,9 @@ func (this *OnlineUser) handleLoop() {
 		case r.req = <-this.inChan:
 		case <-time.After(200 * time.Second):
 			glog.Info("handleLoop:超时----")
-			runtime.Goexit()
 			glog.Info("协程的数量 :", runtime.NumGoroutine())
+			this.Connection.Close()
+			runtime.Goexit()
 			return
 		}
 		if len(r.req) <= 0 {
