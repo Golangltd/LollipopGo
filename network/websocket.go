@@ -51,23 +51,25 @@ func (this *OnlineUser) readLoop() {
 		var content string
 		err := websocket.Message.Receive(this.Connection, &content)
 		if err != nil {
-			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
+			//if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
+			if err == io.EOF {
 				IMsg.CloseEOF(this.Connection)
-				//glog.Info("协程的数量 :", runtime.NumGoroutine())
+				glog.Info("协程的数量 :", runtime.NumGoroutine())
 				//this.Connection.Close()
 				//runtime.Goexit()
 				return
 			}
-			break
+			//break
+			continue
 		}
 		select {
 		case this.inChan <- content:
 		case <-time.After(30 * time.Second):
-			//glog.Info("readLoop:超时----")
+			glog.Info("readLoop:超时----")
 			//glog.Info("协程的数量 :", runtime.NumGoroutine())
 			//this.Connection.Close()
 			//runtime.Goexit()
-			return
+			//return
 			//default:
 			//	fmt.Println("Channel is empty, unable to read data")
 		}
@@ -91,11 +93,12 @@ func (this *OnlineUser) handleLoop() {
 		select {
 		case r.req = <-this.inChan:
 		case <-time.After(200 * time.Second):
-			//glog.Info("handleLoop:超时----")
+			glog.Info("handleLoop:超时----")
 			//glog.Info("协程的数量 :", runtime.NumGoroutine())
 			//this.Connection.Close()
 			//runtime.Goexit()
-			return
+			//return
+			continue
 		}
 		if len(r.req) <= 0 {
 			continue
