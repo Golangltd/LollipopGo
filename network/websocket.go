@@ -57,8 +57,7 @@ func (this *OnlineUser) readLoop() {
 				glog.Info("协程的数量 :", runtime.NumGoroutine())
 				//this.Connection.Close()
 				//runtime.Goexit()
-				//return
-				continue
+				return
 			}
 			//break
 			continue
