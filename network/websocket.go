@@ -54,7 +54,7 @@ func (this *OnlineUser) readLoop() {
 			if err == io.EOF || err == io.ErrClosedPipe || content == "" || err == io.ErrNoProgress {
 				IMsg.CloseEOF(this.Connection)
 				glog.Info("协程的数量 :", runtime.NumGoroutine())
-				this.Connection.Close()
+				//this.Connection.Close()
 				runtime.Goexit()
 				return
 			}
@@ -65,7 +65,7 @@ func (this *OnlineUser) readLoop() {
 		case <-time.After(30 * time.Second):
 			glog.Info("readLoop:超时----")
 			glog.Info("协程的数量 :", runtime.NumGoroutine())
-			this.Connection.Close()
+			//this.Connection.Close()
 			runtime.Goexit()
 			return
 			//default:
@@ -93,7 +93,7 @@ func (this *OnlineUser) handleLoop() {
 		case <-time.After(200 * time.Second):
 			glog.Info("handleLoop:超时----")
 			glog.Info("协程的数量 :", runtime.NumGoroutine())
-			this.Connection.Close()
+			//this.Connection.Close()
 			runtime.Goexit()
 			return
 		}
