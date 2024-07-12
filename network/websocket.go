@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-var BytebufLen int = 10000
+var BytebufLen int64 = 10000000000
 var IMsg MsgHandleClt.Msg_data
 
 type OnlineUser struct {
@@ -62,6 +62,10 @@ func (this *OnlineUser) readLoop() {
 		}
 		select {
 		case this.inChan <- content:
+		//case <-time.After(3 * time.Second):
+		//	fmt.Println("超时----")
+		default:
+			fmt.Println("Channel is empty, unable to read data")
 		}
 	}
 }
