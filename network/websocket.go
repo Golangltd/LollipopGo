@@ -55,7 +55,7 @@ func (this *OnlineUser) readLoop() {
 				IMsg.CloseEOF(this.Connection)
 				glog.Info("协程的数量 :", runtime.NumGoroutine())
 				//this.Connection.Close()
-				runtime.Goexit()
+				//runtime.Goexit()
 				return
 			}
 			break
@@ -66,7 +66,7 @@ func (this *OnlineUser) readLoop() {
 			glog.Info("readLoop:超时----")
 			glog.Info("协程的数量 :", runtime.NumGoroutine())
 			//this.Connection.Close()
-			runtime.Goexit()
+			//runtime.Goexit()
 			return
 			//default:
 			//	fmt.Println("Channel is empty, unable to read data")
@@ -94,7 +94,7 @@ func (this *OnlineUser) handleLoop() {
 			glog.Info("handleLoop:超时----")
 			glog.Info("协程的数量 :", runtime.NumGoroutine())
 			//this.Connection.Close()
-			runtime.Goexit()
+			//runtime.Goexit()
 			return
 		}
 		if len(r.req) <= 0 {
