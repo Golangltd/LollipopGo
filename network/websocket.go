@@ -59,7 +59,7 @@ func (this *OnlineUser) readLoop() {
 		}
 		select {
 		case this.inChan <- content:
-		case <-time.After(90 * time.Second):
+		case <-time.After(30 * time.Second):
 			glog.Info("readLoop:超时----")
 			return
 			//default:
@@ -84,7 +84,7 @@ func (this *OnlineUser) handleLoop() {
 		var r Requestbody
 		select {
 		case r.req = <-this.inChan:
-		case <-time.After(90 * time.Second):
+		case <-time.After(30 * time.Second):
 			glog.Info("handleLoop:超时----")
 			return
 		}
