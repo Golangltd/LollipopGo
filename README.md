@@ -4,6 +4,7 @@ Golang语言情怀  全球服游戏服务器框架,目前协议支持websocket�
 >微信服务号：Golang语言游戏服务器<Br/>
 >商业定制版：联系彬哥(微信：cserli)<Br/>
 >以下是本框架的实时对战3v3游戏项目：《荒野坦克大战》<Br/>
+>[苹果商店【坦克对决】下载地址：https://apps.apple.com/us/app/versus-war/id6444600708](https://apps.apple.com/us/app/versus-war/id6444600708)<Br/>
 >[谷歌play海外【荒野坦克大战】下载地址：https://play.google.com/store/apps/details?id=com.byteedu.tankBattle](https://play.google.com/store/apps/details?id=com.byteedu.tankBattle)<Br/>
 >[taptap国内【荒野坦克大战】下载地址：https://www.taptap.cn/app/243380](https://www.taptap.cn/app/243380)<Br/>
 >[4399游戏盒子国内【荒野坦克大战】下载地址：http://a.4399.cn/game-id-252256.html](http://a.4399.cn/game-id-252256.html)<Br/>
