@@ -64,7 +64,7 @@ func (this *OnlineUser) readLoop() {
 		}
 		select {
 		case this.inChan <- content:
-		case <-time.After(30 * time.Second):
+		case <-time.After(60 * time.Second):
 			glog.Info("readLoop:超时----")
 			//glog.Info("协程的数量 :", runtime.NumGoroutine())
 			//this.Connection.Close()
