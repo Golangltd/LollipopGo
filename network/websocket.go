@@ -38,8 +38,9 @@ func InitConnection(wsConn *websocket.Conn) (*OnlineUser, error) {
 
 	defer conn.Connection.Close()
 	go conn.handleLoop()
-	go conn.readLoop()
-	select {}
+	conn.readLoop()
+	//go conn.readLoop()
+	//select {}
 
 	return conn, nil
 }
