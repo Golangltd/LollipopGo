@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-var BytebufLen int64 = 10000000
+var BytebufLen int64 = 10000
 var IMsg MsgHandleClt.Msg_data
 
 type OnlineUser struct {
@@ -201,7 +201,7 @@ func PlayerSendToServer(conn *websocket.Conn, data interface{}) {
 	return
 }
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 func PlayerSendToProxyServer(conn *websocket.Conn, senddata interface{}, strOpenID string) {
 	if len(strOpenID) > 50 {
 		return
@@ -318,7 +318,7 @@ func WebSocketStart(url string,
 	}
 }
 
-//添加参数到get请求
+// 添加参数到get请求
 func AddParamsToGetReq(tpType string, strArr []string, paramsMap map[string]string) string {
 	urlPath := getUrlPath(tpType, strArr)
 	if len(paramsMap) <= 0 || paramsMap == nil { //如果没有参数需要添加直接返回当前路径
@@ -333,7 +333,7 @@ func AddParamsToGetReq(tpType string, strArr []string, paramsMap map[string]stri
 	return fmt.Sprintf("%s%s", urlPath, tempStr)
 }
 
-//获取url路径
+// 获取url路径
 func getUrlPath(tpType string, strArr []string) string {
 	urlPath := strings.Join(strArr, "")
 	return fmt.Sprintf("%s://%s", tpType, urlPath)
