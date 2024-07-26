@@ -52,24 +52,11 @@ Golang语言情怀
 架构目录说明
 -----------
 ```go
-├── encrypt
-│   ├── AES           # AES加密           
-│   ├── DES           # DES加密
-│   └── RSA           # RSA加密
-├── error             # 错误统一格式管理模块，全局错误码定义
 ├── global_Interface  # 网络接口定义，分布式服务器需要单独实现接口
-├── heartbeat         # 通用心跳模块
 ├── leaf              # leaf的一些扩展函数，包括自定义的protobuf消息解析器
-├── log               # 通用的log封装
 ├── network           # 网络处理封装，目前支持：http、rpc、websocket
-├── PhysX             # 3D游戏Physx支持，目前内测
-│   ├── DLLAndSo      # PhysX动态链接库，支持windows系统及linux系统
-│   ├── PhysXAPI      # Go语言封装的PhysXAPI调用接口
-│   └── example       # Go语言封装接口测试实例
 ├── Proxy_Server      
 │   └──  Proto        # 反向代理消息公用模块，框架标准
-├── SM                # 游戏AI处理,目前支持有限状态机
-├── standard          # 框架函数、变量命名规则(建议驼峰命名)
 ├── timer             # 通用定时器
 ├── tools
 │   ├── collection    # 集合类的扩展方法
@@ -77,9 +64,6 @@ Golang语言情怀
 │   ├── deepcopy      # 通用深拷贝（使用反射）
 │   ├── DFA           # 过滤敏感字
 │   ├── fs            # 文件系统/配置解析
-│   ├── hardware      
-│   └──  MAC          # 获取MAC地址
-│   ├── ip            # ip地址库
 │   ├── jsonutils     # json工具库
 │   ├── mem           # 常用的内存缓存类
 │   ├── num           # 基础数字类型工具函数
