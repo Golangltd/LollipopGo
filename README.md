@@ -39,7 +39,6 @@ Golang语言情怀
 <li>LollipopGo架构 直接下载就可以使用（彬哥维护），无需依赖管理，否则导致部分官方接口无法使用 </li>
 <li>LollipopGo架构 手机对战游戏视频：<a href="https://www.bilibili.com/video/av52239498" target="_blank">点击访问</a></li>
 <li>LollipopGo架构 PC端游对战游戏视频：<a href="https://www.bilibili.com/video/av54726431" target="_blank">点击访问</a></li>
-<li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://gopher.ke.qq.com" target="_blank">腾讯课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="https://study.163.com/provider/400000000538037/index.htm?share=2&shareId=400000000538037" target="_blank">网易云课堂</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://space.bilibili.com/389368547?" target="_blank">B站(bilibili.com)</a></li>
 <li>同时我们的免费课程也在持续更新中; 点击访问：<a href="http://www.gameais.com" target="_blank">LollipopGo框架文档地址，关注公众服务号：Golang语言游戏服务器</a></li>
